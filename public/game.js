@@ -2,8 +2,12 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const PI = Math.PI;
 const radToDeg = 1/3.14*180;
+const magicViewNumber = 0.6;
+const magicViewNumber2 = 3000;
+const screen = {'width':320,'height':200};
+
 let keys = {'up':false,'down':false,'left':false,'right':false};
-let renderMode = 1;
+let renderMode = 0;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
@@ -29,10 +33,10 @@ function keyUpHandler(e) {
 }
 
 let mikeObject = {'type':'remotePlayer','x':140,'y':60};
-let wall1 = {'type':'wall','x1':100,'y1':100,'x2':100,'y2':25};
-let wall2 = {'type':'wall','x1':100,'y1':25,'x2':25,'y2':25};
-let wall3 = {'type':'wall','x1':25,'y1':25,'x2':25,'y2':100};
-let wall4 = {'type':'wall','x1':25,'y1':100,'x2':100,'y2':100};
+let wall1 = {'type':'wall','x1':100,'y1':100,'x2':100,'y2':25,'color':"#9f389d"};
+let wall2 = {'type':'wall','x1':100,'y1':25,'x2':25,'y2':25,'color':"#9f389d"};
+let wall3 = {'type':'wall','x1':25,'y1':25,'x2':25,'y2':100,'color':"#9f389d"};
+let wall4 = {'type':'wall','x1':25,'y1':100,'x2':100,'y2':100,'color':"#9f389d"};
 
 let objects = [wall1,wall2,wall3,wall4,mikeObject];
 let objectsToRender = [];
@@ -42,7 +46,7 @@ let playerSpeed = 2.5;
 let rotationSpeed = 0.025;
 let FOV = 3.14/2;
 
-requestAnimationFrame(doFrame);
+
 function doFrame(){
     ctx.fillStyle = "#2a2a2a";
     ctx.beginPath();
@@ -60,6 +64,7 @@ function doFrame(){
 
     requestAnimationFrame(doFrame);
 }
+requestAnimationFrame(doFrame);
 
 function playerControls(){
     if(keys.up){
@@ -99,6 +104,8 @@ function prepareForRender(){
         objects[i]['distFromPlayer2'] = Math.sqrt(Math.pow(localPlayer.x-objects[i].x2 ,2)+Math.pow(localPlayer.y-objects[i].y2,2));
         objects[i]['dirFromPlayer2'] = Math.atan2(objects[i].y2 - localPlayer.y,objects[i].x2 - localPlayer.x);
 
+        objects[i]['dirDiff'] = (localPlayer.dir - objects[i]['dirFromPlayer'] +PI + 2*PI) % (2*PI)-PI
+        objects[i]['dirDiff2'] = (localPlayer.dir - objects[i]['dirFromPlayer2'] +PI + 2*PI) % (2*PI)-PI
 
 
         //this line mods by a rotation, and shifts up by a rotation, and mods again. This makes it positive.
@@ -111,7 +118,8 @@ function prepareForRender(){
 
         let angDiffOld = (localPlayer.dir - (Math.atan2(objects[i]['y1']-localPlayer.y,objects[i]['x1']-localPlayer.x)+ PI + 2*PI)%(2*PI)-PI);
 
-        objects[i]['inFOV'] = angDiffOld>FOV/2&&angDiffOld<0-FOV/2;
+        objects[i]['inFOV'] = true;
+       // objects[i]['inFOV'] = angDiffOld>FOV/2&&angDiffOld<0-FOV/2;
      //   objects[i]['inFOV'] = adjustedDirFromPlayer>=side1 && adjustedDirFromPlayer<=side2 ;
         ///   side2>adjDir>side1
         //  objects[i]['inFOV'] = true;
@@ -119,14 +127,14 @@ function prepareForRender(){
         if(frameOn%60==0){
             //    console.log('adjDir:    '+Math.floor(adjustedDirFromPlayer*radToDeg));
             //    console.log('playerDir: '+ Math.floor(side2*radToDeg)+','+Math.floor(side1*radToDeg));
-            console.log(localPlayer.dir*radToDeg)
+          //  console.log(localPlayer.dir*radToDeg)
         //    console.log(adjustedDirFromPlayer*radToDeg)
         }
 
 
     }
 
-    objectsToRender = [];
+    objectsToRender = [];  //this bit of code fills the array with indexes of objects, sorted by distance from player
     let objectsCopy = objects.slice();
     for(let i = 0; i<objects.length; i++)
         objectsToRender[i] = i;
@@ -192,11 +200,43 @@ function renderTopDown(){
     ctx.stroke();
     ctx.closePath();
 
-
-
-
 }
 
 function render3D(){
+for(let i = 0; i<objectsToRender.length; i++){
+    let theObject = objects[objectsToRender[i]];
+    if(theObject.type == 'wall'){
+        if(theObject['inFOV']){
+            ctx.beginPath();
+            ctx.fillStyle = theObject.color;
+            let planeXStart = (0-theObject['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
+            let planeXEnd = (0-theObject['dirDiff2'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
+            let adjPointDistStart = magicViewNumber2/theObject['dirDiff'];
+            let adjPointDistEnd = magicViewNumber2/theObject['dirDiff2'];
 
+            let lowerYStart = screen.height/2-adjPointDistStart;
+            let upperYStart = screen.height/2+adjPointDistStart;
+            let lowerYEnd = screen.height/2-adjPointDistEnd;
+            let upperYEnd = screen.height/2+adjPointDistEnd;
+
+            if(frameOn%100==0)
+                console.log(planeXStart+','+upperYStart+' '+planeXEnd+','+lowerYStart);
+
+            ctx.moveTo(planeXEnd,lowerYEnd);
+            ctx.lineTo(planeXEnd,upperYEnd);
+            ctx.lineTo(planeXStart,upperYStart);
+            ctx.lineTo(planeXStart,lowerYStart)
+            ctx.lineTo(planeXEnd,lowerYEnd);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+
+
+
+            //     var pointDisplayX = (0-allRenderWalls1Dir[i][j] + magicViewNumber) /(magicViewNumber*2)*cWidth; //don't ask me how i got here
+
+        }
+
+    }
+}
 }
