@@ -2,12 +2,10 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const PI = Math.PI;
 const radToDeg = 1/3.14*180;
-const magicViewNumber = 0.6;
-const magicViewNumber2 = 3000;
 const screen = {'width':320,'height':200};
-
+let frameOn = 0;
 let keys = {'up':false,'down':false,'left':false,'right':false};
-let renderMode = 0;
+let renderMode = 1;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
@@ -41,13 +39,16 @@ let wall4 = {'type':'wall','x1':25,'y1':100,'x2':100,'y2':100,'color':"#9f389d"}
 let objects = [wall1,wall2,wall3,wall4,mikeObject];
 let objectsToRender = [];
 
-let localPlayer = {'x':150,'y':150,'dir':3.14/2};
+let localPlayer = {'x':150,'y':150,'dir':-1.5*PI/2};
 let playerSpeed = 2.5;
 let rotationSpeed = 0.025;
-let FOV = 3.14/2;
+let FOV = 3.14/3;
 
-
+let newFrameOn = 0;
 function doFrame(){
+    if(newFrameOn%10==0)
+        console.log(localPlayer.dir);
+
     ctx.fillStyle = "#2a2a2a";
     ctx.beginPath();
     ctx.rect(0,0,1000,1000);
@@ -69,68 +70,48 @@ requestAnimationFrame(doFrame);
 function playerControls(){
     if(keys.up){
         localPlayer.x+= Math.cos(localPlayer.dir);
-        localPlayer.y-= Math.sin(localPlayer.dir);
+        localPlayer.y+= Math.sin(localPlayer.dir);
     }
     if(keys.down){
         localPlayer.x-= Math.cos(localPlayer.dir);
-        localPlayer.y+= Math.sin(localPlayer.dir);
+        localPlayer.y-= Math.sin(localPlayer.dir);
     }
     if(keys.left){
-        localPlayer.dir+=rotationSpeed;
-    }
-    if(keys.right){
         localPlayer.dir-=rotationSpeed;
     }
+    if(keys.right){
+        localPlayer.dir+=rotationSpeed;
+    }
 
-    if(localPlayer.dir<0)
-        localPlayer.dir=2*PI;
-    if(localPlayer.dir>2*PI)
-        localPlayer.dir = 0;
+    localPlayer.dir = localPlayer.dir%(2*PI);
 }
-let frameOn = 0;
+
 
 
 function prepareForRender(){
     for(let i = 0; i<objects.length; i++){
+        let thisObject = objects[i];
         if(objects[i].type == 'remotePlayer'){
-            objects[i]['x1'] = objects[i].x; objects[i]['x2'] = objects[i].x;
-            objects[i]['y1'] = objects[i].y; objects[i]['y2'] = objects[i].y;
+            thisObject['x1'] = thisObject.x; thisObject['x2'] = thisObject.x;
+            thisObject['y1'] = thisObject.y; thisObject['y2'] = thisObject.y;
         }
-        objects[i]['centerX'] = (objects[i].x1+objects[i].x2)/2;
-        objects[i]['centerY'] = (objects[i].y1+objects[i].y2)/2;
-        objects[i]['distFromPlayer'] = Math.sqrt(Math.pow(localPlayer.x-objects[i].x1 ,2)+Math.pow(localPlayer.y-objects[i].y1,2));
-        objects[i]['dirFromPlayer'] = Math.atan2(objects[i].y1 - localPlayer.y,objects[i].x1 - localPlayer.x);
+        thisObject['centerX'] = (thisObject.x1+thisObject.x2)/2;
+        thisObject['centerY'] = (thisObject.y1+thisObject.y2)/2;
+        thisObject['distFromPlayer'] = Math.sqrt(Math.pow(localPlayer.x-objects[i].x1 ,2)+Math.pow(localPlayer.y-objects[i].y1,2));
+        thisObject['dirFromPlayer'] = Math.atan2(objects[i].y1 - localPlayer.y,objects[i].x1 - localPlayer.x);
 
         objects[i]['distFromPlayer2'] = Math.sqrt(Math.pow(localPlayer.x-objects[i].x2 ,2)+Math.pow(localPlayer.y-objects[i].y2,2));
         objects[i]['dirFromPlayer2'] = Math.atan2(objects[i].y2 - localPlayer.y,objects[i].x2 - localPlayer.x);
 
-        objects[i]['dirDiff'] = (localPlayer.dir - objects[i]['dirFromPlayer'] +PI + 2*PI) % (2*PI)-PI
-        objects[i]['dirDiff2'] = (localPlayer.dir - objects[i]['dirFromPlayer2'] +PI + 2*PI) % (2*PI)-PI
+        let wallDirTest = Math.atan2(thisObject.y1 - localPlayer.y, thisObject.x1 - localPlayer.x);
+
+        let angDiff = (localPlayer.dir - wallDirTest + PI + 2*PI) % (2*PI) - PI;
 
 
-        //this line mods by a rotation, and shifts up by a rotation, and mods again. This makes it positive.
-        let adjustedDirFromPlayer = ((((objects[0]['dirFromPlayer']%(2*PI))+(2*PI))%(2*PI)));
 
-        let side1 = 0*PI-(localPlayer.dir+FOV/2);
-        let side2 = 2*PI-(localPlayer.dir-FOV/2);
-        side1 = ((((side1%(2*PI))+(2*PI))%(2*PI)));
-        side2 = ((((side2%(2*PI))+(2*PI)%(2*PI))));
-
-        let angDiffOld = (localPlayer.dir - (Math.atan2(objects[i]['y1']-localPlayer.y,objects[i]['x1']-localPlayer.x)+ PI + 2*PI)%(2*PI)-PI);
-
-        objects[i]['inFOV'] = true;
-       // objects[i]['inFOV'] = angDiffOld>FOV/2&&angDiffOld<0-FOV/2;
-     //   objects[i]['inFOV'] = adjustedDirFromPlayer>=side1 && adjustedDirFromPlayer<=side2 ;
-        ///   side2>adjDir>side1
-        //  objects[i]['inFOV'] = true;
         frameOn++;
-        if(frameOn%60==0){
-            //    console.log('adjDir:    '+Math.floor(adjustedDirFromPlayer*radToDeg));
-            //    console.log('playerDir: '+ Math.floor(side2*radToDeg)+','+Math.floor(side1*radToDeg));
-          //  console.log(localPlayer.dir*radToDeg)
-        //    console.log(adjustedDirFromPlayer*radToDeg)
-        }
 
+        thisObject['inFOV'] = angDiff>0-FOV/2&&angDiff<FOV/2;
 
     }
 
@@ -193,15 +174,17 @@ function renderTopDown(){
     ctx.strokeStyle = "#ffffff";
     ctx.beginPath();
     ctx.moveTo(localPlayer.x,localPlayer.y);
-    ctx.lineTo(localPlayer.x+Math.cos(localPlayer.dir-FOV/2)*1000,localPlayer.y-Math.sin(localPlayer.dir-FOV/2)*1000);
+    ctx.lineTo(localPlayer.x+Math.cos(localPlayer.dir-FOV/2)*1000,localPlayer.y+Math.sin(localPlayer.dir-FOV/2)*1000);
     ctx.stroke();
     ctx.moveTo(localPlayer.x,localPlayer.y);
-    ctx.lineTo(localPlayer.x+Math.cos(localPlayer.dir+FOV/2)*1000,localPlayer.y-Math.sin(localPlayer.dir+FOV/2)*1000);
+    ctx.lineTo(localPlayer.x+Math.cos(localPlayer.dir+FOV/2)*1000,localPlayer.y+Math.sin(localPlayer.dir+FOV/2)*1000);
     ctx.stroke();
     ctx.closePath();
 
 }
 
+const magicViewNumber = 0.6;
+const magicViewNumber2 = 3000;
 function render3D(){
 for(let i = 0; i<objectsToRender.length; i++){
     let theObject = objects[objectsToRender[i]];
@@ -219,8 +202,6 @@ for(let i = 0; i<objectsToRender.length; i++){
             let lowerYEnd = screen.height/2-adjPointDistEnd;
             let upperYEnd = screen.height/2+adjPointDistEnd;
 
-            if(frameOn%100==0)
-                console.log(planeXStart+','+upperYStart+' '+planeXEnd+','+lowerYStart);
 
             ctx.moveTo(planeXEnd,lowerYEnd);
             ctx.lineTo(planeXEnd,upperYEnd);
