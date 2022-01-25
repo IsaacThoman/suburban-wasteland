@@ -26,8 +26,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('playerData', (msg) => {
-        console.log('player '+msg.playerNum+' sent '+msg);
+     //   console.log('player '+msg.playerNum+' sent '+msg);
         io.emit('playerData',msg);
+    });
+
+    socket.on('playerShot', (msg) => {
+        io.emit('playerShot',msg);
     });
 
 
