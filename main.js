@@ -5,6 +5,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+let playerCount = 0;
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -12,11 +14,24 @@ app.get('/', (req, res) => {
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
-    console.log('user connected.');
+    //use socket.emit to send to single listener
+
+    playerCount++;
+    console.log(playerCount+' users connected.')
+    io.emit('playerCount',playerCount);
 
     socket.on('disconnect', () => {
-        console.log('user disconnected.');
+        console.log(playerCount+' users connected.');
+        io.emit('playerCount',playerCount);
     });
+
+    socket.on('playerData', (msg) => {
+        console.log('player '+msg.playerNum+' sent '+msg);
+        io.emit('playerData',msg);
+    });
+
+
+
 
 
 });
