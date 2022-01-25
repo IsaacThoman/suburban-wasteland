@@ -27,11 +27,13 @@ function prepareForRender(){
         objects[i]['dirDiff2'] = (localPlayer.dir - objects[i]['dirFromPlayer2'] +PI + 2*PI) % (2*PI)-PI
 
         let wallDirTest = Math.atan2(thisObject.y1 - localPlayer.y, thisObject.x1 - localPlayer.x);
+        let wallDirTest2 = Math.atan2(thisObject.y2 - localPlayer.y, thisObject.x2 - localPlayer.x);
 
         let angDiff = (localPlayer.dir - wallDirTest + PI + 2*PI) % (2*PI) - PI;
+        let angDiff2 = (localPlayer.dir - wallDirTest2 + PI + 2*PI) % (2*PI) - PI;
 
 
-        thisObject['inFOV'] = angDiff>0-FOV/2&&angDiff<FOV/2;
+        thisObject['inFOV'] = (angDiff>0-FOV/2&&angDiff<FOV/2) || (angDiff2>0-FOV/2&&angDiff2<FOV/2);
 
     }
 
@@ -54,21 +56,21 @@ function prepareForRender(){
     }
 
 }
-function renderTopDown(){
+function renderTopDown(showWallLines){
     for(let i = 0; i<objects.length; i++){
         //   if(objects[i].type=='wall'){
         ctx.strokeStyle = objects[i]['color'];
         ctx.beginPath();
-        ctx.moveTo(objects[i].x1,objects[i].y1);
-        ctx.lineTo(objects[i].x2,objects[i].y2);
+        ctx.moveTo(objects[i].x1/3,objects[i].y1/3);
+        ctx.lineTo(objects[i].x2/3,objects[i].y2/3);
         ctx.stroke();
         ctx.closePath();
 
-        if(objects[i].inFOV){
+        if(objects[i].inFOV && showWallLines){
             ctx.strokeStyle = "#31ffa5";
             ctx.beginPath();
-            ctx.moveTo(localPlayer.x,localPlayer.y);
-            ctx.lineTo(localPlayer.x +Math.cos(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer'],localPlayer.y +Math.sin(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer']);
+            ctx.moveTo(localPlayer.x/3,localPlayer.y/3);
+            ctx.lineTo((localPlayer.x +Math.cos(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer'])/3,(localPlayer.y +Math.sin(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer'])/3);
             ctx.stroke();
             ctx.closePath();
         }
@@ -77,7 +79,7 @@ function renderTopDown(){
         if(objects[i].type=='remotePlayer'){
             ctx.fillStyle = "#eead62";
             ctx.beginPath();
-            ctx.rect(objects[i].x-2,objects[i].y-2,4,4);
+            ctx.rect((objects[i].x-3)/3,(objects[i].y-3)/3,6,6);
             ctx.fill();
             ctx.closePath();
         }
@@ -86,17 +88,17 @@ function renderTopDown(){
 
     ctx.fillStyle = "#50a142"; //local player
     ctx.beginPath();
-    ctx.rect(localPlayer.x-2,localPlayer.y-2,4,4);
+    ctx.rect((localPlayer.x-2)/3,(localPlayer.y-2)/3,4,4);
     ctx.fill();
     ctx.closePath();
 
 
     ctx.beginPath();
-    ctx.moveTo(localPlayer.x,localPlayer.y);
-    ctx.lineTo(localPlayer.x+Math.cos(localPlayer.dir-FOV/2)*1000,localPlayer.y+Math.sin(localPlayer.dir-FOV/2)*1000);
+    ctx.moveTo(localPlayer.x/3,localPlayer.y/3);
+    ctx.lineTo((localPlayer.x+Math.cos(localPlayer.dir-FOV/2)*1000)/3,(localPlayer.y+Math.sin(localPlayer.dir-FOV/2)*1000)/3);
     ctx.stroke();
-    ctx.moveTo(localPlayer.x,localPlayer.y);
-    ctx.lineTo(localPlayer.x+Math.cos(localPlayer.dir+FOV/2)*1000,localPlayer.y+Math.sin(localPlayer.dir+FOV/2)*1000);
+    ctx.moveTo(localPlayer.x/3,localPlayer.y/3);
+    ctx.lineTo((localPlayer.x+Math.cos(localPlayer.dir+FOV/2)*1000)/3,(localPlayer.y+Math.sin(localPlayer.dir+FOV/2)*1000)/3);
     ctx.strokeStyle = "#ffffff";
     ctx.stroke();
     ctx.closePath();
@@ -151,10 +153,10 @@ function render3D(){
                 }
 
                 if(imgToShow>=0 && imgToShow<8){
-                    ctx.drawImage(mikeImages[imgToShow],planeXStart,lowerYStart,mikeWidth,mikeHeight);
+                    ctx.drawImage(mikeImages[imgToShow],planeXStart-mikeWidth/2,lowerYStart,mikeWidth,mikeHeight);
                 }else{
                     console.log('imgToShow: '+imgToShow);
-                    ctx.drawImage(mikeImages[7],planeXStart,lowerYStart,mikeWidth,mikeHeight);
+                    ctx.drawImage(mikeImages[7],planeXStart-mikeWidth/2,lowerYStart,mikeWidth,mikeHeight);
                 }
 
 
