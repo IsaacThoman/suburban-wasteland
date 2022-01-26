@@ -5,6 +5,7 @@ for(let i = 0; i<8; i++) {
     mikeImages[i].src = 'mikes/'+i+'.png';
 }
 
+
 function prepareForRender(){
     for(let i = 0; i<objects.length; i++){
         let thisObject = objects[i];
@@ -122,6 +123,8 @@ function render3D(){
             let lowerYEnd = screen.height/2-planeYEnd;
             let upperYEnd = screen.height/2+planeYEnd;
 
+
+
             if(theObject.type == 'wall'){
                 ctx.beginPath();
                 ctx.fillStyle = theObject.color;
@@ -152,11 +155,23 @@ function render3D(){
                     imgToShow%=8;
                 }
 
+                let drawX = planeXStart-mikeWidth/2;
+                let drawY = (lowerYStart+mikeHeight/8);  // the +mikeHeight/8 makes them more eye-level
+                let drawWidth = mikeWidth;
+                let drawHeight = mikeHeight;
+                if(theObject['crouching']){
+                    drawHeight/=2;
+                    drawY+=mikeHeight/2;
+                }
+                if(localPlayer['crouching']){
+                    drawHeight*=2;
+                    drawY-=mikeHeight;
+                }
+
                 if(imgToShow>=0 && imgToShow<8){
-                    ctx.drawImage(mikeImages[imgToShow],planeXStart-mikeWidth/2,lowerYStart,mikeWidth,mikeHeight);
+                    ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
                 }else{
-                    console.log('imgToShow: '+imgToShow);
-                    ctx.drawImage(mikeImages[7],planeXStart-mikeWidth/2,lowerYStart,mikeWidth,mikeHeight);
+                    console.log('mike image out of bounds: '+imgToShow);
                 }
 
 

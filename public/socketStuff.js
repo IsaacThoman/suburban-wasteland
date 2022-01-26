@@ -9,19 +9,25 @@ let uploads = 0;
 
 function uploadPlayerData(){
     uploads++;
-    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir && uploads%(2*60)!=0)
+    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching && uploads%(2*60)!=0)
         return;
     socket.emit('playerData',localPlayer);
-    lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir;
+    lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching;
 }
 
+let lastShot = 0;
 function cKeyPressed(){
-socket.emit('playerShot',playerPointedAt);
+    if(utcTime>lastShot+4){
+        socket.emit('playerShot',playerPointedAt);
+        lastShot = utcTime;
+    }
 }
 
 socket.on('playerShot', function(msg) {
-    if(msg==localPlayer.playerNum)
-        comicTelemetry = 'you\'ve been shot!!';
+    if(msg==localPlayer.playerNum){
+        localPlayerShot();
+    }
+
 });
 
 socket.on('playerCount', function(msg) {

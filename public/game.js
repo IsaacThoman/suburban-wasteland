@@ -5,7 +5,7 @@ const PI = Math.PI;
 const radToDeg = 1/3.14*180;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
-let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false};
+let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false};
 let renderMode = 0;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -20,6 +20,8 @@ function keyDownHandler(e) {
         case 65: keys.a = true; break;
         case 83: keys.s = true; break;
         case 68: keys.d = true; break;
+
+        case 16: keys.shift = true; break;
     }
     if (e.keyCode === 81)
         if (renderMode == 1)
@@ -41,15 +43,16 @@ function keyUpHandler(e) {
         case 65: keys.a = false; break;
         case 83: keys.s = false; break;
         case 68: keys.d = false; break;
+
+        case 16: keys.shift = false; break;
     }
 }
 
 
-
-
+let utcTime = Math.floor((new Date()).getTime() / 1000);
 let objects = [];
 let objectsToRender = [];
-let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1};
+let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false};
 let playerSpeed = 2.5;
 let rotationSpeed = 0.025;
 let FOV = 0.5*3.14;
@@ -98,8 +101,7 @@ function doFrame(){
     ctx.closePath();
 
 
-
-
+    utcTime = Math.floor((new Date()).getTime() / 1000);
     requestAnimationFrame(doFrame);
 }
 requestAnimationFrame(doFrame);
@@ -156,7 +158,9 @@ function makeObjectsList(){
 
     for(let i = 0; i<remotePlayers.length; i++){
         if(remotePlayers[i]!=null && remotePlayers[i].hasOwnProperty('x') && remotePlayers[i].hasOwnProperty('y') && remotePlayers[i].hasOwnProperty('dir') && remotePlayers[i].hasOwnProperty('playerNum')){
-            let mikeObject = {'type':'remotePlayer','x':remotePlayers[i]['x'],'y':remotePlayers[i]['y'],'dir':remotePlayers[i]['dir'],'playerNum':remotePlayers[i]['playerNum']};
+            //let mikeObject = {'type':'remotePlayer','x':remotePlayers[i]['x'],'y':remotePlayers[i]['y'],'dir':remotePlayers[i]['dir'],'playerNum':remotePlayers[i]['playerNum']};
+            let mikeObject = remotePlayers[i];
+            mikeObject['type'] = 'remotePlayer';
             objects.push(mikeObject);
         }
     }
@@ -204,8 +208,23 @@ function playerControls(){
         localPlayer.dir+=rotationSpeed;
     }
 
+    if(keys.shift){
+        localPlayer.crouching = true;
+    }else{
+        localPlayer.crouching = false;
+    }
+
     localPlayer.dir = localPlayer.dir%(2*PI);
 }
 
-
+function localPlayerShot(){
+    console.log('you\'ve been shot!!')
+    localPlayer.lives--;
+    if(localPlayer.lives<=0){
+        localPlayer.x = 235;
+        localPlayer.y = 50;
+        localPlayer.dir = 1.8;
+        localPlayer.lives = 3;
+    }
+}
 
