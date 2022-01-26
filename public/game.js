@@ -60,7 +60,9 @@ let rotationSpeed = 0.025;
 let FOV = 0.5*3.14;
 
 let comicTelemetry = '';
-let framesSinceShot = 1000;
+let timeLocalWasShot = 0;
+let framesSinceShot = 10;
+let framesSinceHeal =10;
 
 let playerPointedAt = -1;
 
@@ -110,12 +112,21 @@ function doFrame(){
     ctx.closePath();
 
     framesSinceShot++;
-    if(framesSinceShot<5){
-        ctx.fillStyle = "#ff0000";
+    framesSinceHeal++;
+    if(framesSinceShot<5 || framesSinceHeal<5){
+        if(framesSinceShot<5)
+            ctx.fillStyle = "rgba(255,0,0,0.3)";
+        else
+            ctx.fillStyle = "rgba(0,255,0,0.3)";
         ctx.beginPath();
         ctx.rect(0,0,1000,1000);
         ctx.fill();
         ctx.closePath();
+    }
+    if(timeLocalWasShot+5<utcTime && localPlayer.lives<3){
+        timeLocalWasShot = utcTime;
+        localPlayer.lives++;
+        framesSinceHeal = 0;
     }
 
 
@@ -250,5 +261,6 @@ framesSinceShot = 0;
         localPlayer.dir = 1.8;
         localPlayer.lives = 3;
     }
+    timeLocalWasShot = utcTime;
 }
 
