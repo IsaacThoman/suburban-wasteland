@@ -146,10 +146,13 @@ function render3D(){
 
                 let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
 
+                viewingAngle-=15/radToDeg;
+
                 let imgToShow = (Math.floor((0-(viewingAngle-(theObject['dir']))/6.28*8))+ 8 )% 8;
 
                 let mikeWidth = 0.8*(upperYStart-lowerYStart);
                 let mikeHeight = 1*(upperYStart-lowerYStart);
+
                 while(imgToShow<0){
                     imgToShow+=8;
                     imgToShow%=8;
