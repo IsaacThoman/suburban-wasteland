@@ -3,9 +3,10 @@ const ctx = canvas.getContext("2d");
 
 const PI = Math.PI;
 const radToDeg = 1/3.14*180;
+const debugMode = false;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
-let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false};
+let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false};
 let renderMode = 0;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -21,6 +22,11 @@ function keyDownHandler(e) {
         case 83: keys.s = true; break;
         case 68: keys.d = true; break;
 
+        case 85: keys.u = true; break;
+        case 72: keys.h = true; break;
+        case 74: keys.j = true; break;
+        case 75: keys.k = true; break;
+
         case 16: keys.shift = true; break;
         case 17: keys.control = true; break;
     }
@@ -32,6 +38,15 @@ function keyDownHandler(e) {
 
     if(e.keyCode == 67)
         cKeyPressed();
+
+    if(e.keyCode == 76 && debugMode)
+        lockToClosestWall();
+
+    if(e.keyCode == 79 && debugMode)
+        setFirstWallPos();
+
+    if(e.keyCode == 80 && debugMode)
+        setSecondWallPos();
 }
 function keyUpHandler(e) {
     switch(e.keyCode){
@@ -44,6 +59,11 @@ function keyUpHandler(e) {
         case 65: keys.a = false; break;
         case 83: keys.s = false; break;
         case 68: keys.d = false; break;
+
+        case 85: keys.u = false; break;
+        case 72: keys.h = false; break;
+        case 74: keys.j = false; break;
+        case 75: keys.k = false; break;
 
         case 16: keys.shift = false; break;
         case 17: keys.control = false; break;
@@ -65,6 +85,9 @@ let framesSinceShot = 10;
 let framesSinceHeal =10;
 
 let playerPointedAt = -1;
+
+let firstWallPos = {};
+let addedObjects = [];
 
 
 function doFrame(){
@@ -146,6 +169,9 @@ function makeObjectsList(){
 
 
     objects = [wall1,wall2,wall3,wall4,wall5];
+
+    for(let i = 0; i<addedObjects.length; i++)
+        objects.push(addedObjects[i]);
 
     //pillar turtle
     // let pt = {x:150,y:150,dir:0,faceCount:6,size:15};
@@ -248,6 +274,18 @@ function playerControls(){
     }
 
     localPlayer.dir = localPlayer.dir%(2*PI);
+
+    if(debugMode){
+        if(keys.u)
+            localPlayer.y-=1;
+        if(keys.j)
+            localPlayer.y+=1;
+        if(keys.h)
+            localPlayer.x-=1;
+        if(keys.k)
+            localPlayer.x+=1;
+    }
+
 }
 
 function localPlayerShot(){
@@ -264,3 +302,36 @@ framesSinceShot = 0;
     timeLocalWasShot = utcTime;
 }
 
+function lockToClosestWall(){
+    let smallestDist = 1000;
+    let smallestX = 0;
+    let smallestY = 0;
+    for(let i = 0; i<objects.length; i++){
+        let dist1 = Math.sqrt(Math.pow(objects[i].x1-localPlayer.x,2)+Math.pow(objects[i].y1-localPlayer.y,2));
+        let dist2 = Math.sqrt(Math.pow(objects[i].x2-localPlayer.x,2)+Math.pow(objects[i].y2-localPlayer.y,2));
+        if(dist1<smallestDist){
+            smallestDist = dist1;
+            smallestX = objects[i].x1;
+            smallestY = objects[i].y1;
+        }
+        if(dist2<smallestDist){
+            smallestDist = dist2;
+            smallestX = objects[i].x2;
+            smallestY = objects[i].y2;
+        }
+
+    }
+    localPlayer.x = smallestX;
+    localPlayer.y = smallestY;
+}
+
+
+function setFirstWallPos(){
+firstWallPos = {x:localPlayer.x, y:localPlayer.y};
+}
+
+function setSecondWallPos(){
+    let newWall = {'type':'wall','x1':firstWallPos.x,'y1':firstWallPos.y,'x2':localPlayer.x,'y2':localPlayer.y,'color':"#9f389d",'outlineColor':"#c7c7c7"};
+    addedObjects.push(newWall)
+    console.log(addedObjects)
+}
