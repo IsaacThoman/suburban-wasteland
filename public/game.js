@@ -51,7 +51,7 @@ function keyUpHandler(e) {
 }
 
 
-let utcTime = Math.floor((new Date()).getTime() / 1000);
+let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let objectsToRender = [];
 let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false};
@@ -60,6 +60,7 @@ let rotationSpeed = 0.025;
 let FOV = 0.5*3.14;
 
 let comicTelemetry = '';
+let framesSinceShot = 1000;
 
 let playerPointedAt = -1;
 
@@ -108,8 +109,17 @@ function doFrame(){
     ctx.fill();
     ctx.closePath();
 
+    framesSinceShot++;
+    if(framesSinceShot<5){
+        ctx.fillStyle = "#ff0000";
+        ctx.beginPath();
+        ctx.rect(0,0,1000,1000);
+        ctx.fill();
+        ctx.closePath();
+    }
 
-    utcTime = Math.floor((new Date()).getTime() / 1000);
+
+    utcTime = (new Date()).getTime() / 1000;
     requestAnimationFrame(doFrame);
 }
 requestAnimationFrame(doFrame);
@@ -232,6 +242,8 @@ function playerControls(){
 function localPlayerShot(){
     console.log('you\'ve been shot!!')
     localPlayer.lives--;
+framesSinceShot = 0;
+
     if(localPlayer.lives<=0){
         localPlayer.x = 235;
         localPlayer.y = 50;

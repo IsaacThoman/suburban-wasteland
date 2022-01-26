@@ -17,7 +17,7 @@ function uploadPlayerData(){
 
 let lastShot = 0;
 function cKeyPressed(){
-    if(utcTime>lastShot+4){
+    if(utcTime>lastShot+1){
         socket.emit('playerShot',playerPointedAt);
         lastShot = utcTime;
     }
