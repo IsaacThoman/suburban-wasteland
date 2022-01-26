@@ -163,10 +163,10 @@ function render3D(){
                     drawHeight/=2;
                     drawY+=mikeHeight/2;
                 }
-                if(localPlayer['crouching']){
-                    drawHeight*=2;
-                    drawY-=mikeHeight;
-                }
+                // if(localPlayer['crouching']){
+                //     drawHeight*=2;
+                //     drawY-=mikeHeight;
+                // }
 
                 if(imgToShow>=0 && imgToShow<8){
                     ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);

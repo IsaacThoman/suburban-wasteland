@@ -5,7 +5,7 @@ const PI = Math.PI;
 const radToDeg = 1/3.14*180;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
-let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false};
+let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false};
 let renderMode = 0;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -22,6 +22,7 @@ function keyDownHandler(e) {
         case 68: keys.d = true; break;
 
         case 16: keys.shift = true; break;
+        case 17: keys.control = true; break;
     }
     if (e.keyCode === 81)
         if (renderMode == 1)
@@ -45,6 +46,7 @@ function keyUpHandler(e) {
         case 68: keys.d = false; break;
 
         case 16: keys.shift = false; break;
+        case 17: keys.control = false; break;
     }
 }
 
@@ -53,7 +55,7 @@ let utcTime = Math.floor((new Date()).getTime() / 1000);
 let objects = [];
 let objectsToRender = [];
 let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false};
-let playerSpeed = 2.5;
+let playerSpeed = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.5*3.14;
 
@@ -63,6 +65,12 @@ let playerPointedAt = -1;
 
 
 function doFrame(){
+
+    if(localPlayer.crouching)
+        screen.height = 160;
+    else
+        screen.height = 200;
+
     ctx.fillStyle = "#2a2a2a";
     ctx.beginPath();
     ctx.rect(0,0,1000,screen.height/2);
@@ -184,21 +192,21 @@ function getCrosshairObject(){
 
 function playerControls(){
     if(keys.up||keys.w){
-        localPlayer.x+= Math.cos(localPlayer.dir);
-        localPlayer.y+= Math.sin(localPlayer.dir);
+        localPlayer.x+= Math.cos(localPlayer.dir)*playerSpeed;
+        localPlayer.y+= Math.sin(localPlayer.dir)*playerSpeed;
     }
     if(keys.down||keys.s){
-        localPlayer.x-= Math.cos(localPlayer.dir);
-        localPlayer.y-= Math.sin(localPlayer.dir);
+        localPlayer.x-= Math.cos(localPlayer.dir)*playerSpeed;
+        localPlayer.y-= Math.sin(localPlayer.dir)*playerSpeed;
     }
     //strafing
     if(keys.a){
-        localPlayer.x+= Math.cos(localPlayer.dir-3.14/2);
-        localPlayer.y+= Math.sin(localPlayer.dir-3.14/2);
+        localPlayer.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed;
+        localPlayer.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed;
     }
     if(keys.d){
-        localPlayer.x+= Math.cos(localPlayer.dir+3.14/2);
-        localPlayer.y+= Math.sin(localPlayer.dir+3.14/2);
+        localPlayer.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed;
+        localPlayer.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed;
     }
 
     if(keys.left){
@@ -208,8 +216,12 @@ function playerControls(){
         localPlayer.dir+=rotationSpeed;
     }
 
+
+    playerSpeed = 1;
+
     if(keys.shift){
         localPlayer.crouching = true;
+        playerSpeed = 0.4;
     }else{
         localPlayer.crouching = false;
     }

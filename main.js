@@ -16,6 +16,9 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     //use socket.emit to send to single listener
     playerCount++;
+    if(playerCount>1000)
+        playerCount = 0;
+
     console.log(playerCount+' users connected.')
     io.emit('playerCount',playerCount);
 
