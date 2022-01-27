@@ -89,6 +89,10 @@ let playerPointedAt = -1;
 let firstWallPos = {};
 let addedObjects = [];
 
+let handAnimFrame = 0;
+let handY = 0;
+let framesInHandAnim = 15;
+
 
 function doFrame(){
 
@@ -123,10 +127,23 @@ function doFrame(){
 
     uploadPlayerData();
 
+    if(handAnimFrame==0) //sets random hand
+        handToUse = Math.floor(Math.random()*handImg.length)
+
+    if(handAnimFrame <=framesInHandAnim)
+        handY = screen.height-handAnimFrame*screen.height/framesInHandAnim;
+    if(utcTime>lastShot+1 && handAnimFrame<=framesInHandAnim){
+        handAnimFrame++;
+    }
+    if(utcTime<lastShot+1 && handAnimFrame>=0){
+        handAnimFrame--;
+    }
+
 
     ctx.fillStyle = "#9ae090";
     ctx.font = '12px Comic Sans MS';
     ctx.fillText(comicTelemetry, 0, 12);
+
 
     ctx.fillStyle = "#ff0000";
     ctx.beginPath();
