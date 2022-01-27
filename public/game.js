@@ -6,7 +6,7 @@ const radToDeg = 1/3.14*180;
 const debugMode = false;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
-let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false};
+let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false};
 let renderMode = 0;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -36,7 +36,7 @@ function keyDownHandler(e) {
         else
             renderMode = 1;
 
-    if(e.keyCode == 67)
+    if(e.keyCode == 67 || e.keyCode == 32)
         cKeyPressed();
 
     if(e.keyCode == 76 && debugMode)
@@ -74,7 +74,7 @@ function keyUpHandler(e) {
 let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let objectsToRender = [];
-let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false};
+let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false,'inPain':false};
 let playerSpeed = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.5*3.14;
@@ -119,7 +119,7 @@ function doFrame(){
     if(renderMode==0)
         render3D();
     if(renderMode==1)
-        renderTopDown(true);
+        renderTopDown(false);
 
     uploadPlayerData();
 
@@ -130,12 +130,13 @@ function doFrame(){
 
     ctx.fillStyle = "#ff0000";
     ctx.beginPath();
-    ctx.rect(screen.width/2,screen.height/2,2,2);
+    ctx.rect(screen.width/2,100,2,2);
     ctx.fill();
     ctx.closePath();
 
     framesSinceShot++;
     framesSinceHeal++;
+    localPlayer.inPain = (framesSinceShot<5);
     if(framesSinceShot<5 || framesSinceHeal<5){
         if(framesSinceShot<5)
             ctx.fillStyle = "rgba(255,0,0,0.3)";

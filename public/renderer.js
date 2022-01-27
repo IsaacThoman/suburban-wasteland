@@ -1,9 +1,47 @@
-
 let mikeImages = [];
-for(let i = 0; i<8; i++) {
+for(let i = 0; i<16; i++)
     mikeImages[i] = new Image();
+
+for(let i = 0; i<8; i++) {
     mikeImages[i].src = 'mikes/'+i+'.png';
+    mikeImages[i].onload = function(){onMikeLoad();}
 }
+
+let mikesLoaded = 0;
+let mikesInPainCreated = false;
+
+function onMikeLoad(){
+    mikesLoaded++;
+    if(mikesLoaded>=8)
+        createMikesInPain();
+}
+
+
+function createMikesInPain(){
+    console.log('started');
+    let imgEditorCanvas = document.createElement("canvas");
+    imgEditorCanvas.width = 382;
+    imgEditorCanvas.height = 640;
+    let editorCtx = imgEditorCanvas.getContext("2d");
+    for(let i = 0; i<8; i++){
+        editorCtx.clearRect(0,0,1000,1000);
+        editorCtx.drawImage(mikeImages[i],0,0)
+        let tempImg = editorCtx.getImageData(0,0,382,640);
+        let tempImgData = tempImg.data;
+        let tempImgLength = tempImgData.length;
+        for(let i=0; i < tempImgLength; i+=4){
+            if(tempImgData[i+3]>15){
+                tempImgData[i] +=50;
+            }
+        }
+        tempImg.data = tempImgData;
+        editorCtx.putImageData(tempImg,0,0);
+        mikeImages[i+8].src = imgEditorCanvas.toDataURL()
+    }
+    mikesInPainCreated = true;
+    console.log('done!');
+}
+
 
 
 function prepareForRender(){
@@ -93,17 +131,17 @@ function renderTopDown(showWallLines){
     ctx.fill();
     ctx.closePath();
 
-
+if(showWallLines) {
     ctx.beginPath();
-    ctx.moveTo(localPlayer.x/3,localPlayer.y/3);
-    ctx.lineTo((localPlayer.x+Math.cos(localPlayer.dir-FOV/2)*1000)/3,(localPlayer.y+Math.sin(localPlayer.dir-FOV/2)*1000)/3);
+    ctx.moveTo(localPlayer.x / 3, localPlayer.y / 3);
+    ctx.lineTo((localPlayer.x + Math.cos(localPlayer.dir - FOV / 2) * 1000) / 3, (localPlayer.y + Math.sin(localPlayer.dir - FOV / 2) * 1000) / 3);
     ctx.stroke();
-    ctx.moveTo(localPlayer.x/3,localPlayer.y/3);
-    ctx.lineTo((localPlayer.x+Math.cos(localPlayer.dir+FOV/2)*1000)/3,(localPlayer.y+Math.sin(localPlayer.dir+FOV/2)*1000)/3);
+    ctx.moveTo(localPlayer.x / 3, localPlayer.y / 3);
+    ctx.lineTo((localPlayer.x + Math.cos(localPlayer.dir + FOV / 2) * 1000) / 3, (localPlayer.y + Math.sin(localPlayer.dir + FOV / 2) * 1000) / 3);
     ctx.strokeStyle = "#ffffff";
     ctx.stroke();
     ctx.closePath();
-
+}
 }
 
 const magicViewNumber = 0.6;
@@ -170,8 +208,9 @@ function render3D(){
                 //     drawHeight*=2;
                 //     drawY-=mikeHeight;
                 // }
-
-                if(imgToShow>=0 && imgToShow<8){
+                if(theObject['inPain'])
+                    imgToShow+=8;
+                if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
                     ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
                 }else{
                     console.log('mike image out of bounds: '+imgToShow);

@@ -9,7 +9,7 @@ let uploads = 0;
 
 function uploadPlayerData(){
     uploads++;
-    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching && uploads%(2*60)!=0)
+    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3 && uploads%(2*60)!=0)
         return;
     socket.emit('playerData',localPlayer);
     lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching;
