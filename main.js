@@ -5,7 +5,9 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+
 let playerCount = 0;
+let playerNumAssign = 0;
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -16,15 +18,18 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     //use socket.emit to send to single listener
     playerCount++;
-    if(playerCount>1000)
-        playerCount = 0;
+
+    playerNumAssign++;
+    if(playerNumAssign>1000)
+        playerNumAssign = 0;
 
     console.log(playerCount+' users connected.')
-    io.emit('playerCount',playerCount);
+    io.emit('playerCount',playerNumAssign);
 
     socket.on('disconnect', () => {
+        playerCount--;
         console.log(playerCount+' users connected.');
-        io.emit('playerCount',playerCount);
+        io.emit('playerCount',playerNumAssign);
     });
 
     socket.on('playerData', (msg) => {
