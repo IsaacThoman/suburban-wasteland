@@ -17,7 +17,7 @@ function onMikeLoad(){
 }
 
 let handImg = [];
-for(let i = 0; i<5; i++){
+for(let i = 0; i<=7; i++){
     handImg[i] = new Image();
     handImg[i].src = 'hands/hands'+i+'.png';
 }
