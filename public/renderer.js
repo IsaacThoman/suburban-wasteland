@@ -16,18 +16,20 @@ function onMikeLoad(){
         createMikesInPain();
 }
 
-let handImg = [];
-for(let i = 0; i<=7; i++){
-    handImg[i] = new Image();
-    handImg[i].src = 'hands/hands'+i+'.png';
-}
+// let handImg = [];
+// for(let i = 0; i<=7; i++){
+//     handImg[i] = new Image();
+//     handImg[i].src = 'hands/hands'+i+'.png';
+// }
+//
+// let handToUse = 0;
+let handImg = new Image();
+handImg.src = 'hand.png';
 
-let handToUse = 0;
 
 
 
-
-function createMikesInPain(){
+    function createMikesInPain(){
     console.log('started');
     let imgEditorCanvas = document.createElement("canvas");
     imgEditorCanvas.width = 382;
@@ -105,21 +107,22 @@ function prepareForRender(){
     }
 
 }
+let topDownScale = 3;
 function renderTopDown(showWallLines){
     for(let i = 0; i<objects.length; i++){
         //   if(objects[i].type=='wall'){
         ctx.strokeStyle = objects[i]['color'];
         ctx.beginPath();
-        ctx.moveTo(objects[i].x1/3,objects[i].y1/3);
-        ctx.lineTo(objects[i].x2/3,objects[i].y2/3);
+        ctx.moveTo(objects[i].x1/topDownScale,objects[i].y1/topDownScale);
+        ctx.lineTo(objects[i].x2/topDownScale,objects[i].y2/topDownScale);
         ctx.stroke();
         ctx.closePath();
 
         if(objects[i].inFOV && showWallLines){
             ctx.strokeStyle = "#31ffa5";
             ctx.beginPath();
-            ctx.moveTo(localPlayer.x/3,localPlayer.y/3);
-            ctx.lineTo((localPlayer.x +Math.cos(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer'])/3,(localPlayer.y +Math.sin(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer'])/3);
+            ctx.moveTo(localPlayer.x/topDownScale,localPlayer.y/topDownScale);
+            ctx.lineTo((localPlayer.x +Math.cos(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer'])/topDownScale,(localPlayer.y +Math.sin(objects[i]['dirFromPlayer'])*objects[i]['distFromPlayer'])/topDownScale);
             ctx.stroke();
             ctx.closePath();
         }
@@ -128,7 +131,7 @@ function renderTopDown(showWallLines){
         if(objects[i].type=='remotePlayer'){
             ctx.fillStyle = "#eead62";
             ctx.beginPath();
-            ctx.rect((objects[i].x-3)/3,(objects[i].y-3)/3,6,6);
+            ctx.rect((objects[i].x-3)/topDownScale,(objects[i].y-3)/topDownScale,6,6);
             ctx.fill();
             ctx.closePath();
         }
@@ -137,17 +140,17 @@ function renderTopDown(showWallLines){
 
     ctx.fillStyle = "#50a142"; //local player
     ctx.beginPath();
-    ctx.rect((localPlayer.x-2)/3,(localPlayer.y-2)/3,4,4);
+    ctx.rect((localPlayer.x-2)/topDownScale,(localPlayer.y-2)/topDownScale,4,4);
     ctx.fill();
     ctx.closePath();
 
 if(showWallLines) {
     ctx.beginPath();
-    ctx.moveTo(localPlayer.x / 3, localPlayer.y / 3);
-    ctx.lineTo((localPlayer.x + Math.cos(localPlayer.dir - FOV / 2) * 1000) / 3, (localPlayer.y + Math.sin(localPlayer.dir - FOV / 2) * 1000) / 3);
+    ctx.moveTo(localPlayer.x / topDownScale, localPlayer.y / topDownScale);
+    ctx.lineTo((localPlayer.x + Math.cos(localPlayer.dir - FOV / 2) * 1000) / topDownScale, (localPlayer.y + Math.sin(localPlayer.dir - FOV / 2) * 1000) / topDownScale);
     ctx.stroke();
-    ctx.moveTo(localPlayer.x / 3, localPlayer.y / 3);
-    ctx.lineTo((localPlayer.x + Math.cos(localPlayer.dir + FOV / 2) * 1000) / 3, (localPlayer.y + Math.sin(localPlayer.dir + FOV / 2) * 1000) / 3);
+    ctx.moveTo(localPlayer.x / topDownScale, localPlayer.y / topDownScale);
+    ctx.lineTo((localPlayer.x + Math.cos(localPlayer.dir + FOV / 2) * 1000) / topDownScale, (localPlayer.y + Math.sin(localPlayer.dir + FOV / 2) * 1000) / topDownScale);
     ctx.strokeStyle = "#ffffff";
     ctx.stroke();
     ctx.closePath();
@@ -234,5 +237,5 @@ function render3D(){
 
 
     }
-    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200)
+    ctx.drawImage(handImg,0,handY,screen.width,200)
 }
