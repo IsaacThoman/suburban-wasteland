@@ -9,6 +9,8 @@ const io = new Server(server);
 let playerCount = 0;
 let playerNumAssign = 0;
 
+let storedPlayerData = [];
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -35,6 +37,7 @@ io.on('connection', (socket) => {
     socket.on('playerData', (msg) => {
      //   console.log('player '+msg.playerNum+' sent '+msg);
         io.emit('playerData',msg);
+        storedPlayerData[msg['playerNum']] = msg;
     });
 
     socket.on('playerShot', (msg) => {

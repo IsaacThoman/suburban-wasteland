@@ -18,7 +18,11 @@ function uploadPlayerData(){
 let lastShot = 0;
 function cKeyPressed(){
     if(utcTime>lastShot+1){
-        socket.emit('playerShot',playerPointedAt);
+        for(let i = 0; i<objectsToRender.length; i++){
+            if(objects[objectsToRender[i]]['type']=='remotePlayer' &&playerPointedAt == objects[objectsToRender[i]]['playerNum']&& Math.abs(objects[objectsToRender[i]]['dirDiff'])<0.1)
+                socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
+        }
+
         lastShot = utcTime;
     }
 }

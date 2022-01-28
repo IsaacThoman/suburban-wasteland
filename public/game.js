@@ -47,6 +47,9 @@ function keyDownHandler(e) {
 
     if(e.keyCode == 80 && debugMode)
         setSecondWallPos();
+
+    if(e.keyCode == 90)
+        addedObjects.pop();
 }
 function keyUpHandler(e) {
     switch(e.keyCode){
@@ -77,7 +80,7 @@ let objectsToRender = [];
 let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false,'inPain':false};
 let playerSpeed = 1;
 let rotationSpeed = 0.025;
-let FOV = 0.5*3.14;
+let FOV = 1*3.14;
 
 let comicTelemetry = '';
 let timeLocalWasShot = 0;
@@ -123,7 +126,7 @@ function doFrame(){
     if(renderMode==0)
         render3D();
     if(renderMode==1)
-        renderTopDown(false);
+        renderTopDown(true);
 
     uploadPlayerData();
 
@@ -140,9 +143,7 @@ function doFrame(){
     }
 
 
-    ctx.fillStyle = "#9ae090";
-    ctx.font = '12px Comic Sans MS';
-    ctx.fillText(comicTelemetry, 0, 12);
+
 
 
     ctx.fillStyle = "#ff0000";
@@ -170,6 +171,9 @@ function doFrame(){
         framesSinceHeal = 0;
     }
 
+    ctx.fillStyle = "#9ae090";
+    ctx.font = '12px Comic Sans MS';
+    ctx.fillText(comicTelemetry, 0, 12);
 
     utcTime = (new Date()).getTime() / 1000;
     requestAnimationFrame(doFrame);
@@ -178,15 +182,15 @@ requestAnimationFrame(doFrame);
 
 function makeObjectsList(){
 
-    let wall1 = {'type':'wall','x1':100,'y1':300,'x2':100,'y2':380,'color':"#9f389d",'outlineColor':"#c7c7c7"};
-    let wall2 = {'type':'wall','x1':200,'y1':300,'x2':200,'y2':380,'color':"#9f389d",'outlineColor':"#c7c7c7"};
+    let wall1 = {'type':'wall','x1':100,'y1':300,'x2':25,'y2':380,'color':"#9f389d",'outlineColor':"#c7c7c7"};
+    let wall2 = {'type':'wall','x1':200,'y1':300,'x2':275,'y2':380,'color':"#9f389d",'outlineColor':"#c7c7c7"};
     let wall3 = {'type':'wall','x1':145,'y1':380,'x2':155,'y2':380,'color':"#9f389d",'outlineColor':"#c7c7c7"};
 
     let wall4 = {'type':'wall','x1':145,'y1':380,'x2':145,'y2':450,'color':"#9f389d",'outlineColor':"#c7c7c7"};
     let wall5 = {'type':'wall','x1':155,'y1':380,'x2':155,'y2':450,'color':"#9f389d",'outlineColor':"#c7c7c7"};
 
 
-    objects = [wall1,wall2,wall3,wall4,wall5];
+    objects = [];
 
     for(let i = 0; i<addedObjects.length; i++)
         objects.push(addedObjects[i]);
@@ -248,7 +252,7 @@ function getCrosshairObject(){
             if(Math.abs(theObject['dirDiff'])<0.1){
                 playerPointedAt =  theObject['playerNum'];
             }else{
-                playerPointedAt = -1;
+                //playerPointedAt = -1;
             }
 
         }
