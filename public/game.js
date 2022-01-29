@@ -3,11 +3,11 @@ const ctx = canvas.getContext("2d");
 
 const PI = Math.PI;
 const radToDeg = 1/3.14*180;
-const debugMode = true;
+const debugMode = false;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false};
-let renderMode = 1;
+let renderMode = 0;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
@@ -80,7 +80,7 @@ let objectsToRender = [];
 let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false,'inPain':false};
 let playerSpeed = 1;
 let rotationSpeed = 0.025;
-let FOV = 1*3.14;
+let FOV = 0.4*3.14;
 
 let comicTelemetry = '';
 let timeLocalWasShot = 0;
@@ -329,25 +329,11 @@ function playerControls(){
         localPlayer.dir+=rotationSpeed*gameSpeed;
     }
 
-    /*
-    let dontMove = false;
-    for(let i = 0; i<objects.length; i++){
-        if(objects[i]['type']=='wall'){
-            let wallP1 = {x:objects[i]['x1'],y:objects[i]['y1']};
-            let wallP2 = {x:objects[i]['x2'],y:objects[i]['y2']};
-          //do math to figure out if the lines intersect
-        }
-    }
-
-    if(!dontMove){
+    if(!wallBetween(localPlayer,newPos)){
         localPlayer.x = newPos.x;
         localPlayer.y = newPos.y;
     }
 
-     */
-
-    localPlayer.x = newPos.x;
-    localPlayer.y = newPos.y;
 
     playerSpeed = 1;
 

@@ -7,10 +7,10 @@ function wallBetween(point1, point2){
             let point3 = new Point(objects[i]['x1'],objects[i]['y1']);
             let point4 = new Point(objects[i]['x2'],objects[i]['y2']);
             if(doIntersect(point1,point2,point3,point4))
-                return false;
+                return true;
         }
     }
-    return true;
+    return false;
 }
 
 
