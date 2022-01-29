@@ -3,7 +3,7 @@ for(let i = 0; i<16; i++)
     mikeImages[i] = new Image();
 
 for(let i = 0; i<8; i++) {
-    mikeImages[i].src = 'mikes/'+i+'.png';
+    mikeImages[i].src = 'mikes/'+i+'.webp';
     mikeImages[i].onload = function(){onMikeLoad();}
 }
 
