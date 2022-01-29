@@ -267,22 +267,24 @@ function getCrosshairObject(){
 }
 
 function playerControls(){
+    let newPos = {x:localPlayer.x, y:localPlayer.y};
+
     if(keys.up||keys.w){
-        localPlayer.x+= Math.cos(localPlayer.dir)*playerSpeed;
-        localPlayer.y+= Math.sin(localPlayer.dir)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir)*playerSpeed;
+        newPos.y+= Math.sin(localPlayer.dir)*playerSpeed;
     }
     if(keys.down||keys.s){
-        localPlayer.x-= Math.cos(localPlayer.dir)*playerSpeed;
-        localPlayer.y-= Math.sin(localPlayer.dir)*playerSpeed;
+        newPos.x-= Math.cos(localPlayer.dir)*playerSpeed;
+        newPos.y-= Math.sin(localPlayer.dir)*playerSpeed;
     }
     //strafing
     if(keys.a){
-        localPlayer.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed;
-        localPlayer.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed;
+        newPos.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed;
     }
     if(keys.d){
-        localPlayer.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed;
-        localPlayer.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed;
+        newPos.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed;
     }
 
     if(keys.left){
@@ -292,6 +294,25 @@ function playerControls(){
         localPlayer.dir+=rotationSpeed;
     }
 
+    /*
+    let dontMove = false;
+    for(let i = 0; i<objects.length; i++){
+        if(objects[i]['type']=='wall'){
+            let wallP1 = {x:objects[i]['x1'],y:objects[i]['y1']};
+            let wallP2 = {x:objects[i]['x2'],y:objects[i]['y2']};
+          //do math to figure out if the lines intersect
+        }
+    }
+
+    if(!dontMove){
+        localPlayer.x = newPos.x;
+        localPlayer.y = newPos.y;
+    }
+
+     */
+
+    localPlayer.x = newPos.x;
+    localPlayer.y = newPos.y;
 
     playerSpeed = 1;
 
