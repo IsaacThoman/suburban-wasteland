@@ -96,6 +96,11 @@ let handAnimFrame = 0;
 let handY = 0;
 let framesInHandAnim = 15;
 
+let lastSecond = utcTime;
+let framesSinceLastSecond = 0;
+let framesPerSecond = 60;
+let gameSpeed = 1;
+
 
 function doFrame(){
 
@@ -170,6 +175,15 @@ function doFrame(){
         localPlayer.lives++;
         framesSinceHeal = 0;
     }
+
+    framesSinceLastSecond++;
+    if(utcTime>lastSecond+1){
+        lastSecond = utcTime;
+        framesPerSecond = framesSinceLastSecond;
+        framesSinceLastSecond = 0;
+    }
+    comicTelemetry = framesPerSecond;
+    gameSpeed = 1*60/framesPerSecond;
 
     ctx.fillStyle = "#9ae090";
     ctx.font = '12px Comic Sans MS';
@@ -266,32 +280,53 @@ function getCrosshairObject(){
     }
 }
 
+// mouse locking from https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API
+canvas.requestPointerLock = canvas.requestPointerLock;  //mouse lock stuff
+document.exitPointerLock = document.exitPointerLock;
+canvas.onclick = function() {
+    canvas.requestPointerLock();
+    cKeyPressed();
+}
+document.addEventListener('pointerlockchange', toggleUseMouse, false);
+let usingMouse = false;
+function toggleUseMouse(){
+    usingMouse = (document.pointerLockElement === canvas);
+    if(usingMouse)
+        document.addEventListener("mousemove", mouseUpdate, false);
+    else
+        document.removeEventListener("mousemove", mouseUpdate, false);
+}
+function mouseUpdate(e){
+    localPlayer.dir+= e.movementX/550;
+}
+
+
 function playerControls(){
     let newPos = {x:localPlayer.x, y:localPlayer.y};
 
     if(keys.up||keys.w){
-        newPos.x+= Math.cos(localPlayer.dir)*playerSpeed;
-        newPos.y+= Math.sin(localPlayer.dir)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
+        newPos.y+= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
     }
     if(keys.down||keys.s){
-        newPos.x-= Math.cos(localPlayer.dir)*playerSpeed;
-        newPos.y-= Math.sin(localPlayer.dir)*playerSpeed;
+        newPos.x-= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
+        newPos.y-= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
     }
     //strafing
     if(keys.a){
-        newPos.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed;
-        newPos.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
+        newPos.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
     }
     if(keys.d){
-        newPos.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed;
-        newPos.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
+        newPos.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
     }
 
     if(keys.left){
-        localPlayer.dir-=rotationSpeed;
+        localPlayer.dir-=rotationSpeed*gameSpeed;
     }
     if(keys.right){
-        localPlayer.dir+=rotationSpeed;
+        localPlayer.dir+=rotationSpeed*gameSpeed;
     }
 
     /*
@@ -337,6 +372,8 @@ function playerControls(){
     }
 
 }
+
+
 
 function localPlayerShot(){
     console.log('you\'ve been shot!!')
