@@ -1,30 +1,33 @@
 let mikeImages = [];
-for(let i = 0; i<16; i++)
+for(let i = 0; i<32; i++)
     mikeImages[i] = new Image();
 
 for(let i = 0; i<8; i++) {
     mikeImages[i].src = 'mikes/'+i+'.webp';
     mikeImages[i].onload = function(){onMikeLoad();}
+
+    mikeImages[i+16].src = 'saberMike/'+i+'.webp';
+    mikeImages[i+16].onload = function(){onMikeLoad();}
+
 }
 
 let mikesLoaded = 0;
 let mikesInPainCreated = false;
 
+
 function onMikeLoad(){
     mikesLoaded++;
-    if(mikesLoaded>=8)
+    if(mikesLoaded>=16)
         createMikesInPain();
 }
 
-// let handImg = [];
-// for(let i = 0; i<=7; i++){
-//     handImg[i] = new Image();
-//     handImg[i].src = 'hands/hands'+i+'.png';
-// }
-//
-// let handToUse = 0;
-let handImg = new Image();
-handImg.src = 'hand.png';
+let handImg = [];
+for(let i = 0; i<=1; i++){
+    handImg[i] = new Image();
+    handImg[i].src = 'hands/'+i+'.png';
+}
+
+let handToUse = 0;
 
 
 
@@ -35,7 +38,9 @@ handImg.src = 'hand.png';
     imgEditorCanvas.width = 382;
     imgEditorCanvas.height = 640;
     let editorCtx = imgEditorCanvas.getContext("2d");
-    for(let i = 0; i<8; i++){
+    let indexesToHurt = [0,1,2,3,4,5,6,7,16,17,18,19,20,21,22,23];
+    for(let j = 0; j<indexesToHurt.length; j++){
+        i = indexesToHurt[j];
         editorCtx.clearRect(0,0,1000,1000);
         editorCtx.drawImage(mikeImages[i],0,0)
         let tempImg = editorCtx.getImageData(0,0,382,640);
@@ -223,11 +228,14 @@ function render3D(){
                 // }
                 if(theObject['inPain'])
                     imgToShow+=8;
-                if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
+                if(theObject['weaponHeld']==2)
+                    imgToShow+=16;
+
+             //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
                     ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
-                }else{
-                    console.log('mike image out of bounds: '+imgToShow);
-                }
+            //    }else{
+            //        console.log('mike image out of bounds: '+imgToShow);
+             //   }
 
 
             }
@@ -237,5 +245,5 @@ function render3D(){
 
 
     }
-    ctx.drawImage(handImg,0,handY,screen.width,200)
+    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200)
 }

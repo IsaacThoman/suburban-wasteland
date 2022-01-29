@@ -1,7 +1,4 @@
 function wallBetween(point1, point2){
-
-    console.log(point1)
-
     for(let i = 0; i<objects.length; i++){
         if(objects[i]['type']=='wall'){
             let point3 = new Point(objects[i]['x1'],objects[i]['y1']);

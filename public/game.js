@@ -30,6 +30,12 @@ function keyDownHandler(e) {
         case 16: keys.shift = true; break;
         case 17: keys.control = true; break;
     }
+
+    switch(e.keyCode){
+        case 49: if(localPlayer.weaponHeld!=1){localPlayer.weaponHeld = 1; lastShot = utcTime; }break;// 1
+        case 50: if(localPlayer.weaponHeld!=2){localPlayer.weaponHeld = 2; lastShot = utcTime; }break;// 2
+    }
+
     if (e.keyCode === 81)
         if (renderMode == 1)
             renderMode = 0;
@@ -77,7 +83,7 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false,'inPain':false};
+let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false,'inPain':false,'weaponHeld':1};
 let playerSpeed = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
@@ -135,8 +141,8 @@ function doFrame(){
 
     uploadPlayerData();
 
-    if(handAnimFrame==0) //sets random hand
-        handToUse = Math.floor(Math.random()*handImg.length)
+    if(handAnimFrame==0) //sets hand
+        updateHeldWeapon();
 
     if(handAnimFrame <=framesInHandAnim)
         handY = screen.height-handAnimFrame*screen.height/framesInHandAnim;
@@ -193,6 +199,13 @@ function doFrame(){
     requestAnimationFrame(doFrame);
 }
 requestAnimationFrame(doFrame);
+
+function updateHeldWeapon(){
+    if(localPlayer.weaponHeld==1)
+        handToUse = 0;
+    if(localPlayer.weaponHeld==2)
+        handToUse = 1;
+}
 
 function makeObjectsList(){
 
