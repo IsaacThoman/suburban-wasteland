@@ -17,14 +17,38 @@ function uploadPlayerData(){
 
 let lastShot = 0;
 function cKeyPressed(){
-    if(utcTime>lastShot+1){
-        for(let i = 0; i<objectsToRender.length; i++){
-            if(objects[objectsToRender[i]]['type']=='remotePlayer' &&playerPointedAt == objects[objectsToRender[i]]['playerNum']&& Math.abs(objects[objectsToRender[i]]['dirDiff'])<0.1)
-                socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
-        }
 
-        lastShot = utcTime;
+    if(localPlayer.weaponHeld == 1){
+        if(utcTime>lastShot+1){
+            for(let i = 0; i<objectsToRender.length; i++){
+                if(objects[objectsToRender[i]]['type']=='remotePlayer' &&playerPointedAt == objects[objectsToRender[i]]['playerNum']&& Math.abs(objects[objectsToRender[i]]['dirDiff'])<0.1){
+                    if(!wallBetween(objects[objectsToRender[i]],localPlayer))
+                        socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
+                }
+
+            }
+
+            lastShot = utcTime;
+        }
     }
+
+    if(localPlayer.weaponHeld == 2){
+        if(utcTime>lastShot+1){
+            for(let i = 0; i<objectsToRender.length; i++){
+                if(objects[objectsToRender[i]]['type']=='remotePlayer' &&playerPointedAt == objects[objectsToRender[i]]['playerNum']&& Math.abs(objects[objectsToRender[i]]['dirDiff'])<0.25 && Math.abs(objects[objectsToRender[i]]['distFromPlayer'])<30){
+                    if(!wallBetween(objects[objectsToRender[i]],localPlayer)) //line above also checks distance < 30 for melee
+                       for(let hits = 0; hits<2; hits++) // does 2 damage
+                        socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
+                }
+
+            }
+
+            lastShot = utcTime;
+        }
+    }
+
+
+
 }
 
 socket.on('playerShot', function(msg) {

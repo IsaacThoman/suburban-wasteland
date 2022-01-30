@@ -8,6 +8,21 @@ const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false};
 let renderMode = 0;
+const startingPoints = [
+    {x: 124, y: 454, dir: -1.07},
+    {x: 65, y: 366, dir: -0.068},
+    {x: 70, y: 403, dir: -0.39},
+    {x: 50, y: 232, dir: 0.43},
+    {x: 65, y: 208, dir: 0.45},
+    {x: 241, y: 39, dir: 1.37},
+    {x: 329, y: 54, dir: 1.99},
+    {x: 391, y: 113, dir: 2.25},
+    {x: 501, y: 140, dir: 2.60},
+    {x: 547, y: 318, dir: 3.36},
+    {x: 494, y: 443, dir: 3.89},
+    {x: 407, y: 514, dir: 4.32},
+    {x: 257, y: 539, dir: 5.17}
+]
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
@@ -30,6 +45,12 @@ function keyDownHandler(e) {
         case 16: keys.shift = true; break;
         case 17: keys.control = true; break;
     }
+
+    switch(e.keyCode){
+        case 49: if(localPlayer.weaponHeld!=1){localPlayer.weaponHeld = 1; lastShot = utcTime; }break;// 1
+        case 50: if(localPlayer.weaponHeld!=2){localPlayer.weaponHeld = 2; lastShot = utcTime; }break;// 2
+    }
+
     if (e.keyCode === 81)
         if (renderMode == 1)
             renderMode = 0;
@@ -73,14 +94,15 @@ function keyUpHandler(e) {
     }
 }
 
-
 let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
+let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false,'inPain':false};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':-1,'lives':3,'crouching':false,'inPain':false,'weaponHeld':1};
+resetPlayer();
 let playerSpeed = 1;
 let rotationSpeed = 0.025;
-let FOV = 1*3.14;
+let FOV = 0.4*3.14;
 
 let comicTelemetry = '';
 let timeLocalWasShot = 0;
@@ -95,6 +117,11 @@ let addedObjects = [];
 let handAnimFrame = 0;
 let handY = 0;
 let framesInHandAnim = 15;
+
+let lastSecond = utcTime;
+let framesSinceLastSecond = 0;
+let framesPerSecond = 60;
+let gameSpeed = 1;
 
 
 function doFrame(){
@@ -130,8 +157,8 @@ function doFrame(){
 
     uploadPlayerData();
 
-    if(handAnimFrame==0) //sets random hand
-        handToUse = Math.floor(Math.random()*handImg.length)
+    if(handAnimFrame==0) //sets hand
+        updateHeldWeapon();
 
     if(handAnimFrame <=framesInHandAnim)
         handY = screen.height-handAnimFrame*screen.height/framesInHandAnim;
@@ -171,6 +198,15 @@ function doFrame(){
         framesSinceHeal = 0;
     }
 
+    framesSinceLastSecond++;
+    if(utcTime>lastSecond+1){
+        lastSecond = utcTime;
+        framesPerSecond = framesSinceLastSecond;
+        framesSinceLastSecond = 0;
+    }
+    comicTelemetry = framesPerSecond;
+    gameSpeed = 1*60/framesPerSecond;
+
     ctx.fillStyle = "#9ae090";
     ctx.font = '12px Comic Sans MS';
     ctx.fillText(comicTelemetry, 0, 12);
@@ -179,6 +215,13 @@ function doFrame(){
     requestAnimationFrame(doFrame);
 }
 requestAnimationFrame(doFrame);
+
+function updateHeldWeapon(){
+    if(localPlayer.weaponHeld==1)
+        handToUse = 0;
+    if(localPlayer.weaponHeld==2)
+        handToUse = 1;
+}
 
 function makeObjectsList(){
 
@@ -190,46 +233,53 @@ function makeObjectsList(){
     let wall5 = {'type':'wall','x1':155,'y1':380,'x2':155,'y2':450,'color':"#9f389d",'outlineColor':"#c7c7c7"};
 
 
+
     objects = [];
+
 
     for(let i = 0; i<addedObjects.length; i++)
         objects.push(addedObjects[i]);
 
+    for(let i = 0; i<levelBuilt.length; i++){
+        objects.push(levelBuilt[i])
+    }
+
     //pillar turtle
-    // let pt = {x:150,y:150,dir:0,faceCount:6,size:15};
-    // for(let i = 0; i<pt.faceCount; i++){
-    //     let nextX = pt.x+(Math.cos(pt.dir)*pt.size);
-    //     let nextY = pt.y+(Math.sin(pt.dir)*pt.size);
-    //
-    //     let pillarWall = {'type':'wall','x1':pt.x,'y1':pt.y,'x2':nextX,'y2':nextY,'color':"#9f389d",'outlineColor':"#c7c7c7"};
-    //     objects.push(pillarWall);
-    //     pt.x = nextX;
-    //     pt.y = nextY;
-    //     pt.dir+=2*PI/pt.faceCount;
-    //
-    // }
+    let pT = {x:300,y:0,dir:0,faceCount:70,size:25};
+
+    for(let i = 0; i<pT.faceCount; i++){
+        let nextX = pT.x+(Math.cos(pT.dir)*pT.size);
+        let nextY = pT.y+(Math.sin(pT.dir)*pT.size);
+
+        let pillarWall = {'type':'wall','x1':pT.x,'y1':pT.y,'x2':nextX,'y2':nextY,'color':"#663db9",'outlineColor':"#c7c7c7"};
+        objects.push(pillarWall);
+        pT.x = nextX;
+        pT.y = nextY;
+        pT.dir+=2*PI/pT.faceCount;
+
+    }
 
     let splitSize = 25;
     let color = "#4b389f";
     let outlineColor = "#6464c7";
 
-    for(let i = 0; i<300; i+=splitSize){
-        let outerWall = {'type':'wall','x1':i,'y1':5,'x2':i+splitSize,'y2':5,'color':color,'outlineColor':outlineColor};
-        objects.push(outerWall);
-        outerWall = {'type':'wall','x1':5,'y1':i,'x2':5,'y2':i+splitSize,'color':color,'outlineColor':outlineColor};
-        objects.push(outerWall);
-        outerWall = {'type':'wall','x1':300,'y1':i,'x2':300,'y2':i+splitSize,'color':color,'outlineColor':outlineColor};
-        objects.push(outerWall);
-    }
+    // for(let i = 0; i<300; i+=splitSize){
+    //     let outerWall = {'type':'wall','x1':i,'y1':5,'x2':i+splitSize,'y2':5,'color':color,'outlineColor':outlineColor};
+    //     objects.push(outerWall);
+    //     outerWall = {'type':'wall','x1':5,'y1':i,'x2':5,'y2':i+splitSize,'color':color,'outlineColor':outlineColor};
+    //     objects.push(outerWall);
+    //     outerWall = {'type':'wall','x1':300,'y1':i,'x2':300,'y2':i+splitSize,'color':color,'outlineColor':outlineColor};
+    //     objects.push(outerWall);
+    // }
 
-    color = "#608dc4";
-    outlineColor = "#6464c7";
-    for(let i = 0; i<100; i+=splitSize){
-        let outerWall = {'type':'wall','x1':i,'y1':300,'x2':i+splitSize,'y2':300,'color':color,'outlineColor':outlineColor};
-        objects.push(outerWall);
-        outerWall = {'type':'wall','x1':300-i,'y1':300,'x2':300-i-splitSize,'y2':300,'color':color,'outlineColor':outlineColor};
-        objects.push(outerWall);
-    }
+    // color = "#608dc4";
+    // outlineColor = "#6464c7";
+    // for(let i = 0; i<100; i+=splitSize){
+    //     let outerWall = {'type':'wall','x1':i,'y1':300,'x2':i+splitSize,'y2':300,'color':color,'outlineColor':outlineColor};
+    //     objects.push(outerWall);
+    //     outerWall = {'type':'wall','x1':300-i,'y1':300,'x2':300-i-splitSize,'y2':300,'color':color,'outlineColor':outlineColor};
+    //     objects.push(outerWall);
+    // }
 
 
 
@@ -259,30 +309,58 @@ function getCrosshairObject(){
     }
 }
 
+// mouse locking from https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API
+canvas.requestPointerLock = canvas.requestPointerLock;  //mouse lock stuff
+document.exitPointerLock = document.exitPointerLock;
+canvas.onclick = function() {
+    canvas.requestPointerLock();
+    cKeyPressed();
+}
+document.addEventListener('pointerlockchange', toggleUseMouse, false);
+let usingMouse = false;
+function toggleUseMouse(){
+    usingMouse = (document.pointerLockElement === canvas);
+    if(usingMouse)
+        document.addEventListener("mousemove", mouseUpdate, false);
+    else
+        document.removeEventListener("mousemove", mouseUpdate, false);
+}
+function mouseUpdate(e){
+    localPlayer.dir+= e.movementX/550;
+}
+
+
 function playerControls(){
+    let newPos = {x:localPlayer.x, y:localPlayer.y};
+
     if(keys.up||keys.w){
-        localPlayer.x+= Math.cos(localPlayer.dir)*playerSpeed;
-        localPlayer.y+= Math.sin(localPlayer.dir)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
+        newPos.y+= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
     }
     if(keys.down||keys.s){
-        localPlayer.x-= Math.cos(localPlayer.dir)*playerSpeed;
-        localPlayer.y-= Math.sin(localPlayer.dir)*playerSpeed;
+        newPos.x-= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
+        newPos.y-= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
     }
     //strafing
     if(keys.a){
-        localPlayer.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed;
-        localPlayer.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
+        newPos.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
     }
     if(keys.d){
-        localPlayer.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed;
-        localPlayer.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed;
+        newPos.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
+        newPos.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
     }
 
     if(keys.left){
-        localPlayer.dir-=rotationSpeed;
+        localPlayer.dir-=rotationSpeed*gameSpeed;
     }
     if(keys.right){
-        localPlayer.dir+=rotationSpeed;
+        localPlayer.dir+=rotationSpeed*gameSpeed;
+    }
+
+    if(!wallBetween(localPlayer,newPos)){
+        localPlayer.x = newPos.x;
+        localPlayer.y = newPos.y;
     }
 
 
@@ -310,20 +388,26 @@ function playerControls(){
 
 }
 
+
+
 function localPlayerShot(){
     console.log('you\'ve been shot!!')
     localPlayer.lives--;
 framesSinceShot = 0;
 
     if(localPlayer.lives<=0){
-        localPlayer.x = 235;
-        localPlayer.y = 50;
-        localPlayer.dir = 1.8;
-        localPlayer.lives = 3;
+        resetPlayer();
     }
     timeLocalWasShot = utcTime;
 }
 
+function resetPlayer(){
+    let randomPoint = Math.floor(Math.random()*startingPoints.length);
+    localPlayer.x = startingPoints[randomPoint].x;
+    localPlayer.y = startingPoints[randomPoint].y;
+    localPlayer.dir = startingPoints[randomPoint].dir;
+    localPlayer.lives = 3;
+}
 function lockToClosestWall(){
     let smallestDist = 1000;
     let smallestX = 0;
