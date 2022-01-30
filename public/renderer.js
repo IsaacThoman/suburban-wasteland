@@ -24,7 +24,7 @@ function onMikeLoad(){
 let handImg = [];
 for(let i = 0; i<=1; i++){
     handImg[i] = new Image();
-    handImg[i].src = 'hands/'+i+'.png';
+    handImg[i].src = 'hands/'+i+'.webp';
 }
 
 let handToUse = 0;
