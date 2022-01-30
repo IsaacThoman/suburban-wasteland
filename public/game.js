@@ -8,6 +8,21 @@ const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false};
 let renderMode = 0;
+const startingPoints = [
+    {x: 124, y: 454, dir: -1.07},
+    {x: 65, y: 366, dir: -0.068},
+    {x: 70, y: 403, dir: -0.39},
+    {x: 50, y: 232, dir: 0.43},
+    {x: 65, y: 208, dir: 0.45},
+    {x: 241, y: 39, dir: 1.37},
+    {x: 329, y: 54, dir: 1.99},
+    {x: 391, y: 113, dir: 2.25},
+    {x: 501, y: 140, dir: 2.60},
+    {x: 547, y: 318, dir: 3.36},
+    {x: 494, y: 443, dir: 3.89},
+    {x: 407, y: 514, dir: 4.32},
+    {x: 257, y: 539, dir: 5.17}
+]
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
@@ -83,7 +98,8 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':235,'y':50,'dir':1.8,'playerNum':-1,'lives':3,'crouching':false,'inPain':false,'weaponHeld':1};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':-1,'lives':3,'crouching':false,'inPain':false,'weaponHeld':1};
+resetPlayer();
 let playerSpeed = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
@@ -137,7 +153,7 @@ function doFrame(){
     if(renderMode==0)
         render3D();
     if(renderMode==1)
-        renderTopDown(false);
+        renderTopDown(true);
 
     uploadPlayerData();
 
@@ -380,14 +396,18 @@ function localPlayerShot(){
 framesSinceShot = 0;
 
     if(localPlayer.lives<=0){
-        localPlayer.x = 235;
-        localPlayer.y = 50;
-        localPlayer.dir = 1.8;
-        localPlayer.lives = 3;
+        resetPlayer();
     }
     timeLocalWasShot = utcTime;
 }
 
+function resetPlayer(){
+    let randomPoint = Math.floor(Math.random()*startingPoints.length);
+    localPlayer.x = startingPoints[randomPoint].x;
+    localPlayer.y = startingPoints[randomPoint].y;
+    localPlayer.dir = startingPoints[randomPoint].dir;
+    localPlayer.lives = 3;
+}
 function lockToClosestWall(){
     let smallestDist = 1000;
     let smallestX = 0;

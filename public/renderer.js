@@ -114,6 +114,13 @@ function prepareForRender(){
 }
 let topDownScale = 3;
 function renderTopDown(showWallLines){
+
+    ctx.fillStyle = "#2a2a2a";
+    ctx.beginPath();
+    ctx.rect(0,0,1000,1000);
+    ctx.fill();
+    ctx.closePath();
+
     for(let i = 0; i<objects.length; i++){
         //   if(objects[i].type=='wall'){
         ctx.strokeStyle = objects[i]['color'];
@@ -133,13 +140,13 @@ function renderTopDown(showWallLines){
         }
 
         //q    }
-        if(objects[i].type=='remotePlayer'){
-            ctx.fillStyle = "#eead62";
-            ctx.beginPath();
-            ctx.rect((objects[i].x-3)/topDownScale,(objects[i].y-3)/topDownScale,6,6);
-            ctx.fill();
-            ctx.closePath();
-        }
+        // if(objects[i].type=='remotePlayer'){
+        //     ctx.fillStyle = "#eead62";
+        //     ctx.beginPath();
+        //     ctx.rect((objects[i].x-3)/topDownScale,(objects[i].y-3)/topDownScale,6,6);
+        //     ctx.fill();
+        //     ctx.closePath();
+        // }
 
     }
 
