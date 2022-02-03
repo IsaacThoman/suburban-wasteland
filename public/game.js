@@ -98,7 +98,7 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':-1,'lives':3,'crouching':false,'inPain':false,'weaponHeld':1};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1};
 resetPlayer();
 let playerSpeed = 1;
 let rotationSpeed = 0.025;
@@ -204,12 +204,12 @@ function doFrame(){
         framesPerSecond = framesSinceLastSecond;
         framesSinceLastSecond = 0;
     }
-    comicTelemetry = framesPerSecond;
+    comicTelemetry = playerCount;
     gameSpeed = 1*60/framesPerSecond;
 
     ctx.fillStyle = "#9ae090";
-    ctx.font = '12px Comic Sans MS';
-    ctx.fillText(comicTelemetry, 0, 12);
+    ctx.font = '10px Comic Sans MS';
+    ctx.fillText(comicTelemetry, 0, 10);
 
     utcTime = (new Date()).getTime() / 1000;
     requestAnimationFrame(doFrame);
