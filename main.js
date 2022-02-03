@@ -6,8 +6,6 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 let utcTime = (new Date()).getTime() / 1000;
-let playerCount = 0;
-let playerNumAssign = 0;
 
 let serverPlayerData = [];
 let lastPlayerDataEmit = utcTime;
@@ -19,12 +17,9 @@ app.get('/', (req, res) => {
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
+    
 
-    console.log('someone connected')
-
-    socket.on('disconnect', () => {
-        console.log('someone disconnected');
-    });
+    socket.on('disconnect', () => {});
 
 
     socket.on('playerData', (msg) => {
@@ -72,6 +67,14 @@ if(utcTime>lastPlayerDataEmit+0.08) {
 
 
 });
+
+function playerCount(){
+let out = 0;
+for(let i = 0; i<serverPlayerData.length; i++)
+    if(serverPlayerData[i]!=null) out++;
+return out;
+
+}
 
 
 server.listen(3000, () => {
