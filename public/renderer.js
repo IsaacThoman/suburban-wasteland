@@ -139,14 +139,13 @@ function renderTopDown(showWallLines){
             ctx.closePath();
         }
 
-        //q    }
-        // if(objects[i].type=='remotePlayer'){
-        //     ctx.fillStyle = "#eead62";
-        //     ctx.beginPath();
-        //     ctx.rect((objects[i].x-3)/topDownScale,(objects[i].y-3)/topDownScale,6,6);
-        //     ctx.fill();
-        //     ctx.closePath();
-        // }
+        if(objects[i].type=='remotePlayer'){
+            ctx.fillStyle = "#eead62";
+            ctx.beginPath();
+            ctx.rect((objects[i].x-3)/topDownScale,(objects[i].y-3)/topDownScale,6,6);
+            ctx.fill();
+            ctx.closePath();
+        }
 
     }
 
@@ -239,7 +238,13 @@ function render3D(){
                     imgToShow+=16;
 
              //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
+                ctx.fillStyle = "rgba(255,255,255,0.6)";
+                ctx.font = drawHeight/12+'px Comic Sans MS';
+                let remoteName = theObject['name'];
+                ctx.fillText(remoteName,drawX+drawWidth/2-ctx.measureText(remoteName).width/2,drawY)
+
                     ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+
             //    }else{
             //        console.log('mike image out of bounds: '+imgToShow);
              //   }
@@ -253,4 +258,18 @@ function render3D(){
 
     }
     ctx.drawImage(handImg[handToUse],0,handY,screen.width,200)
+}
+
+function fillSky(){
+    ctx.fillStyle = "#2a2a2a";
+    ctx.beginPath();
+    ctx.rect(0,0,1000,screen.height/2);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.fillStyle = "#969696";
+    ctx.beginPath();
+    ctx.rect(0,screen.height/2,1000,1000);
+    ctx.fill();
+    ctx.closePath();
 }
