@@ -49,6 +49,7 @@ function keyDownHandler(e) {
         if(nonLetters.indexOf(e.keyCode)==-1)
             usernameTyped+= e.key;
 
+    localPlayer.name = usernameTyped;
 
         return;}
 

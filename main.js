@@ -26,11 +26,6 @@ io.on('connection', (socket) => {
         utcTime = (new Date()).getTime() / 1000;
      //   console.log('player '+msg.playerNum+' sent '+msg);
 
-        for(let i = 0; i<serverPlayerData.length; i++){ //removes players who haven't sent an update in the last 5 seconds
-            if(serverPlayerData[i] == null) continue;
-            if(serverPlayerData[i]['lastUploadTime']+5<utcTime) serverPlayerData[i] = null;
-        }
-
         let playerExists = false;
 for(let i = 0; i<serverPlayerData.length; i++){
     if(serverPlayerData[i]==null) continue;
@@ -49,6 +44,14 @@ if(!playerExists){
         }
     }
 }
+
+        for(let i = 0; i<serverPlayerData.length; i++){ //removes players who haven't sent an update in the last 5 seconds
+            if(serverPlayerData[i] == null) continue;
+
+            if(serverPlayerData[i]['name'].length>100) serverPlayerData[i]['name'] = 'Michael Frederick Krol'; //removes long names
+
+            if(serverPlayerData[i]['lastUploadTime']+5<utcTime) serverPlayerData[i] = null;
+        }
 
 
 if(utcTime>lastPlayerDataEmit+0.08) {

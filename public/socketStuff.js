@@ -10,11 +10,12 @@ let lastUploadTime = 0;
 
 function uploadPlayerData(){
     uploads++;
-    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3 && uploads%(2*60)!=0)
+    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3+localPlayer.name && uploads%(2*60)!=0)
         return;
     if(utcTime<lastUploadTime+0.1) return;
     socket.emit('playerData',localPlayer);
-    lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching;
+    console.log('emit sent')
+    lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3+localPlayer.name;
     lastUploadTime = utcTime;
 }
 
