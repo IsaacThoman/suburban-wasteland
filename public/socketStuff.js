@@ -1,18 +1,22 @@
 const socket = io();
 
+const gameVersion = 0.10;
 let lastUpload = 0;
 let playerCount = 0;
 
 let killOldMikes = true;
 let remotePlayers = [];
 let uploads = 0;
+let lastUploadTime = 0;
 
 function uploadPlayerData(){
     uploads++;
-    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3 && uploads%(2*60)!=0)
+    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3+localPlayer.name && uploads%(2*60)!=0)
         return;
+    if(utcTime<lastUploadTime+0.1) return;
     socket.emit('playerData',localPlayer);
-    lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching;
+    lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3+localPlayer.name;
+    lastUploadTime = utcTime;
 }
 
 let lastShot = 0;
@@ -58,16 +62,25 @@ socket.on('playerShot', function(msg) {
 
 });
 
-socket.on('playerCount', function(msg) {
-   if(killOldMikes) remotePlayers = [];
-    playerCount = msg;
-    if(localPlayer.playerNum == -1)
-        localPlayer.playerNum = msg;
-});
 
 
-socket.on('playerData', function(msg) {
-    if(msg.playerNum == localPlayer.playerNum)
-        return;
-    remotePlayers[msg.playerNum] = msg;
+socket.on('playerDataNew', function(msg) {
+remotePlayers = msg;
+    playerCount = 0;
+    for(let i = 0; i<remotePlayers.length; i++)
+        if(remotePlayers[i]!=null)
+            playerCount++;
+
+for(let i = 0; i<remotePlayers.length; i++)
+    if(remotePlayers[i]!=null && remotePlayers[i]['playerNum']==localPlayer.playerNum)
+        remotePlayers[i] = null; //removes you from the list of remote players
 });
+
+socket.on('gameVersion', function(msg) {
+  if(gameVersion!=msg)
+      onVersionMismatch();
+});
+
+function onVersionMismatch(){
+    comicTelemetry = 'You\'re running an outdated version. Try clearing your cache.';
+}

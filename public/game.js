@@ -6,8 +6,11 @@ const radToDeg = 1/3.14*180;
 const debugMode = false;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
-let keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false};
+let keys; resetKeys();
+function resetKeys(){ keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
 let renderMode = 0;
+let interfaceEnabled = false;
+let usernameTyped = '';
 const startingPoints = [
     {x: 124, y: 454, dir: -1.07},
     {x: 65, y: 366, dir: -0.068},
@@ -26,6 +29,30 @@ const startingPoints = [
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
+    if(interfaceEnabled) {
+        let nonLetters = [9,20,16,8,13,46,17,18];
+
+        if (e.keyCode == 27) {// escape
+            interfaceEnabled = false;
+            return;
+        }
+
+        if (e.keyCode == 13) { //enter
+            localPlayer.name = usernameTyped;
+            interfaceEnabled = false;
+            return;
+        }
+
+    if(e.keyCode==8)//backspace
+        usernameTyped = usernameTyped.substring(0,usernameTyped.length-1);
+
+        if(nonLetters.indexOf(e.keyCode)==-1)
+            usernameTyped+= e.key;
+
+    localPlayer.name = usernameTyped;
+
+        return;}
+
     switch(e.keyCode){
         case 38: keys.up = true;    break;
         case 40: keys.down = true;  break;
@@ -44,6 +71,8 @@ function keyDownHandler(e) {
 
         case 16: keys.shift = true; break;
         case 17: keys.control = true; break;
+
+        case 84: interfaceEnabled = true; resetKeys(); usernameTyped=''; break;
     }
 
     switch(e.keyCode){
@@ -73,6 +102,7 @@ function keyDownHandler(e) {
         addedObjects.pop();
 }
 function keyUpHandler(e) {
+    if(interfaceEnabled)return;
     switch(e.keyCode){
         case 38: keys.up = false;    break;
         case 40: keys.down = false;  break;
@@ -98,9 +128,10 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':-1,'lives':3,'crouching':false,'inPain':false,'weaponHeld':1};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':''};
 resetPlayer();
-let playerSpeed = 1;
+let playerSpeed = 1.2;
+let playerSpeedMultiplier = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
 
@@ -131,17 +162,6 @@ function doFrame(){
     else
         screen.height = 200;
 
-    ctx.fillStyle = "#2a2a2a";
-    ctx.beginPath();
-    ctx.rect(0,0,1000,screen.height/2);
-    ctx.fill();
-    ctx.closePath();
-
-    ctx.fillStyle = "#969696";
-    ctx.beginPath();
-    ctx.rect(0,screen.height/2,1000,1000);
-    ctx.fill();
-    ctx.closePath();
 
     makeObjectsList();
 
@@ -150,10 +170,20 @@ function doFrame(){
 
     getCrosshairObject();
 
+fillSky();
     if(renderMode==0)
         render3D();
     if(renderMode==1)
         renderTopDown(true);
+
+    if(interfaceEnabled){
+        let blinker = '|';
+        if(frameOn%40<20)blinker = '';
+        ctx.fillStyle = "#9ae090";
+        ctx.font = '14px Comic Sans MS';
+        ctx.fillText('Set name: '+usernameTyped+blinker, 15, screen.height/4);
+    }
+
 
     uploadPlayerData();
 
@@ -204,14 +234,15 @@ function doFrame(){
         framesPerSecond = framesSinceLastSecond;
         framesSinceLastSecond = 0;
     }
-    comicTelemetry = framesPerSecond;
+  //  comicTelemetry = playerCount;
     gameSpeed = 1*60/framesPerSecond;
 
     ctx.fillStyle = "#9ae090";
-    ctx.font = '12px Comic Sans MS';
-    ctx.fillText(comicTelemetry, 0, 12);
+    ctx.font = '10px Comic Sans MS';
+    ctx.fillText(comicTelemetry, 0, 10);
 
     utcTime = (new Date()).getTime() / 1000;
+    frameOn++;
     requestAnimationFrame(doFrame);
 }
 requestAnimationFrame(doFrame);
@@ -332,24 +363,25 @@ function mouseUpdate(e){
 
 function playerControls(){
     let newPos = {x:localPlayer.x, y:localPlayer.y};
+    let moveKeyHeld = (keys.up||keys.w||keys.down||keys.s||keys.a||keys.d);
+    let moveX = 0;
+    let moveY = 0;
 
-    if(keys.up||keys.w){
-        newPos.x+= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
-        newPos.y+= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
-    }
-    if(keys.down||keys.s){
-        newPos.x-= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
-        newPos.y-= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
-    }
-    //strafing
-    if(keys.a){
-        newPos.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
-        newPos.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
-    }
-    if(keys.d){
-        newPos.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
-        newPos.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
-    }
+    if(keys.up||keys.w)
+        moveY = 1;
+    if(keys.down||keys.s)
+        moveY = -1;
+    if(keys.a)
+        moveX = -1;
+    if(keys.d)
+        moveX = 1;
+
+    let movementDir = Math.atan2(moveX,moveY);
+
+if(moveKeyHeld) {
+    newPos.x += Math.cos(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed;
+    newPos.y += Math.sin(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed;
+}
 
     if(keys.left){
         localPlayer.dir-=rotationSpeed*gameSpeed;
@@ -364,11 +396,11 @@ function playerControls(){
     }
 
 
-    playerSpeed = 1;
+    playerSpeedMultiplier = 1;
 
     if(keys.shift){
         localPlayer.crouching = true;
-        playerSpeed = 0.4;
+        playerSpeedMultiplier = 0.4;
     }else{
         localPlayer.crouching = false;
     }
