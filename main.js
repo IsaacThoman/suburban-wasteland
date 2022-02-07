@@ -5,6 +5,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const gameVersion = 0.10;
+let emitCount = 0;
 let utcTime = (new Date()).getTime() / 1000;
 
 let serverPlayerData = [];
@@ -25,6 +27,10 @@ io.on('connection', (socket) => {
     socket.on('playerData', (msg) => {
         utcTime = (new Date()).getTime() / 1000;
      //   console.log('player '+msg.playerNum+' sent '+msg);
+        let msgRequirements = ['x','y','inPain','lives','name','playerNum','weaponHeld','crouching'];
+        for(let i in msgRequirements)
+        if(!msgRequirements[i] in msg)
+            return;
 
         let playerExists = false;
 for(let i = 0; i<serverPlayerData.length; i++){
@@ -56,7 +62,10 @@ if(!playerExists){
 
 if(utcTime>lastPlayerDataEmit+0.08) {
     io.emit('playerDataNew', serverPlayerData)
+    if(emitCount%10==0)
+        io.emit('gameVersion',gameVersion)
     lastPlayerDataEmit = utcTime;
+    emitCount++;
 }
 
     });
