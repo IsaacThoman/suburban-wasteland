@@ -130,7 +130,8 @@ let disallowedMoveBlocks = [];
 let objectsToRender = [];
 let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':''};
 resetPlayer();
-let playerSpeed = 1;
+let playerSpeed = 1.2;
+let playerSpeedMultiplier = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
 
@@ -233,7 +234,7 @@ fillSky();
         framesPerSecond = framesSinceLastSecond;
         framesSinceLastSecond = 0;
     }
-    comicTelemetry = playerCount;
+  //  comicTelemetry = playerCount;
     gameSpeed = 1*60/framesPerSecond;
 
     ctx.fillStyle = "#9ae090";
@@ -362,24 +363,25 @@ function mouseUpdate(e){
 
 function playerControls(){
     let newPos = {x:localPlayer.x, y:localPlayer.y};
+    let moveKeyHeld = (keys.up||keys.w||keys.down||keys.s||keys.a||keys.d);
+    let moveX = 0;
+    let moveY = 0;
 
-    if(keys.up||keys.w){
-        newPos.x+= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
-        newPos.y+= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
-    }
-    if(keys.down||keys.s){
-        newPos.x-= Math.cos(localPlayer.dir)*playerSpeed*gameSpeed;
-        newPos.y-= Math.sin(localPlayer.dir)*playerSpeed*gameSpeed;
-    }
-    //strafing
-    if(keys.a){
-        newPos.x+= Math.cos(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
-        newPos.y+= Math.sin(localPlayer.dir-3.14/2)*playerSpeed*gameSpeed;
-    }
-    if(keys.d){
-        newPos.x+= Math.cos(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
-        newPos.y+= Math.sin(localPlayer.dir+3.14/2)*playerSpeed*gameSpeed;
-    }
+    if(keys.up||keys.w)
+        moveY = 1;
+    if(keys.down||keys.s)
+        moveY = -1;
+    if(keys.a)
+        moveX = -1;
+    if(keys.d)
+        moveX = 1;
+
+    let movementDir = Math.atan2(moveX,moveY);
+
+if(moveKeyHeld) {
+    newPos.x += Math.cos(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed;
+    newPos.y += Math.sin(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed;
+}
 
     if(keys.left){
         localPlayer.dir-=rotationSpeed*gameSpeed;
@@ -394,11 +396,11 @@ function playerControls(){
     }
 
 
-    playerSpeed = 1;
+    playerSpeedMultiplier = 1;
 
     if(keys.shift){
         localPlayer.crouching = true;
-        playerSpeed = 0.4;
+        playerSpeedMultiplier = 0.4;
     }else{
         localPlayer.crouching = false;
     }
