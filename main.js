@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
         utcTime = (new Date()).getTime() / 1000;
      //   console.log('player '+msg.playerNum+' sent '+msg);
         let msgRequirements = ['x','y','inPain','lives','name','playerNum','weaponHeld','crouching'];
+        if(typeof msg != "object") return;
         for(let i in msgRequirements)
         if(!msgRequirements[i] in msg)
             return;
