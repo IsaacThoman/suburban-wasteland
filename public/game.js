@@ -234,7 +234,8 @@ fillSky();
         framesPerSecond = framesSinceLastSecond;
         framesSinceLastSecond = 0;
     }
-  //  comicTelemetry = playerCount;
+  if(serverVersion!=gameVersion)
+      comicTelemetry = 'You\'re running an outdated version. Try a hard refresh.';
     gameSpeed = 1*60/framesPerSecond;
 
     ctx.fillStyle = "#9ae090";

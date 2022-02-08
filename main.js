@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const gameVersion = 0.10;
+const gameVersion = 0.11;
 let emitCount = 0;
 let utcTime = (new Date()).getTime() / 1000;
 
