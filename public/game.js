@@ -12,20 +12,23 @@ let renderMode = 0;
 let interfaceEnabled = false;
 let usernameTyped = '';
 const startingPoints = [
-    {x: 124, y: 454, dir: -1.07},
-    {x: 65, y: 366, dir: -0.068},
-    {x: 70, y: 403, dir: -0.39},
-    {x: 50, y: 232, dir: 0.43},
-    {x: 65, y: 208, dir: 0.45},
-    {x: 241, y: 39, dir: 1.37},
-    {x: 329, y: 54, dir: 1.99},
-    {x: 391, y: 113, dir: 2.25},
-    {x: 501, y: 140, dir: 2.60},
-    {x: 547, y: 318, dir: 3.36},
-    {x: 494, y: 443, dir: 3.89},
-    {x: 407, y: 514, dir: 4.32},
-    {x: 257, y: 539, dir: 5.17}
+    {x: 0, y: 250, dir: 0}
 ]
+
+class Wall{
+    constructor(x1,y1,x2,y2,height,z,color,outlineColor) {
+        this.type = 'wall';
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+        this.color = color;
+        this.outlineColor = outlineColor;
+        this.height = height;
+        this.z = z;
+    }
+}
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
@@ -264,9 +267,11 @@ function makeObjectsList(){
     let wall4 = {'type':'wall','x1':145,'y1':380,'x2':145,'y2':450,'color':"#9f389d",'outlineColor':"#c7c7c7"};
     let wall5 = {'type':'wall','x1':155,'y1':380,'x2':155,'y2':450,'color':"#9f389d",'outlineColor':"#c7c7c7"};
 
+    let wallTest = new Wall(200,200,200,220,50,0,'#9f389d','#c7c7c7');
+    let wallTest2 = new Wall(200,220,200,240,700,0,'#9f389d','#c7c7c7');
 
 
-    objects = [];
+    objects = [wallTest,wallTest2];
 
     let cactus = {'type':'cactus','x':341,'y':182,'dir':0};
 objects.push(cactus);
@@ -274,13 +279,14 @@ objects.push(cactus);
     for(let i = 0; i<addedObjects.length; i++)
         objects.push(addedObjects[i]);
 
-    for(let i = 0; i<levelBuilt.length; i++){
+ /*   for(let i = 0; i<levelBuilt.length; i++){
         objects.push(levelBuilt[i])
     }
+*/
 
     //pillar turtle
     let pT = {x:300,y:0,dir:0,faceCount:70,size:25};
-
+/*
     for(let i = 0; i<pT.faceCount; i++){
         let nextX = pT.x+(Math.cos(pT.dir)*pT.size);
         let nextY = pT.y+(Math.sin(pT.dir)*pT.size);
@@ -292,7 +298,7 @@ objects.push(cactus);
         pT.dir+=2*PI/pT.faceCount;
 
     }
-
+*/
     let splitSize = 25;
     let color = "#4b389f";
     let outlineColor = "#6464c7";
