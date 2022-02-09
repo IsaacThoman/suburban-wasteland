@@ -3,6 +3,8 @@ for(let i = 0; i<32; i++)
     mikeImages[i] = new Image();
 
 for(let i = 0; i<8; i++) {
+
+
     mikeImages[i].src = 'mikes/'+i+'.webp';
     mikeImages[i].onload = function(){onMikeLoad();}
 
@@ -14,6 +16,11 @@ for(let i = 0; i<8; i++) {
 let mikesLoaded = 0;
 let mikesInPainCreated = false;
 
+let cactiLoaded = false;
+
+let cactiSheet = new Image();
+cactiSheet.src = 'cacti-sheet-128.webp';
+cactiSheet.onload = function (){cactiLoaded = true;}
 
 function onMikeLoad(){
     mikesLoaded++;
@@ -30,7 +37,22 @@ for(let i = 0; i<=1; i++){
 let handToUse = 0;
 
 
+function imgArrayFromSheet(img,width,height,count){
+    let imgEditorCanvas = document.createElement("canvas");
+    imgEditorCanvas.width = width;
+    imgEditorCanvas.height = height;
+    let editorCtx = imgEditorCanvas.getContext("2d");
 
+    let out = [];
+    for(let i = 0; i<count; i++){
+        out[i] = new Image();
+        editorCtx.clearRect(0,0,width*count,height);
+        editorCtx.drawImage(img,width*i,0,width,height,0,0,width,height);
+
+        out[i].src = imgEditorCanvas.toDataURL();
+    }
+    return out;
+}
 
     function createMikesInPain(){
     console.log('started');
@@ -57,6 +79,7 @@ let handToUse = 0;
     }
     mikesInPainCreated = true;
     console.log('done!');
+    imgEditorCanvas.remove();
 }
 
 
@@ -64,7 +87,7 @@ let handToUse = 0;
 function prepareForRender(){
     for(let i = 0; i<objects.length; i++){
         let thisObject = objects[i];
-        if(objects[i].type == 'remotePlayer'){
+        if(objects[i].type == 'remotePlayer' || objects[i].type == 'cactus'){
             thisObject['x1'] = thisObject.x; thisObject['x2'] = thisObject.x;
             thisObject['y1'] = thisObject.y; thisObject['y2'] = thisObject.y;
         }
@@ -79,6 +102,11 @@ function prepareForRender(){
         objects[i]['distFromPlayer2'] = Math.sqrt(Math.pow(localPlayer.x-objects[i].x2 ,2)+Math.pow(localPlayer.y-objects[i].y2,2));
         objects[i]['dirFromPlayer2'] = Math.atan2(objects[i].y2 - localPlayer.y,objects[i].x2 - localPlayer.x);
 
+        if('priority' in thisObject && thisObject['priority']){
+            thisObject['centerDistFromPlayer'] -=1;
+        }
+
+
         objects[i]['dirDiff'] = (localPlayer.dir - objects[i]['dirFromPlayer'] +PI + 2*PI) % (2*PI)-PI
         objects[i]['dirDiff2'] = (localPlayer.dir - objects[i]['dirFromPlayer2'] +PI + 2*PI) % (2*PI)-PI
 
@@ -89,7 +117,12 @@ function prepareForRender(){
         let angDiff2 = (localPlayer.dir - wallDirTest2 + PI + 2*PI) % (2*PI) - PI;
 
 
-        thisObject['inFOV'] = (angDiff>0-FOV/2&&angDiff<FOV/2) || (angDiff2>0-FOV/2&&angDiff2<FOV/2);
+            let FOVEndPoint1 = new Point((localPlayer.x + Math.cos(localPlayer.dir + FOV / 2) * 1000), (localPlayer.y + Math.sin(localPlayer.dir + FOV / 2) * 1000));
+            let FOVEndPoint2 = new Point((localPlayer.x + Math.cos(localPlayer.dir - FOV / 2) * 1000), (localPlayer.y + Math.sin(localPlayer.dir - FOV / 2) * 1000));
+            let originPoint = new Point(localPlayer.x, localPlayer.y);
+            let wallPoint1 = new Point(thisObject['x1'],thisObject['y1']); let wallPoint2 = new Point(thisObject['x2'],thisObject['y2']);
+            thisObject['inFOV'] = ((angDiff>0-FOV/2&&angDiff<FOV/2) || (angDiff2>0-FOV/2&&angDiff2<FOV/2)) || (doIntersect(originPoint,FOVEndPoint1,wallPoint1,wallPoint2));
+
 
     }
 
@@ -175,19 +208,36 @@ function render3D(){
         let theObject = objects[objectsToRender[i]];
         if(theObject.inFOV){
 
+            let topViewNumber = magicViewNumber2*theObject['height'];
+            let bottomViewNumber = magicViewNumber2;
+            topViewNumber+= theObject['z']*magicViewNumber2;
+            bottomViewNumber-= theObject['z']*magicViewNumber2;
+
             let planeXStart = (0-theObject['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeXEnd = (0-theObject['dirDiff2'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeYStart = magicViewNumber2/theObject['distFromPlayer'];
             let planeYEnd = magicViewNumber2/theObject['distFromPlayer2'];
 
+            let planeYStart2 = topViewNumber/theObject['distFromPlayer']; //tops
+            let planeYEnd2 = topViewNumber/theObject['distFromPlayer2'];
+
+            let planeYStart3 = bottomViewNumber/theObject['distFromPlayer']; //bottoms
+            let planeYEnd3 = bottomViewNumber/theObject['distFromPlayer2'];
+
             let lowerYStart = screen.height/2-planeYStart;
-            let upperYStart = screen.height/2+planeYStart;
             let lowerYEnd = screen.height/2-planeYEnd;
+            let upperYStart = screen.height/2+planeYStart;
             let upperYEnd = screen.height/2+planeYEnd;
 
 
 
             if(theObject.type == 'wall'){
+                lowerYStart = screen.height/2-planeYStart2;
+                lowerYEnd = screen.height/2-planeYEnd2;
+                upperYStart = screen.height/2+planeYStart3;
+                upperYEnd = screen.height/2+planeYEnd3;
+
+
                 ctx.beginPath();
                 ctx.fillStyle = theObject.color;
                 ctx.moveTo(planeXEnd,lowerYEnd);
@@ -205,10 +255,9 @@ function render3D(){
 
 
             if(theObject.type == 'remotePlayer'){
-
                 let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
 
-                viewingAngle-=15/radToDeg;
+                viewingAngle-= 15/radToDeg;
 
                 let imgToShow = (Math.floor((0-(viewingAngle-(theObject['dir']))/6.28*8))+ 8 )% 8;
 
@@ -228,26 +277,60 @@ function render3D(){
                     drawHeight/=2;
                     drawY+=mikeHeight/2;
                 }
-                // if(localPlayer['crouching']){
-                //     drawHeight*=2;
-                //     drawY-=mikeHeight;
-                // }
+
                 if(theObject['inPain'])
                     imgToShow+=8;
                 if(theObject['weaponHeld']==2)
                     imgToShow+=16;
 
-             //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
+                //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
                 ctx.fillStyle = "rgba(255,255,255,0.6)";
                 ctx.font = drawHeight/12+'px Comic Sans MS';
                 let remoteName = theObject['name'];
                 ctx.fillText(remoteName,drawX+drawWidth/2-ctx.measureText(remoteName).width/2,drawY)
 
-                    ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+                if(mikesInPainCreated)
+                ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
 
-            //    }else{
-            //        console.log('mike image out of bounds: '+imgToShow);
-             //   }
+                //    }else{
+                //        console.log('mike image out of bounds: '+imgToShow);
+                //   }
+
+
+            }
+
+            if(theObject.type == 'cactus'){
+           //     console.log(theObject)
+                let totalImgCount = 127;
+                let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
+
+              //  viewingAngle-=1/radToDeg; //only needed for mike model
+
+                let imgToShow = (Math.floor((0-(viewingAngle-(theObject['dir']))/6.28*totalImgCount))+ totalImgCount )% totalImgCount;
+
+                let mikeWidth = 0.8*(upperYStart-lowerYStart);
+                let mikeHeight = 1*(upperYStart-lowerYStart);
+
+                while(imgToShow<0){
+                    imgToShow+=totalImgCount;
+                    imgToShow%=totalImgCount;
+                }
+
+                let drawX = planeXStart-mikeWidth/2;
+                let drawY = (lowerYStart+mikeHeight/8);  // the +mikeHeight/8 makes them more eye-level
+                let drawWidth = mikeWidth;
+                let drawHeight = mikeHeight;
+
+                imgToShow = totalImgCount - imgToShow;
+
+                if(cactiLoaded)
+                    ctx.drawImage(cactiSheet,imgToShow*460/4.25,0,460/4.25,200,drawX,drawY,drawWidth,drawHeight);
+                // ctx.drawImage(cactiImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+
+
+                //    }else{
+                //        console.log('mike image out of bounds: '+imgToShow);
+                //   }
 
 
             }
@@ -257,7 +340,7 @@ function render3D(){
 
 
     }
-    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200)
+   // ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
 }
 
 function fillSky(){

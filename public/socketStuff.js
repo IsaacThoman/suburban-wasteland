@@ -1,6 +1,7 @@
 const socket = io();
 
-const gameVersion = 0.10;
+const gameVersion = 0.12;
+let serverVersion = gameVersion;
 let lastUpload = 0;
 let playerCount = 0;
 
@@ -77,10 +78,5 @@ for(let i = 0; i<remotePlayers.length; i++)
 });
 
 socket.on('gameVersion', function(msg) {
-  if(gameVersion!=msg)
-      onVersionMismatch();
+    serverVersion = msg;
 });
-
-function onVersionMismatch(){
-    comicTelemetry = 'You\'re running an outdated version. Try clearing your cache.';
-}

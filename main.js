@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const gameVersion = 0.10;
+const gameVersion = 0.12;
 let emitCount = 0;
 let utcTime = (new Date()).getTime() / 1000;
 
@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
         utcTime = (new Date()).getTime() / 1000;
      //   console.log('player '+msg.playerNum+' sent '+msg);
         let msgRequirements = ['x','y','inPain','lives','name','playerNum','weaponHeld','crouching'];
+        if(typeof msg != "object") return;
         for(let i in msgRequirements)
         if(!msgRequirements[i] in msg)
             return;
