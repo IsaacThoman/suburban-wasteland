@@ -3,6 +3,8 @@ for(let i = 0; i<32; i++)
     mikeImages[i] = new Image();
 
 for(let i = 0; i<8; i++) {
+
+
     mikeImages[i].src = 'mikes/'+i+'.webp';
     mikeImages[i].onload = function(){onMikeLoad();}
 
@@ -15,11 +17,10 @@ let mikesLoaded = 0;
 let mikesInPainCreated = false;
 
 let cactiLoaded = false;
-let cactiImages;
 
 let cactiSheet = new Image();
-cactiSheet.src = 'cacti-sheet-workbench-128.webp';
-cactiSheet.onload = function (){cactiImages = imgArrayFromSheet(cactiSheet,460/4.25,200,128); cactiLoaded = true;}
+cactiSheet.src = 'cacti-sheet-128.webp';
+cactiSheet.onload = function (){cactiLoaded = true;}
 
 function onMikeLoad(){
     mikesLoaded++;
@@ -47,6 +48,7 @@ function imgArrayFromSheet(img,width,height,count){
         out[i] = new Image();
         editorCtx.clearRect(0,0,width*count,height);
         editorCtx.drawImage(img,width*i,0,width,height,0,0,width,height);
+
         out[i].src = imgEditorCanvas.toDataURL();
     }
     return out;
@@ -225,7 +227,7 @@ function render3D(){
             }
 
 
-            if(theObject.type == 'cactus'){
+            if(theObject.type == 'remotePlayer'){
                 let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
 
                 viewingAngle-= 15/radToDeg;
@@ -270,12 +272,9 @@ function render3D(){
 
             }
 
-            if(theObject.type == 'remotePlayer'){
+            if(theObject.type == 'cactus'){
            //     console.log(theObject)
-                let totalImgCount = 1;
-                if(cactiLoaded)
-                    totalImgCount = cactiImages.length -1;
-
+                let totalImgCount = 127;
                 let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
 
               //  viewingAngle-=1/radToDeg; //only needed for mike model
@@ -298,7 +297,9 @@ function render3D(){
                 imgToShow = totalImgCount - imgToShow;
 
                 if(cactiLoaded)
-                    ctx.drawImage(cactiImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+                    ctx.drawImage(cactiSheet,imgToShow*460/4.25,0,460/4.25,200,drawX,drawY,drawWidth,drawHeight);
+                // ctx.drawImage(cactiImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+
 
                 //    }else{
                 //        console.log('mike image out of bounds: '+imgToShow);
