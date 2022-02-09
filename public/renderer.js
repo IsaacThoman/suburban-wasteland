@@ -203,14 +203,19 @@ function render3D(){
         let theObject = objects[objectsToRender[i]];
         if(theObject.inFOV){
 
+            let topViewNumber = magicViewNumber2*theObject['height'];
+
             let planeXStart = (0-theObject['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeXEnd = (0-theObject['dirDiff2'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeYStart = magicViewNumber2/theObject['distFromPlayer'];
             let planeYEnd = magicViewNumber2/theObject['distFromPlayer2'];
 
-            let lowerYStart = screen.height/2-planeYStart;
+            let planeYStart2 = topViewNumber/theObject['distFromPlayer'];
+            let planeYEnd2 = topViewNumber/theObject['distFromPlayer2'];
+
+            let lowerYStart = screen.height/2-planeYStart2;
             let upperYStart = screen.height/2+planeYStart;
-            let lowerYEnd = screen.height/2-planeYEnd;
+            let lowerYEnd = screen.height/2-planeYEnd2;
             let upperYEnd = screen.height/2+planeYEnd;
 
 
@@ -318,7 +323,7 @@ function render3D(){
 
 
     }
-    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
+   // ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
 }
 
 function fillSky(){
