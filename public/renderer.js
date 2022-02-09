@@ -213,14 +213,16 @@ function render3D(){
             let planeYStart2 = topViewNumber/theObject['distFromPlayer'];
             let planeYEnd2 = topViewNumber/theObject['distFromPlayer2'];
 
-            let lowerYStart = screen.height/2-planeYStart2;
+            let lowerYStart = screen.height/2-planeYStart;
+            let lowerYEnd = screen.height/2-planeYEnd;
             let upperYStart = screen.height/2+planeYStart;
-            let lowerYEnd = screen.height/2-planeYEnd2;
             let upperYEnd = screen.height/2+planeYEnd;
 
 
 
             if(theObject.type == 'wall'){
+                lowerYStart = screen.height/2-planeYStart2;
+                lowerYEnd = screen.height/2-planeYEnd2;
                 ctx.beginPath();
                 ctx.fillStyle = theObject.color;
                 ctx.moveTo(planeXEnd,lowerYEnd);
