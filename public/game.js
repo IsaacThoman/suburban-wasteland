@@ -269,11 +269,11 @@ function makeObjectsList(){
 
     let wallTest = new Wall(200,200,200,220,1,0,'#9f389d','#c7c7c7');
     let wallTest2 = new Wall(200,220,200,240,1.25,0,'rgba(159,56,157,0.5)','#c7c7c7');
-    let wallTest3 = new Wall(200,240,200,260,1,0,'#9f389d','#c7c7c7');
-    let wallTest4 = new Wall(200,260,200,280,1.25,0,'#9f389d','#c7c7c7');
+    let wallTest3 = new Wall(200,240,200,260,.25,1,'#9f389d','#c7c7c7');
+    let wallTest4 = new Wall(200,260,200,280,1,0.5,'#9f389d','#c7c7c7');
 
 
-    objects = [wallTest,wallTest2,wallTest3];
+    objects = [wallTest,wallTest2,wallTest3,wallTest4];
 
     let cactus = {'type':'cactus','x':341,'y':182,'dir':0};
 objects.push(cactus);

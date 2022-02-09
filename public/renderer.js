@@ -204,14 +204,20 @@ function render3D(){
         if(theObject.inFOV){
 
             let topViewNumber = magicViewNumber2*theObject['height'];
+            let bottomViewNumber = magicViewNumber2;
+            topViewNumber+= theObject['z']*magicViewNumber2;
+            bottomViewNumber-= theObject['z']*magicViewNumber2;
 
             let planeXStart = (0-theObject['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeXEnd = (0-theObject['dirDiff2'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeYStart = magicViewNumber2/theObject['distFromPlayer'];
             let planeYEnd = magicViewNumber2/theObject['distFromPlayer2'];
 
-            let planeYStart2 = topViewNumber/theObject['distFromPlayer'];
+            let planeYStart2 = topViewNumber/theObject['distFromPlayer']; //tops
             let planeYEnd2 = topViewNumber/theObject['distFromPlayer2'];
+
+            let planeYStart3 = bottomViewNumber/theObject['distFromPlayer']; //bottoms
+            let planeYEnd3 = bottomViewNumber/theObject['distFromPlayer2'];
 
             let lowerYStart = screen.height/2-planeYStart;
             let lowerYEnd = screen.height/2-planeYEnd;
@@ -223,6 +229,10 @@ function render3D(){
             if(theObject.type == 'wall'){
                 lowerYStart = screen.height/2-planeYStart2;
                 lowerYEnd = screen.height/2-planeYEnd2;
+                upperYStart = screen.height/2+planeYStart3;
+                upperYEnd = screen.height/2+planeYEnd3;
+
+
                 ctx.beginPath();
                 ctx.fillStyle = theObject.color;
                 ctx.moveTo(planeXEnd,lowerYEnd);
