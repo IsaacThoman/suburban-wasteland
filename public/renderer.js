@@ -112,7 +112,12 @@ function prepareForRender(){
         let angDiff2 = (localPlayer.dir - wallDirTest2 + PI + 2*PI) % (2*PI) - PI;
 
 
-        thisObject['inFOV'] = (angDiff>0-FOV/2&&angDiff<FOV/2) || (angDiff2>0-FOV/2&&angDiff2<FOV/2);
+            let FOVEndPoint1 = new Point((localPlayer.x + Math.cos(localPlayer.dir + FOV / 2) * 1000), (localPlayer.y + Math.sin(localPlayer.dir + FOV / 2) * 1000));
+            let FOVEndPoint2 = new Point((localPlayer.x + Math.cos(localPlayer.dir - FOV / 2) * 1000), (localPlayer.y + Math.sin(localPlayer.dir - FOV / 2) * 1000));
+            let originPoint = new Point(localPlayer.x, localPlayer.y);
+            let wallPoint1 = new Point(thisObject['x1'],thisObject['y1']); let wallPoint2 = new Point(thisObject['x2'],thisObject['y2']);
+            thisObject['inFOV'] = ((angDiff>0-FOV/2&&angDiff<FOV/2) || (angDiff2>0-FOV/2&&angDiff2<FOV/2)) || (doIntersect(originPoint,FOVEndPoint1,wallPoint1,wallPoint2));
+
 
     }
 
