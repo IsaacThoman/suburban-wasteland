@@ -268,6 +268,8 @@ function makeObjectsList(){
 
     objects = [];
 
+    let cactus = {'type':'cactus','x':341,'y':182,'dir':0};
+objects.push(cactus);
 
     for(let i = 0; i<addedObjects.length; i++)
         objects.push(addedObjects[i]);

@@ -14,6 +14,12 @@ for(let i = 0; i<8; i++) {
 let mikesLoaded = 0;
 let mikesInPainCreated = false;
 
+let cactiLoaded = false;
+let cactiImages;
+
+let cactiSheet = new Image();
+cactiSheet.src = 'cacti-sheet-workbench-128.webp';
+cactiSheet.onload = function (){cactiImages = imgArrayFromSheet(cactiSheet,460/4.25,200,128); cactiLoaded = true;}
 
 function onMikeLoad(){
     mikesLoaded++;
@@ -30,7 +36,21 @@ for(let i = 0; i<=1; i++){
 let handToUse = 0;
 
 
+function imgArrayFromSheet(img,width,height,count){
+    let imgEditorCanvas = document.createElement("canvas");
+    imgEditorCanvas.width = width;
+    imgEditorCanvas.height = height;
+    let editorCtx = imgEditorCanvas.getContext("2d");
 
+    let out = [];
+    for(let i = 0; i<count; i++){
+        out[i] = new Image();
+        editorCtx.clearRect(0,0,width*count,height);
+        editorCtx.drawImage(img,width*i,0,width,height,0,0,width,height);
+        out[i].src = imgEditorCanvas.toDataURL();
+    }
+    return out;
+}
 
     function createMikesInPain(){
     console.log('started');
@@ -57,6 +77,7 @@ let handToUse = 0;
     }
     mikesInPainCreated = true;
     console.log('done!');
+    imgEditorCanvas.remove();
 }
 
 
@@ -64,7 +85,7 @@ let handToUse = 0;
 function prepareForRender(){
     for(let i = 0; i<objects.length; i++){
         let thisObject = objects[i];
-        if(objects[i].type == 'remotePlayer'){
+        if(objects[i].type == 'remotePlayer' || objects[i].type == 'cactus'){
             thisObject['x1'] = thisObject.x; thisObject['x2'] = thisObject.x;
             thisObject['y1'] = thisObject.y; thisObject['y2'] = thisObject.y;
         }
@@ -204,11 +225,10 @@ function render3D(){
             }
 
 
-            if(theObject.type == 'remotePlayer'){
-
+            if(theObject.type == 'cactus'){
                 let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
 
-                viewingAngle-=15/radToDeg;
+                viewingAngle-= 15/radToDeg;
 
                 let imgToShow = (Math.floor((0-(viewingAngle-(theObject['dir']))/6.28*8))+ 8 )% 8;
 
@@ -228,26 +248,61 @@ function render3D(){
                     drawHeight/=2;
                     drawY+=mikeHeight/2;
                 }
-                // if(localPlayer['crouching']){
-                //     drawHeight*=2;
-                //     drawY-=mikeHeight;
-                // }
+
                 if(theObject['inPain'])
                     imgToShow+=8;
                 if(theObject['weaponHeld']==2)
                     imgToShow+=16;
 
-             //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
+                //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
                 ctx.fillStyle = "rgba(255,255,255,0.6)";
                 ctx.font = drawHeight/12+'px Comic Sans MS';
                 let remoteName = theObject['name'];
                 ctx.fillText(remoteName,drawX+drawWidth/2-ctx.measureText(remoteName).width/2,drawY)
 
-                    ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+                if(mikesInPainCreated)
+                ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
 
-            //    }else{
-            //        console.log('mike image out of bounds: '+imgToShow);
-             //   }
+                //    }else{
+                //        console.log('mike image out of bounds: '+imgToShow);
+                //   }
+
+
+            }
+
+            if(theObject.type == 'remotePlayer'){
+           //     console.log(theObject)
+                let totalImgCount = 1;
+                if(cactiLoaded)
+                    totalImgCount = cactiImages.length -1;
+
+                let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
+
+              //  viewingAngle-=1/radToDeg; //only needed for mike model
+
+                let imgToShow = (Math.floor((0-(viewingAngle-(theObject['dir']))/6.28*totalImgCount))+ totalImgCount )% totalImgCount;
+
+                let mikeWidth = 0.8*(upperYStart-lowerYStart);
+                let mikeHeight = 1*(upperYStart-lowerYStart);
+
+                while(imgToShow<0){
+                    imgToShow+=totalImgCount;
+                    imgToShow%=totalImgCount;
+                }
+
+                let drawX = planeXStart-mikeWidth/2;
+                let drawY = (lowerYStart+mikeHeight/8);  // the +mikeHeight/8 makes them more eye-level
+                let drawWidth = mikeWidth;
+                let drawHeight = mikeHeight;
+
+                imgToShow = totalImgCount - imgToShow;
+
+                if(cactiLoaded)
+                    ctx.drawImage(cactiImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+
+                //    }else{
+                //        console.log('mike image out of bounds: '+imgToShow);
+                //   }
 
 
             }
@@ -257,7 +312,7 @@ function render3D(){
 
 
     }
-    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200)
+    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
 }
 
 function fillSky(){
