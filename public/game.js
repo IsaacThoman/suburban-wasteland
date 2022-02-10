@@ -245,7 +245,6 @@ fillSky();
         framesPerSecond = framesSinceLastSecond;
         framesSinceLastSecond = 0;
     }
-    comicTelemetry = playerPointedAt;
   if(serverVersion!=gameVersion)
       comicTelemetry = 'You\'re running an outdated version. Try a hard refresh.';
     gameSpeed = 1*60/framesPerSecond;
@@ -279,7 +278,7 @@ function makeObjectsList(){
     // let heightTemp = frameOn%100;
     // if(frameOn%200>=100)
     //     heightTemp = 200-frameOn%200;
-    let heightTemp = (Math.sin(frameOn/10)+1)*50;
+    let heightTemp = (Math.sin(utcTime)+1)*50;
 
     let wallTest = new Wall(200,200,200,210,1.5,0,'#9f389d','#c7c7c7');
     let wallTest2 = new Wall(200,210,200,270,1,heightTemp/50,'rgba(32,164,168,0.75)','#c7c7c7');
@@ -292,6 +291,8 @@ function makeObjectsList(){
     let cactus = {'type':'cactus','x':240,'y':220,'dir':-3.55};
 objects.push(cactus);
 
+for(let i = 0; i<serverObjects.length; i++)
+    objects.push(serverObjects[i])
 
 
     for(let i = 0; i<addedObjects.length; i++)
@@ -404,7 +405,7 @@ if(moveKeyHeld) {
         localPlayer.dir+=rotationSpeed*gameSpeed;
     }
 
-    if(!wallBetween(localPlayer,newPos)){
+    if(!wallBetween(localPlayer,newPos,'z',true,1.5)){
         localPlayer.x = newPos.x;
         localPlayer.y = newPos.y;
     }

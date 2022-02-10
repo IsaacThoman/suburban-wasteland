@@ -1,9 +1,10 @@
 const socket = io();
 
-const gameVersion = 0.12;
+const gameVersion = 0.14;
 let serverVersion = gameVersion;
 let lastUpload = 0;
 let playerCount = 0;
+let serverObjects = [];
 
 let killOldMikes = true;
 let remotePlayers = [];
@@ -12,9 +13,9 @@ let lastUploadTime = 0;
 
 function uploadPlayerData(){
     uploads++;
-    if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3+localPlayer.name && uploads%(2*60)!=0)
-        return;
-    if(utcTime<lastUploadTime+0.1) return;
+     if(lastUpload==localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3+localPlayer.name && uploads%(2*60)!=0)
+         return;
+    if(utcTime<lastUploadTime+0.08) return;
     socket.emit('playerData',localPlayer);
     lastUpload = localPlayer.x+localPlayer.y+localPlayer.dir+localPlayer.crouching+localPlayer.inPain*3+localPlayer.name;
     lastUploadTime = utcTime;
@@ -31,13 +32,11 @@ function cKeyPressed(){
         if(!wallBetween(objects[objectsToRender[i]],localPlayer) && isPointedAt){
             if(localPlayer.weaponHeld==1){
                 socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
-                lastShot = utcTime;
             }
 
             if(localPlayer.weaponHeld==2 && Math.abs(theObject['distFromPlayer'])<30){
                 for(let shots = 0; shots<2; shots++)
                     socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
-                lastShot = utcTime;
             }
 
 
@@ -45,7 +44,7 @@ function cKeyPressed(){
         }
 
     }
-
+    lastShot = utcTime;
 
 }
 
@@ -58,18 +57,20 @@ socket.on('playerShot', function(msg) {
 
 
 
-socket.on('playerDataNew', function(msg) {
-remotePlayers = msg;
+socket.on('gameStateUpdate', function(msg) {
+gotPlayerData(msg['playerData']);
+serverVersion = msg['serverVersion'];
+serverObjects = msg['serverObjects'];
+});
+
+function gotPlayerData(msg){
+    remotePlayers = msg;
     playerCount = 0;
     for(let i = 0; i<remotePlayers.length; i++)
         if(remotePlayers[i]!=null)
             playerCount++;
 
-for(let i = 0; i<remotePlayers.length; i++)
-    if(remotePlayers[i]!=null && remotePlayers[i]['playerNum']==localPlayer.playerNum)
-        remotePlayers[i] = null; //removes you from the list of remote players
-});
-
-socket.on('gameVersion', function(msg) {
-    serverVersion = msg;
-});
+    for(let i = 0; i<remotePlayers.length; i++)
+        if(remotePlayers[i]!=null && remotePlayers[i]['playerNum']==localPlayer.playerNum)
+            remotePlayers[i] = null; //removes you from the list of remote players
+}

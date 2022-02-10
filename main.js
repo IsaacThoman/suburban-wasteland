@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const gameVersion = 0.12;
+const gameVersion = 0.14;
 let emitCount = 0;
 let utcTime = (new Date()).getTime() / 1000;
 
@@ -61,14 +61,6 @@ if(!playerExists){
         }
 
 
-if(utcTime>lastPlayerDataEmit+0.08) {
-    io.emit('playerDataNew', serverPlayerData)
-    if(emitCount%10==0)
-        io.emit('gameVersion',gameVersion)
-    lastPlayerDataEmit = utcTime;
-    emitCount++;
-}
-
     });
 
     socket.on('playerShot', (msg) => {
@@ -81,15 +73,48 @@ if(utcTime>lastPlayerDataEmit+0.08) {
 
 });
 
-function playerCount(){
-let out = 0;
-for(let i = 0; i<serverPlayerData.length; i++)
-    if(serverPlayerData[i]!=null) out++;
-return out;
+function serverLoop(){
+    emitServerUpdate();
+    setTimeout(serverLoop,41,'');
+}
+setTimeout(serverLoop,41,'');
 
+
+function emitServerUpdate(){
+    let utcTime = (new Date()).getTime() / 1000;
+    let theX = Math.sin(utcTime)*100;
+    let funnyWall = new Wall(theX,0,theX,100,1,0);
+    let gameObjects = [funnyWall];
+    let gameState = {'playerData':serverPlayerData,'serverVersion':gameVersion,'serverObjects':gameObjects};
+
+    io.emit('gameStateUpdate', gameState);
+
+    lastPlayerDataEmit = utcTime;
+    emitCount++;
 }
 
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });
+
+class Wall{
+    constructor(x1,y1,x2,y2,height,z,color,outlineColor,priority) {
+        this.color = "#ffffff";
+        this.outlineColor = "#737373";
+        this.z = 0;
+        this.height = 1;
+        this.priority = false;
+
+        this.type = 'wall';
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+        if(color!=null)this.color = color;
+        if(outlineColor!=null)this.outlineColor = outlineColor;
+        if(height!=null)this.height = height;
+        if(z!=null)this.z = z;
+        if(priority!=null)this.priority = priority;
+    }
+}

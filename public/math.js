@@ -1,15 +1,18 @@
-function wallBetween(point1, point2){
+function wallBetween(point1, point2,prop,greaterThan,num){
     for(let i = 0; i<objects.length; i++){
         if(objects[i]['type']=='wall'){
+            let objection = false;
+            if(prop!=null && prop in objects[i])
+                objection = objects[i][prop] > num == greaterThan;
+
             let point3 = new Point(objects[i]['x1'],objects[i]['y1']);
             let point4 = new Point(objects[i]['x2'],objects[i]['y2']);
-            if(doIntersect(point1,point2,point3,point4))
+            if(doIntersect(point1,point2,point3,point4) && !objection)
                 return true;
         }
     }
     return false;
 }
-
 
 
 // Taken from https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
