@@ -22,39 +22,29 @@ function uploadPlayerData(){
 
 let lastShot = 0;
 function cKeyPressed(){
-
-    if(localPlayer.weaponHeld == 1){
-        if(utcTime>lastShot+1){
-            for(let i = 0; i<objectsToRender.length; i++){
-                    if(objects[objectsToRender[i]]['type']=='remotePlayer'){
-                        let lpViewPoint = new Point(localPlayer.x + Math.cos(localPlayer.dir)*1000,localPlayer.y + Math.sin(localPlayer.dir)*1000);
-                        theObject = objects[objectsToRender[i]];
-                        let isPointedAt = doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane']['x1'],theObject['hitboxPlane']['y1']),new Point(theObject['hitboxPlane']['x2'],theObject['hitboxPlane']['y2'])) || doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane2']['x1'],theObject['hitboxPlane2']['y1']),new Point(theObject['hitboxPlane2']['x2'],theObject['hitboxPlane2']['y2']));
-                    if(!wallBetween(objects[objectsToRender[i]],localPlayer) && isPointedAt)
-                        socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
-                }
-
+    if(utcTime<=lastShot+1) return;
+    for(let i = 0; i<objectsToRender.length; i++){
+        if(objects[objectsToRender[i]]['type']!='remotePlayer')continue;
+        let lpViewPoint = new Point(localPlayer.x + Math.cos(localPlayer.dir)*1000,localPlayer.y + Math.sin(localPlayer.dir)*1000);
+        let theObject = objects[objectsToRender[i]];
+        let isPointedAt = doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane']['x1'],theObject['hitboxPlane']['y1']),new Point(theObject['hitboxPlane']['x2'],theObject['hitboxPlane']['y2'])) || doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane2']['x1'],theObject['hitboxPlane2']['y1']),new Point(theObject['hitboxPlane2']['x2'],theObject['hitboxPlane2']['y2']));
+        if(!wallBetween(objects[objectsToRender[i]],localPlayer) && isPointedAt){
+            if(localPlayer.weaponHeld==1){
+                socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
+                lastShot = utcTime;
             }
 
-            lastShot = utcTime;
-        }
-    }
-
-    if(localPlayer.weaponHeld == 2){
-        if(utcTime>lastShot+1){
-            for(let i = 0; i<objectsToRender.length; i++){
-                if(objects[objectsToRender[i]]['type']=='remotePlayer' &&playerPointedAt == objects[objectsToRender[i]]['playerNum']&& Math.abs(objects[objectsToRender[i]]['dirDiff'])<0.25 && Math.abs(objects[objectsToRender[i]]['distFromPlayer'])<30){
-                    if(!wallBetween(objects[objectsToRender[i]],localPlayer)) //line above also checks distance < 30 for melee
-                       for(let hits = 0; hits<2; hits++) // does 2 damage
-                        socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
-                }
-
+            if(localPlayer.weaponHeld==2 && Math.abs(theObject['distFromPlayer'])<30){
+                for(let shots = 0; shots<2; shots++)
+                    socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
+                lastShot = utcTime;
             }
 
-            lastShot = utcTime;
-        }
-    }
 
+
+        }
+
+    }
 
 
 }
