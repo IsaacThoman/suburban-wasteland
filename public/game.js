@@ -180,7 +180,6 @@ function doFrame(){
     playerControls();
     prepareForRender();
 
-    getCrosshairObject();
 
 fillSky();
     if(renderMode==0)
@@ -293,21 +292,7 @@ function makeObjectsList(){
     let cactus = {'type':'cactus','x':240,'y':220,'dir':-3.55};
 objects.push(cactus);
 
-    for(let i = 0; i<remotePlayers.length; i++){
-        let thePlayer = remotePlayers[i];
-        let probablyReal = (thePlayer!= null && 'x' in thePlayer && 'y' in thePlayer && 'dir' in thePlayer);
-        if(!probablyReal) continue;
-        let playerPlane = new Wall(thePlayer['x']+ Math.cos(thePlayer.dir+PI/2)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir+PI/2)*playerWidth,thePlayer['x']+ Math.cos(thePlayer.dir-PI/2)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir-PI/2)*playerWidth,0.6,0,'#ff741b','#ffffff',false);
-        let playerPlane2 = new Wall(thePlayer['x']+ Math.cos(thePlayer.dir)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir)*playerWidth,thePlayer['x']+ Math.cos(thePlayer.dir-PI)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir-PI)*playerWidth,0.6,0,'#ff741b','#ffffff',false);
-        objects.push(playerPlane2);
-        objects.push(playerPlane)
 
-        thePlayer['hitboxPlane'] = playerPlane;
-        thePlayer['hitboxPlane2'] = playerPlane2;
-        //    let
-        //     thePlayer['pointedAt'] = doIntersect();
-
-    }
 
     for(let i = 0; i<addedObjects.length; i++)
         objects.push(addedObjects[i]);
@@ -368,19 +353,6 @@ objects.push(cactus);
 
 }
 
-function getCrosshairObject(){
-    for(let i = objectsToRender.length-1; i>=0; i--){
-        let theObject = objects[objectsToRender[i]];
-        if(theObject.type=='remotePlayer'){
-            if(Math.abs(theObject['dirDiff'])<0.1){
-                playerPointedAt =  theObject['playerNum'];
-            }else{
-                //playerPointedAt = -1;
-            }
-
-        }
-    }
-}
 
 // mouse locking from https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API
 canvas.requestPointerLock = canvas.requestPointerLock;  //mouse lock stuff

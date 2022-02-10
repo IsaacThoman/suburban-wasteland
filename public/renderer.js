@@ -144,6 +144,17 @@ function prepareForRender(){
         }
     }
 
+    for(let i = 0; i<remotePlayers.length; i++){
+        let thePlayer = remotePlayers[i];
+        let probablyReal = (thePlayer!= null && 'x' in thePlayer && 'y' in thePlayer && 'dir' in thePlayer);
+        if(!probablyReal) continue;
+        let playerPlane = new Wall(thePlayer['x']+ Math.cos(thePlayer.dir+PI/2)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir+PI/2)*playerWidth,thePlayer['x']+ Math.cos(thePlayer.dir-PI/2)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir-PI/2)*playerWidth,0.6,0,'#ff741b','#ffffff',false);
+        let playerPlane2 = new Wall(thePlayer['x']+ Math.cos(thePlayer.dir)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir)*playerWidth,thePlayer['x']+ Math.cos(thePlayer.dir-PI)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir-PI)*playerWidth,0.6,0,'#ff741b','#ffffff',false);
+        thePlayer['hitboxPlane'] = playerPlane;
+        thePlayer['hitboxPlane2'] = playerPlane2;
+    }
+
+
 }
 let topDownScale = 3;
 function renderTopDown(showWallLines){
@@ -340,7 +351,7 @@ function render3D(){
 
 
     }
-   // ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
+    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
 }
 
 function fillSky(){

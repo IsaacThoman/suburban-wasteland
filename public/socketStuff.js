@@ -26,8 +26,11 @@ function cKeyPressed(){
     if(localPlayer.weaponHeld == 1){
         if(utcTime>lastShot+1){
             for(let i = 0; i<objectsToRender.length; i++){
-                if(objects[objectsToRender[i]]['type']=='remotePlayer' &&playerPointedAt == objects[objectsToRender[i]]['playerNum']&& Math.abs(objects[objectsToRender[i]]['dirDiff'])<0.1){
-                    if(!wallBetween(objects[objectsToRender[i]],localPlayer))
+                    if(objects[objectsToRender[i]]['type']=='remotePlayer'){
+                        let lpViewPoint = new Point(localPlayer.x + Math.cos(localPlayer.dir)*1000,localPlayer.y + Math.sin(localPlayer.dir)*1000);
+                        theObject = objects[objectsToRender[i]];
+                        let isPointedAt = doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane']['x1'],theObject['hitboxPlane']['y1']),new Point(theObject['hitboxPlane']['x2'],theObject['hitboxPlane']['y2'])) || doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane2']['x1'],theObject['hitboxPlane2']['y1']),new Point(theObject['hitboxPlane2']['x2'],theObject['hitboxPlane2']['y2']));
+                    if(!wallBetween(objects[objectsToRender[i]],localPlayer) && isPointedAt)
                         socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
                 }
 
