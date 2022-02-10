@@ -15,8 +15,16 @@ const startingPoints = [
     {x: 0, y: 250, dir: 0}
 ]
 
+const playerWidth = 7;
+
 class Wall{
     constructor(x1,y1,x2,y2,height,z,color,outlineColor,priority) {
+        this.color = "#ffffff";
+        this.outlineColor = "#ffffff";
+        this.z = 0;
+        this.height = 1;
+        this.priority = false;
+
         this.type = 'wall';
         this.x1 = x1;
         this.x2 = x2;
@@ -238,6 +246,7 @@ fillSky();
         framesPerSecond = framesSinceLastSecond;
         framesSinceLastSecond = 0;
     }
+    comicTelemetry = playerPointedAt;
   if(serverVersion!=gameVersion)
       comicTelemetry = 'You\'re running an outdated version. Try a hard refresh.';
     gameSpeed = 1*60/framesPerSecond;
@@ -283,6 +292,22 @@ function makeObjectsList(){
 
     let cactus = {'type':'cactus','x':240,'y':220,'dir':-3.55};
 objects.push(cactus);
+
+    for(let i = 0; i<remotePlayers.length; i++){
+        let thePlayer = remotePlayers[i];
+        let probablyReal = (thePlayer!= null && 'x' in thePlayer && 'y' in thePlayer && 'dir' in thePlayer);
+        if(!probablyReal) continue;
+        let playerPlane = new Wall(thePlayer['x']+ Math.cos(thePlayer.dir+PI/2)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir+PI/2)*playerWidth,thePlayer['x']+ Math.cos(thePlayer.dir-PI/2)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir-PI/2)*playerWidth,0.6,0,'#ff741b','#ffffff',false);
+        let playerPlane2 = new Wall(thePlayer['x']+ Math.cos(thePlayer.dir)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir)*playerWidth,thePlayer['x']+ Math.cos(thePlayer.dir-PI)*playerWidth,thePlayer['y']+ Math.sin(thePlayer.dir-PI)*playerWidth,0.6,0,'#ff741b','#ffffff',false);
+        objects.push(playerPlane2);
+        objects.push(playerPlane)
+
+        thePlayer['hitboxPlane'] = playerPlane;
+        thePlayer['hitboxPlane2'] = playerPlane2;
+        //    let
+        //     thePlayer['pointedAt'] = doIntersect();
+
+    }
 
     for(let i = 0; i<addedObjects.length; i++)
         objects.push(addedObjects[i]);
