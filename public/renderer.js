@@ -131,7 +131,8 @@ function prepareForRender(){
                 this3DPoint['distFromPlayer'] = Math.sqrt(Math.pow(localPlayer.x-this3DPoint.x ,2)+Math.pow(localPlayer.y-this3DPoint.y,2));
                 this3DPoint['dirFromPlayer'] = Math.atan2(this3DPoint.y - localPlayer.y,this3DPoint.x - localPlayer.x);
                 this3DPoint['dirDiff'] = (localPlayer.dir - this3DPoint['dirFromPlayer'] +PI + 2*PI) % (2*PI)-PI;
-               // if(this3DPoint['inFOV'])
+                this3DPoint['inFOV'] = ((this3DPoint['dirDiff']>0-FOV/2&&this3DPoint['dirDiff']<FOV/2));
+                if(this3DPoint['inFOV'])
                     thisObject['inFOV'] = true;
             }
         }
