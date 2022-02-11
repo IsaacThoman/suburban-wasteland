@@ -351,7 +351,7 @@ function render3D(){
 
 
     }
-    ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
+   // ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
 }
 
 function fillSky(){
