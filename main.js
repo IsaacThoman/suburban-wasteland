@@ -75,16 +75,16 @@ if(!playerExists){
 
 function serverLoop(){
     emitServerUpdate();
-    setTimeout(serverLoop,41,'');
+    setTimeout(serverLoop,50,'');
 }
-setTimeout(serverLoop,41,'');
+setTimeout(serverLoop,50,'');
 
 
 function emitServerUpdate(){
     let utcTime = (new Date()).getTime() / 1000;
-    let theX = Math.sin(utcTime)*100;
-    let funnyWall = new Wall(theX,0,theX,100,1,0);
-    let gameObjects = [funnyWall];
+    //let theX = Math.sin(utcTime)*100;
+    //let funnyWall = new Wall(theX,0,theX,100,1,0);
+    let gameObjects = [];
     let gameState = {'playerData':serverPlayerData,'serverVersion':gameVersion,'serverObjects':gameObjects};
 
     io.emit('gameStateUpdate', gameState);

@@ -91,6 +91,8 @@ function prepareForRender(){
             thisObject['x1'] = thisObject.x; thisObject['x2'] = thisObject.x;
             thisObject['y1'] = thisObject.y; thisObject['y2'] = thisObject.y;
         }
+
+
         thisObject['centerX'] = (thisObject.x1+thisObject.x2)/2;
         thisObject['centerY'] = (thisObject.y1+thisObject.y2)/2;
 
@@ -123,6 +125,16 @@ function prepareForRender(){
             let wallPoint1 = new Point(thisObject['x1'],thisObject['y1']); let wallPoint2 = new Point(thisObject['x2'],thisObject['y2']);
             thisObject['inFOV'] = ((angDiff>0-FOV/2&&angDiff<FOV/2) || (angDiff2>0-FOV/2&&angDiff2<FOV/2)) || (doIntersect(originPoint,FOVEndPoint1,wallPoint1,wallPoint2));
 
+        if(thisObject['type']=='plane'){ //does its own sort of thing
+            for(let i = 0; i<thisObject['points'].length; i++){
+                let this3DPoint = thisObject['points'][i];
+                this3DPoint['distFromPlayer'] = Math.sqrt(Math.pow(localPlayer.x-this3DPoint.x ,2)+Math.pow(localPlayer.y-this3DPoint.y,2));
+                this3DPoint['dirFromPlayer'] = Math.atan2(this3DPoint.y - localPlayer.y,this3DPoint.x - localPlayer.x);
+                this3DPoint['dirDiff'] = (localPlayer.dir - this3DPoint['dirFromPlayer'] +PI + 2*PI) % (2*PI)-PI;
+               // if(this3DPoint['inFOV'])
+                    thisObject['inFOV'] = true;
+            }
+        }
 
     }
 
@@ -219,21 +231,14 @@ function render3D(){
         let theObject = objects[objectsToRender[i]];
         if(theObject.inFOV){
 
-            let topViewNumber = magicViewNumber2*theObject['height'];
-            let bottomViewNumber = magicViewNumber2;
-            topViewNumber+= theObject['z']*magicViewNumber2;
-            bottomViewNumber-= theObject['z']*magicViewNumber2;
+
 
             let planeXStart = (0-theObject['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeXEnd = (0-theObject['dirDiff2'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
             let planeYStart = magicViewNumber2/theObject['distFromPlayer'];
             let planeYEnd = magicViewNumber2/theObject['distFromPlayer2'];
 
-            let planeYStart2 = topViewNumber/theObject['distFromPlayer']; //tops
-            let planeYEnd2 = topViewNumber/theObject['distFromPlayer2'];
 
-            let planeYStart3 = bottomViewNumber/theObject['distFromPlayer']; //bottoms
-            let planeYEnd3 = bottomViewNumber/theObject['distFromPlayer2'];
 
             let lowerYStart = screen.height/2-planeYStart;
             let lowerYEnd = screen.height/2-planeYEnd;
@@ -243,6 +248,15 @@ function render3D(){
 
 
             if(theObject.type == 'wall'){
+                let topViewNumber = magicViewNumber2*theObject['height'];
+                let bottomViewNumber = magicViewNumber2;
+                topViewNumber+= theObject['z']*magicViewNumber2;
+                bottomViewNumber-= theObject['z']*magicViewNumber2;
+                let planeYStart2 = topViewNumber/theObject['distFromPlayer']; //tops
+                let planeYEnd2 = topViewNumber/theObject['distFromPlayer2'];
+
+                let planeYStart3 = bottomViewNumber/theObject['distFromPlayer']; //bottoms
+                let planeYEnd3 = bottomViewNumber/theObject['distFromPlayer2'];
                 lowerYStart = screen.height/2-planeYStart2;
                 lowerYEnd = screen.height/2-planeYEnd2;
                 upperYStart = screen.height/2+planeYStart3;
@@ -263,6 +277,24 @@ function render3D(){
                 }
                 ctx.closePath();
             }
+
+            if(theObject['type'] == 'plane'){
+                ctx.beginPath();
+                ctx.fillStyle = theObject.color;
+                for(let i = 0; i<theObject['points'].length; i++){
+                    let the3DPoint = theObject['points'][i];
+                    let x = (0-the3DPoint['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
+                    let y = (magicViewNumber2*the3DPoint['z'])/(the3DPoint['distFromPlayer']);
+                    ctx.lineTo(x,screen.height/2-y)
+                }
+                ctx.fill();
+                if('outlineColor' in theObject){
+                    ctx.strokeStyle = theObject.outlineColor;
+                    ctx.stroke();
+                }
+                ctx.closePath();
+            }
+
 
 
             if(theObject.type == 'remotePlayer'){
@@ -351,7 +383,11 @@ function render3D(){
 
 
     }
-   // ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
+   //drawOverlay();
+}
+
+function drawOverlay(){
+     ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
 }
 
 function fillSky(){

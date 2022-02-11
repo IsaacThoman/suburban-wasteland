@@ -19,7 +19,7 @@ const playerWidth = 7;
 
 class Wall{
     constructor(x1,y1,x2,y2,height,z,color,outlineColor,priority) {
-        this.color = "#ffffff";
+        this.color = "#b68181";
         this.outlineColor = "#ffffff";
         this.z = 0;
         this.height = 1;
@@ -30,13 +30,36 @@ class Wall{
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
-        this.color = color;
-        this.outlineColor = outlineColor;
-        this.height = height;
-        this.z = z;
-        this.priority = priority;
+        if(color!=null)this.color = color;
+        if(outlineColor!=null)this.outlineColor = outlineColor;
+        if(height!=null)this.height = height;
+        if(z!=null)this.z = z;
+        if(priority!=null)this.priority = priority;
     }
 }
+
+class Point3D{
+    constructor(x,y,z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+}
+
+class Plane {
+    constructor(points,color,outlineColor,priority) {
+        this.type = 'plane';
+        this.points = points;
+        this.color = "#ff0000";
+        this.outlineColor = "#ff4848";
+        this.priority = false;
+        if(color!=null)this.color = color;
+        if(outlineColor!=null)this.outlineColor = outlineColor;
+        if(priority!=null)this.priority = priority;
+    }
+}
+
+
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -281,12 +304,18 @@ function makeObjectsList(){
     let heightTemp = (Math.sin(utcTime)+1)*50;
 
     let wallTest = new Wall(200,200,200,210,1.5,0,'#9f389d','#c7c7c7');
-    let wallTest2 = new Wall(200,210,200,270,1,heightTemp/50,'rgba(32,164,168,0.75)','#c7c7c7');
+    let wallTest2 = new Wall(200,210,200,270,1.1,heightTemp/50,'rgba(32,164,168,0.75)','#c7c7c7');
     let wallTest3 = new Wall(200,270,200,280,1.5,0,'#9f389d','#c7c7c7');
     let wallTest4 = new Wall(200,200,200,280,-0.6,1.5+0.6,'#9f389d','#c7c7c7',true);
 
+    let p1 = new Point3D(300,300,1);
+    let p2 = new Point3D(300,200,1);
+    let p3 = new Point3D(200,200,1);
+    let p4 = new Point3D(200,300,1);
+    let testPlane = new Plane([p1,p2,p3,p4]);
 
-    objects = [wallTest,wallTest2,wallTest3,wallTest4];
+
+    objects = [testPlane];
 
     let cactus = {'type':'cactus','x':240,'y':220,'dir':-3.55};
 objects.push(cactus);
