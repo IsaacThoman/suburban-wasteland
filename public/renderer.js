@@ -126,7 +126,9 @@ function prepareForRender(){
             thisObject['inFOV'] = ((angDiff>0-FOV/2&&angDiff<FOV/2) || (angDiff2>0-FOV/2&&angDiff2<FOV/2)) || (doIntersect(originPoint,FOVEndPoint1,wallPoint1,wallPoint2));
 
         if(thisObject['type']=='plane'){ //does its own sort of thing
-            for(let i = 0; i<thisObject['points'].length; i++){
+            let sumDir = 0;
+            let ptCount = thisObject['points'].length;
+            for(let i = 0; i<ptCount; i++){
                 let this3DPoint = thisObject['points'][i];
                 this3DPoint['distFromPlayer'] = Math.sqrt(Math.pow(localPlayer.x-this3DPoint.x ,2)+Math.pow(localPlayer.y-this3DPoint.y,2));
                 this3DPoint['dirFromPlayer'] = Math.atan2(this3DPoint.y - localPlayer.y,this3DPoint.x - localPlayer.x);
@@ -134,7 +136,9 @@ function prepareForRender(){
                 this3DPoint['inFOV'] = ((this3DPoint['dirDiff']>0-FOV/2&&this3DPoint['dirDiff']<FOV/2));
                 if(this3DPoint['inFOV'])
                     thisObject['inFOV'] = true;
+                sumDir+=this3DPoint['distFromPlayer'];
             }
+            thisObject['centerDistFromPlayer'] = sumDir/ptCount;
         }
 
     }
@@ -146,7 +150,7 @@ function prepareForRender(){
 
     for(let i = 0; i<objects.length; i++){
         for(let j = i; j<objects.length; j++){
-            if(objectsCopy[j]['centerDistFromPlayer']>objectsCopy[i]['centerDistFromPlayer']){
+            if(objectsCopy[j]['centerDistFromPlayer']>objectsCopy[i]['centerDistFromPlayer'] ){ //&& objectsCopy[i]['type']!='plane' ughhhh
                 let iWas = objectsCopy[i];
                 objectsCopy[i] = objectsCopy[j];
                 objectsCopy[j] = iWas;

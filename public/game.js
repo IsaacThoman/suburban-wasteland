@@ -304,20 +304,25 @@ function makeObjectsList(){
     let heightTemp = (Math.sin(utcTime)+1)*50;
 
     let wallTest = new Wall(200,200,200,210,1.5,0,'#9f389d','#c7c7c7');
-    let wallTest2 = new Wall(200,210,200,270,1.1,heightTemp/50,'rgba(32,164,168,0.75)','#c7c7c7');
+    let wallTest2 = new Wall(200,210,200,270,1.1,heightTemp/50,'rgba(32,164,168,0.7)','#c7c7c7');
     let wallTest3 = new Wall(200,270,200,280,1.5,0,'#9f389d','#c7c7c7');
     let wallTest4 = new Wall(200,200,200,280,-0.6,1.5+0.6,'#9f389d','#c7c7c7',true);
 
-    let p1 = new Point3D(300,300,1);
-    let p2 = new Point3D(300,200,1);
-    let p3 = new Point3D(200,200,1);
-    let p4 = new Point3D(200,300,1);
-    let testPlane = new Plane([p1,p2,p3,p4]);
+    let p1 = new Point3D(300,280,1.5);
+    let p2 = new Point3D(300,200,1.5);
+    let p3 = new Point3D(200,200,1.5);
+    let p4 = new Point3D(200,280,1.5);
+    let testPlane = new Plane([p1,p2,p3,p4],"#cc5d5d",'#ffffff');
+
+    let gWall2 = new Wall(200,200,300,200,1.5);
+    let gWall3 = new Wall(200,280,300,280,1.5);
+    let gWall4 = new Wall(300,200,300,280,1.5);
 
 
-    objects = [testPlane];
 
-    let cactus = {'type':'cactus','x':240,'y':220,'dir':-3.55};
+    objects = [testPlane,wallTest,wallTest2,wallTest3,wallTest4,gWall2,gWall3,gWall4];
+
+    let cactus = {'type':'cactus','x':270,'y':220,'dir':-3.55};
 objects.push(cactus);
 
 for(let i = 0; i<serverObjects.length; i++)
