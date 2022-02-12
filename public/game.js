@@ -7,7 +7,7 @@ const debugMode = false;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys; resetKeys();
-function resetKeys(){ keys = {'up':false,'down':false,'left':false,'right':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
+function resetKeys(){ keys = {'arrowup':false,'down':false,'arrowleft':false,'arrowright':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
 let renderMode = 0;
 let interfaceEnabled = false;
 let usernameTyped = '';
@@ -88,25 +88,10 @@ function keyDownHandler(e) {
 
         return;}
 
+    keys[e.key.toLowerCase()] = true;
+    console.log(e.key.toLowerCase())
+
     switch(e.keyCode){
-        case 38: keys.up = true;    break;
-        case 40: keys.down = true;  break;
-        case 37: keys.left = true;  break;
-        case 39: keys.right = true; break;
-
-        case 87: keys.w = true; break;
-        case 65: keys.a = true; break;
-        case 83: keys.s = true; break;
-        case 68: keys.d = true; break;
-
-        case 85: keys.u = true; break;
-        case 72: keys.h = true; break;
-        case 74: keys.j = true; break;
-        case 75: keys.k = true; break;
-
-        case 16: keys.shift = true; break;
-        case 17: keys.control = true; break;
-
         case 84: interfaceEnabled = true; resetKeys(); usernameTyped=''; break;
     }
 
@@ -138,25 +123,7 @@ function keyDownHandler(e) {
 }
 function keyUpHandler(e) {
     if(interfaceEnabled)return;
-    switch(e.keyCode){
-        case 38: keys.up = false;    break;
-        case 40: keys.down = false;  break;
-        case 37: keys.left = false;  break;
-        case 39: keys.right = false; break;
-
-        case 87: keys.w = false; break;
-        case 65: keys.a = false; break;
-        case 83: keys.s = false; break;
-        case 68: keys.d = false; break;
-
-        case 85: keys.u = false; break;
-        case 72: keys.h = false; break;
-        case 74: keys.j = false; break;
-        case 75: keys.k = false; break;
-
-        case 16: keys.shift = false; break;
-        case 17: keys.control = false; break;
-    }
+    keys[e.key.toLowerCase()] = false;
 }
 
 let utcTime = (new Date()).getTime() / 1000;
@@ -412,11 +379,11 @@ function mouseUpdate(e){
 
 function playerControls(){
     let newPos = {x:localPlayer.x, y:localPlayer.y};
-    let moveKeyHeld = (keys.up||keys.w||keys.down||keys.s||keys.a||keys.d);
+    let moveKeyHeld = (keys.arrowup||keys.w||keys.down||keys.s||keys.a||keys.d);
     let moveX = 0;
     let moveY = 0;
 
-    if(keys.up||keys.w)
+    if(keys.arrowup||keys.w)
         moveY = 1;
     if(keys.down||keys.s)
         moveY = -1;
@@ -432,10 +399,10 @@ if(moveKeyHeld) {
     newPos.y += Math.sin(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed;
 }
 
-    if(keys.left){
+    if(keys.arrowleft){
         localPlayer.dir-=rotationSpeed*gameSpeed;
     }
-    if(keys.right){
+    if(keys.arrowright){
         localPlayer.dir+=rotationSpeed*gameSpeed;
     }
 
