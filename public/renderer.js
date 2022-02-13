@@ -1,3 +1,5 @@
+let viewDistance = 400;
+
 let mikeImages = [];
 for(let i = 0; i<32; i++)
     mikeImages[i] = new Image();
@@ -104,8 +106,8 @@ function prepareForRender(){
         objects[i]['distFromPlayer2'] = Math.sqrt(Math.pow(localPlayer.x-objects[i].x2 ,2)+Math.pow(localPlayer.y-objects[i].y2,2));
         objects[i]['dirFromPlayer2'] = Math.atan2(objects[i].y2 - localPlayer.y,objects[i].x2 - localPlayer.x);
 
-        if('priority' in thisObject && thisObject['priority']){
-            thisObject['centerDistFromPlayer'] -=1;
+        if('priority' in thisObject){
+            thisObject['centerDistFromPlayer'] -= thisObject['priority'];
         }
 
 
@@ -140,6 +142,9 @@ function prepareForRender(){
             }
             thisObject['centerDistFromPlayer'] = sumDir/ptCount;
         }
+
+        if(thisObject['centerDistFromPlayer']>viewDistance)
+            thisObject['inFOV'] = false;
 
     }
 
@@ -286,11 +291,14 @@ function render3D(){
             if(theObject['type'] == 'plane'){
                 ctx.beginPath();
                 ctx.fillStyle = theObject.color;
-                for(let i = 0; i<theObject['points'].length; i++){
+                for(let i = 0; i<theObject['points'].length+1; i++){
+                    let doFirstAgain = i == theObject['points'].length;
+                    if(doFirstAgain) i = 0;
                     let the3DPoint = theObject['points'][i];
                     let x = (0-the3DPoint['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
                     let y = (magicViewNumber2*the3DPoint['z'])/(the3DPoint['distFromPlayer']);
                     ctx.lineTo(x,screen.height/2-y)
+                    if(doFirstAgain)break;
                 }
                 ctx.fill();
                 if('outlineColor' in theObject){
@@ -398,13 +406,13 @@ function drawOverlay(){
 function fillSky(){
     ctx.fillStyle = "#2a2a2a";
     ctx.beginPath();
-    ctx.rect(0,0,1000,screen.height/2);
+    ctx.rect(0,0,1000,screen.height);
     ctx.fill();
     ctx.closePath();
-
-    ctx.fillStyle = "#969696";
-    ctx.beginPath();
-    ctx.rect(0,screen.height/2,1000,1000);
-    ctx.fill();
-    ctx.closePath();
+    //
+    // ctx.fillStyle = "#969696";
+    // ctx.beginPath();
+    // ctx.rect(0,screen.height/2,1000,1000);
+    // ctx.fill();
+    // ctx.closePath();
 }

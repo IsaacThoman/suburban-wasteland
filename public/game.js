@@ -89,7 +89,6 @@ function keyDownHandler(e) {
         return;}
 
     keys[e.key.toLowerCase()] = true;
-    console.log(e.key.toLowerCase())
 
     switch(e.keyCode){
         case 84: interfaceEnabled = true; resetKeys(); usernameTyped=''; break;
@@ -235,6 +234,7 @@ fillSky();
         framesPerSecond = framesSinceLastSecond;
         framesSinceLastSecond = 0;
     }
+    comicTelemetry = framesPerSecond;
   if(serverVersion!=gameVersion)
       comicTelemetry = 'You\'re running an outdated version. Try a hard refresh.';
     gameSpeed = 1*60/framesPerSecond;
@@ -256,6 +256,7 @@ function updateHeldWeapon(){
         handToUse = 1;
 }
 
+let floorTiles = [];
 function makeObjectsList(){
 
     let wall1 = {'type':'wall','x1':100,'y1':300,'x2':25,'y2':380,'color':"#9f389d",'outlineColor':"#c7c7c7"};
@@ -275,22 +276,48 @@ function makeObjectsList(){
     let wallTest3 = new Wall(200,270,200,280,1.5,0,'#9f389d','#c7c7c7');
     let wallTest4 = new Wall(200,200,200,280,-0.6,1.5+0.6,'#9f389d','#c7c7c7',true);
 
+
+
+    let gWall2 = new Wall(200,200,300,200,1.5);
+    let gWall3 = new Wall(200,280,300,280,1.5);
+    let gWall4 = new Wall(300,200,300,280,1.5);
+
     let p1 = new Point3D(300,280,1.5);
     let p2 = new Point3D(300,200,1.5);
     let p3 = new Point3D(200,200,1.5);
     let p4 = new Point3D(200,280,1.5);
     let testPlane = new Plane([p1,p2,p3,p4],"#cc5d5d",'#ffffff');
 
-    let gWall2 = new Wall(200,200,300,200,1.5);
-    let gWall3 = new Wall(200,280,300,280,1.5);
-    let gWall4 = new Wall(300,200,300,280,1.5);
-
-
-
-    objects = [testPlane,wallTest,wallTest2,wallTest3,wallTest4,gWall2,gWall3,gWall4];
+    objects = [wallTest,wallTest2,wallTest3,wallTest4,gWall3,gWall2,gWall4,testPlane];
 
     let cactus = {'type':'cactus','x':270,'y':220,'dir':-3.55};
 objects.push(cactus);
+
+
+for(let i = 0; i<floorTiles.length; i++)
+    objects.push(floorTiles[i]);
+if(frameOn%(60)==0){
+    floorTiles = [];
+    let sqrSize = 40;
+    let tilesLength = viewDistance;
+    let startX = Math.floor(localPlayer.x/sqrSize)*sqrSize;
+    let startY = Math.floor(localPlayer.y/sqrSize)*sqrSize;
+    for(let x = startX-tilesLength; x<startX+tilesLength; x+=sqrSize){
+        for(let y = startY-tilesLength; y<startY+tilesLength; y+=sqrSize){
+            let colorToUse = "#ffffff";
+            if((x+y)/sqrSize%2==0)colorToUse = "#000000";
+            let z = -1;
+            let p1 = new Point3D(x,y,z);
+            let p2 = new Point3D(x,y+sqrSize,z);
+            let p3 = new Point3D(x+sqrSize,y+sqrSize,z);
+            let p4 = new Point3D(x+sqrSize,y,z);
+            let testPlane = new Plane([p1,p2,p3,p4],colorToUse,'rgba(255,255,255,0)',-1000);
+            floorTiles.push(testPlane);
+        }
+    }
+}
+
+
 
 for(let i = 0; i<serverObjects.length; i++)
     objects.push(serverObjects[i])
