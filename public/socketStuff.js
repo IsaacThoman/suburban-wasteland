@@ -1,6 +1,6 @@
 const socket = io();
 
-const gameVersion = 0.14;
+const gameVersion = 0.15;
 let serverVersion = gameVersion;
 let lastUpload = 0;
 let playerCount = 0;
@@ -31,12 +31,12 @@ function cKeyPressed(){
         let isPointedAt = doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane']['x1'],theObject['hitboxPlane']['y1']),new Point(theObject['hitboxPlane']['x2'],theObject['hitboxPlane']['y2'])) || doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane2']['x1'],theObject['hitboxPlane2']['y1']),new Point(theObject['hitboxPlane2']['x2'],theObject['hitboxPlane2']['y2']));
         if(!wallBetween(objects[objectsToRender[i]],localPlayer) && isPointedAt){
             if(localPlayer.weaponHeld==1){
-                socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
+                sendShot(objects[objectsToRender[i]]);
             }
 
             if(localPlayer.weaponHeld==2 && Math.abs(theObject['distFromPlayer'])<30){
                 for(let shots = 0; shots<2; shots++)
-                    socket.emit('playerShot', objects[objectsToRender[i]]['playerNum']);
+                    sendShot(objects[objectsToRender[i]]);
             }
 
 
@@ -46,6 +46,11 @@ function cKeyPressed(){
     }
     lastShot = utcTime;
 
+}
+function sendShot(playerToShoot){
+    if(playerToShoot['lives']<=1)
+        localPlayer['killCount'] ++;
+    socket.emit('playerShot', playerToShoot['playerNum']);
 }
 
 socket.on('playerShot', function(msg) {

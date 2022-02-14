@@ -396,7 +396,7 @@ function render3D(){
 
 
     }
-   //drawOverlay();
+   drawOverlay();
 }
 
 function drawOverlay(){

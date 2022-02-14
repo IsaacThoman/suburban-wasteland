@@ -119,6 +119,9 @@ function keyDownHandler(e) {
 
     if(e.keyCode == 90)
         addedObjects.pop();
+
+    if(e.key == '`')
+        showStats = !showStats;
 }
 function keyUpHandler(e) {
     if(interfaceEnabled)return;
@@ -129,7 +132,7 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':''};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1};
 resetPlayer();
 let playerSpeed = 1.2;
 let playerSpeedMultiplier = 1;
@@ -137,6 +140,7 @@ let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
 
 let comicTelemetry = '';
+let showStats = true;
 let timeLocalWasShot = 0;
 let framesSinceShot = 10;
 let framesSinceHeal =10;
@@ -231,17 +235,27 @@ fillSky();
     framesSinceLastSecond++;
     if(utcTime>lastSecond+1){
         lastSecond = utcTime;
-        framesPerSecond = framesSinceLastSecond;
+        framesPerSecond = framesSinceLastSecond-1;
         framesSinceLastSecond = 0;
     }
-    comicTelemetry = framesPerSecond;
+let KDR = 0;
+    if(localPlayer.killCount!=0||localPlayer.deathCount!=0)
+     KDR = Math.floor(localPlayer.killCount/localPlayer.deathCount*10)/10;
+if(showStats)
+    comicTelemetry = framesPerSecond+'FPS, '+playerCount+' players\n'+localPlayer.killCount+' kills'+'\n'+localPlayer.deathCount+' deaths'+'\nratio: '+KDR+'';
+else
+    comicTelemetry = '';
+
+
   if(serverVersion!=gameVersion)
       comicTelemetry = 'You\'re running an outdated version. Try a hard refresh.';
     gameSpeed = 1*60/framesPerSecond;
 
     ctx.fillStyle = "#9ae090";
     ctx.font = '10px Comic Sans MS';
-    ctx.fillText(comicTelemetry, 0, 10);
+    let telemList = comicTelemetry.split('\n');
+    for(let i = 0; i<telemList.length; i++)
+        ctx.fillText(telemList[i], 2, i*10+10);
 
     utcTime = (new Date()).getTime() / 1000;
     frameOn++;
@@ -482,6 +496,7 @@ function resetPlayer(){
     localPlayer.y = startingPoints[randomPoint].y;
     localPlayer.dir = startingPoints[randomPoint].dir;
     localPlayer.lives = 3;
+    localPlayer['deathCount']++;
 }
 function lockToClosestWall(){
     let smallestDist = 1000;
