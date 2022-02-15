@@ -162,11 +162,6 @@ let gameSpeed = 1;
 
 function doFrame(){
 
-    if(localPlayer.crouching)
-        screen.height = 160;
-    else
-        screen.height = 200;
-
 
     makeObjectsList();
 

@@ -106,9 +106,7 @@ function prepareForRender(){
         objects[i]['distFromPlayer2'] = Math.sqrt(Math.pow(localPlayer.x-objects[i].x2 ,2)+Math.pow(localPlayer.y-objects[i].y2,2));
         objects[i]['dirFromPlayer2'] = Math.atan2(objects[i].y2 - localPlayer.y,objects[i].x2 - localPlayer.x);
 
-        if('priority' in thisObject){
-            thisObject['centerDistFromPlayer'] -= thisObject['priority'];
-        }
+
 
 
         objects[i]['dirDiff'] = (localPlayer.dir - objects[i]['dirFromPlayer'] +PI + 2*PI) % (2*PI)-PI
@@ -176,6 +174,12 @@ function prepareForRender(){
         thePlayer['hitboxPlane2'] = playerPlane2;
     }
 
+    for(let i = 0 ; i<objectsToRender.length; i++){
+        let thisObject = objects[objectsToRender[i]];
+        if('priority' in thisObject){
+            thisObject['centerDistFromPlayer'] -= thisObject['priority'];
+        }
+    }
 
 }
 let topDownScale = 3;
@@ -255,13 +259,16 @@ function render3D(){
             let upperYStart = screen.height/2+planeYStart;
             let upperYEnd = screen.height/2+planeYEnd;
 
+            let crouchDispModifier = 0;
+            if(localPlayer.crouching) crouchDispModifier = 0.5;
 
 
             if(theObject.type == 'wall'){
+
                 let topViewNumber = magicViewNumber2*theObject['height'];
                 let bottomViewNumber = magicViewNumber2;
-                topViewNumber+= theObject['z']*magicViewNumber2;
-                bottomViewNumber-= theObject['z']*magicViewNumber2;
+                topViewNumber+= (theObject['z']+crouchDispModifier)*magicViewNumber2;
+                bottomViewNumber-= (theObject['z']+crouchDispModifier)*magicViewNumber2;
                 let planeYStart2 = topViewNumber/theObject['distFromPlayer']; //tops
                 let planeYEnd2 = topViewNumber/theObject['distFromPlayer2'];
 
@@ -289,6 +296,7 @@ function render3D(){
             }
 
             if(theObject['type'] == 'plane'){
+
                 ctx.beginPath();
                 ctx.fillStyle = theObject.color;
                 for(let i = 0; i<theObject['points'].length+1; i++){
@@ -296,7 +304,7 @@ function render3D(){
                     if(doFirstAgain) i = 0;
                     let the3DPoint = theObject['points'][i];
                     let x = (0-the3DPoint['dirDiff'] + magicViewNumber) / (magicViewNumber*2)*screen.width;
-                    let y = (magicViewNumber2*the3DPoint['z'])/(the3DPoint['distFromPlayer']);
+                    let y = (magicViewNumber2*(the3DPoint['z']+crouchDispModifier))/(the3DPoint['distFromPlayer']);
                     ctx.lineTo(x,screen.height/2-y)
                     if(doFirstAgain)break;
                 }
@@ -327,6 +335,7 @@ function render3D(){
 
                 let drawX = planeXStart-mikeWidth/2;
                 let drawY = (lowerYStart+mikeHeight/8);  // the +mikeHeight/8 makes them more eye-level
+
                 let drawWidth = mikeWidth;
                 let drawHeight = mikeHeight;
                 if(theObject['crouching']){
