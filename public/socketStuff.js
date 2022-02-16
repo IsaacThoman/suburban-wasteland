@@ -48,8 +48,11 @@ function cKeyPressed(){
 
 }
 function sendShot(playerToShoot){
-    if(playerToShoot['lives']<=1)
+    if(playerToShoot['lives']<=1){
         localPlayer['killCount'] ++;
+        playerToShoot['lives'] = 3;
+    }
+
     socket.emit('playerShot', playerToShoot['playerNum']);
 }
 
