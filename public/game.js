@@ -3,12 +3,12 @@ const ctx = canvas.getContext("2d");
 
 const PI = Math.PI;
 const radToDeg = 1/3.14*180;
-const debugMode = false;
+const debugMode = true;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys; resetKeys();
 function resetKeys(){ keys = {'arrowup':false,'down':false,'arrowleft':false,'arrowright':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
-let renderMode = 0;
+let renderMode = 1;
 let interfaceEnabled = false;
 let usernameTyped = '';
 const startingPoints = [
@@ -16,49 +16,6 @@ const startingPoints = [
 ]
 
 const playerWidth = 7;
-
-class Wall{
-    constructor(x1,y1,x2,y2,height,z,color,outlineColor,priority) {
-        this.color = "#b68181";
-        this.outlineColor = "#ffffff";
-        this.z = 0;
-        this.height = 1;
-        this.priority = false;
-
-        this.type = 'wall';
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
-        if(color!=null)this.color = color;
-        if(outlineColor!=null)this.outlineColor = outlineColor;
-        if(height!=null)this.height = height;
-        if(z!=null)this.z = z;
-        if(priority!=null)this.priority = priority;
-    }
-}
-
-class Point3D{
-    constructor(x,y,z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-}
-
-class Plane {
-    constructor(points,color,outlineColor,priority) {
-        this.type = 'plane';
-        this.points = points;
-        this.color = "#ff0000";
-        this.outlineColor = "#ff4848";
-        this.priority = false;
-        if(color!=null)this.color = color;
-        if(outlineColor!=null)this.outlineColor = outlineColor;
-        if(priority!=null)this.priority = priority;
-    }
-}
-
 
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -134,13 +91,13 @@ let disallowedMoveBlocks = [];
 let objectsToRender = [];
 let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1};
 resetPlayer();
-let playerSpeed = 1.2;
+let playerSpeed = 1.6;
 let playerSpeedMultiplier = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
 
 let comicTelemetry = '';
-let showStats = true;
+let showStats = false;
 let timeLocalWasShot = 0;
 let framesSinceShot = 10;
 let framesSinceHeal =10;
@@ -178,7 +135,7 @@ fillSky();
     if(renderMode==0)
         render3D();
     if(renderMode==1)
-        renderTopDown(true);
+        renderTopDown(false);
 
     if(interfaceEnabled){
         let blinker = '|';
@@ -302,34 +259,35 @@ function makeObjectsList(){
     let p4 = new Point3D(200,280,1.5);
     let testPlane = new Plane([p1,p2,p3,p4],"#cc5d5d",'#ffffff');
 
-    objects = [wallTest,wallTest2,wallTest3,wallTest4,gWall3,gWall2,gWall4,testPlane];
+ //   objects = [wallTest,wallTest2,wallTest3,wallTest4,gWall3,gWall2,gWall4,testPlane];
+    objects = [];
 
     let cactus = {'type':'cactus','x':270,'y':220,'dir':-3.55};
 objects.push(cactus);
 
 
-for(let i = 0; i<floorTiles.length; i++)
-    objects.push(floorTiles[i]);
-if(frameOn%(60)==0){
-    floorTiles = [];
-    let sqrSize = 40;
-    let tilesLength = viewDistance;
-    let startX = Math.floor(localPlayer.x/sqrSize)*sqrSize;
-    let startY = Math.floor(localPlayer.y/sqrSize)*sqrSize;
-    for(let x = startX-tilesLength; x<startX+tilesLength; x+=sqrSize){
-        for(let y = startY-tilesLength; y<startY+tilesLength; y+=sqrSize){
-            let colorToUse = "#ffffff";
-            if((x+y)/sqrSize%2==0)colorToUse = "#000000";
-            let z = -1;
-            let p1 = new Point3D(x,y,z);
-            let p2 = new Point3D(x,y+sqrSize,z);
-            let p3 = new Point3D(x+sqrSize,y+sqrSize,z);
-            let p4 = new Point3D(x+sqrSize,y,z);
-            let testPlane = new Plane([p1,p2,p3,p4],colorToUse,'rgba(255,255,255,0)',-1000);
-            floorTiles.push(testPlane);
-        }
-    }
-}
+// for(let i = 0; i<floorTiles.length; i++)
+//     objects.push(floorTiles[i]);
+// if(frameOn%(60)==0){
+//     floorTiles = [];
+//     let sqrSize = 40;
+//     let tilesLength = 1000;
+//     let startX = Math.floor(localPlayer.x/sqrSize)*sqrSize;
+//     let startY = Math.floor(localPlayer.y/sqrSize)*sqrSize;
+//     for(let x = startX-tilesLength; x<startX+tilesLength; x+=sqrSize){
+//         for(let y = startY-tilesLength; y<startY+tilesLength; y+=sqrSize){
+//             let colorToUse = "#ffffff";
+//             if((x+y)/sqrSize%2==0)colorToUse = "#000000";
+//             let z = -1;
+//             let p1 = new Point3D(x,y,z);
+//             let p2 = new Point3D(x,y+sqrSize,z);
+//             let p3 = new Point3D(x+sqrSize,y+sqrSize,z);
+//             let p4 = new Point3D(x+sqrSize,y,z);
+//             let testPlane = new Plane([p1,p2,p3,p4],colorToUse,'rgba(255,255,255,0)',-1000);
+//             floorTiles.push(testPlane);
+//         }
+//     }
+// }
 
 
 
@@ -340,10 +298,11 @@ for(let i = 0; i<serverObjects.length; i++)
     for(let i = 0; i<addedObjects.length; i++)
         objects.push(addedObjects[i]);
 
- /*   for(let i = 0; i<levelBuilt.length; i++){
+// /*
+ for(let i = 0; i<levelBuilt.length; i++){
         objects.push(levelBuilt[i])
     }
-*/
+//*/
 
     //pillar turtle
     let pT = {x:300,y:0,dir:0,faceCount:70,size:25};
@@ -527,7 +486,8 @@ firstWallPos = {x:localPlayer.x, y:localPlayer.y};
 }
 
 function setSecondWallPos(){
-    let newWall = {'type':'wall','x1':firstWallPos.x,'y1':firstWallPos.y,'x2':localPlayer.x,'y2':localPlayer.y,'color':"#9f389d",'outlineColor':"#c7c7c7"};
+    //let newWall = {'type':'wall','x1':firstWallPos.x,'y1':firstWallPos.y,'x2':localPlayer.x,'y2':localPlayer.y,'color':"#9f389d",'outlineColor':"#c7c7c7"};
+    let newWall = new Wall(firstWallPos.x,firstWallPos.y,localPlayer.x,localPlayer.y)
     addedObjects.push(newWall)
     console.log(addedObjects)
 }

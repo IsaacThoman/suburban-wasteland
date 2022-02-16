@@ -1,4 +1,4 @@
-let viewDistance = 400;
+let viewDistance = 2500;
 
 let mikeImages = [];
 for(let i = 0; i<32; i++)
@@ -84,6 +84,47 @@ function imgArrayFromSheet(img,width,height,count){
     imgEditorCanvas.remove();
 }
 
+class Wall{
+    constructor(x1,y1,x2,y2,height,z,color,outlineColor,priority) {
+        this.color = "#b68181";
+        this.outlineColor = "#ffffff";
+        this.z = 0;
+        this.height = 1;
+        this.priority = false;
+
+        this.type = 'wall';
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+        if(color!=null)this.color = color;
+        if(outlineColor!=null)this.outlineColor = outlineColor;
+        if(height!=null)this.height = height;
+        if(z!=null)this.z = z;
+        if(priority!=null)this.priority = priority;
+    }
+}
+
+class Point3D{
+    constructor(x,y,z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+}
+
+class Plane {
+    constructor(points,color,outlineColor,priority) {
+        this.type = 'plane';
+        this.points = points;
+        this.color = "#ff0000";
+        this.outlineColor = "#ff4848";
+        this.priority = false;
+        if(color!=null)this.color = color;
+        if(outlineColor!=null)this.outlineColor = outlineColor;
+        if(priority!=null)this.priority = priority;
+    }
+}
 
 
 function prepareForRender(){
@@ -178,7 +219,7 @@ function prepareForRender(){
 
 
 }
-let topDownScale = 3;
+let topDownScale = 7;
 function renderTopDown(showWallLines){
 
     ctx.fillStyle = "#2a2a2a";
@@ -409,10 +450,10 @@ function fillSky(){
     ctx.rect(0,0,1000,screen.height);
     ctx.fill();
     ctx.closePath();
-    //
-    // ctx.fillStyle = "#969696";
-    // ctx.beginPath();
-    // ctx.rect(0,screen.height/2,1000,1000);
-    // ctx.fill();
-    // ctx.closePath();
+
+    ctx.fillStyle = "#969696";
+    ctx.beginPath();
+    ctx.rect(0,screen.height/2,1000,1000);
+    ctx.fill();
+    ctx.closePath();
 }

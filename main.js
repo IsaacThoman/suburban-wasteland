@@ -11,6 +11,7 @@ let utcTime = (new Date()).getTime() / 1000;
 
 let serverPlayerData = [];
 let lastPlayerDataEmit = utcTime;
+let gameObjects = [];
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
@@ -84,7 +85,7 @@ function emitServerUpdate(){
     let utcTime = (new Date()).getTime() / 1000;
     //let theX = Math.sin(utcTime)*100;
     //let funnyWall = new Wall(theX,0,theX,100,1,0);
-    let gameObjects = [];
+   // let gameObjects = [];
     let gameState = {'playerData':serverPlayerData,'serverVersion':gameVersion,'serverObjects':gameObjects};
 
     io.emit('gameStateUpdate', gameState);
