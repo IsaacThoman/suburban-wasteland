@@ -12,7 +12,7 @@ let renderMode = 0;
 let interfaceEnabled = false;
 let usernameTyped = '';
 const startingPoints = [
-    {x: 0, y: 250, dir: 0}
+    {x: 265, y: 580, dir: 0}
 ]
 
 const playerWidth = 7;

@@ -29,7 +29,7 @@ function cKeyPressed(){
         let lpViewPoint = new Point(localPlayer.x + Math.cos(localPlayer.dir)*1000,localPlayer.y + Math.sin(localPlayer.dir)*1000);
         let theObject = objects[objectsToRender[i]];
         let isPointedAt = doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane']['x1'],theObject['hitboxPlane']['y1']),new Point(theObject['hitboxPlane']['x2'],theObject['hitboxPlane']['y2'])) || doIntersect(localPlayer,lpViewPoint,new Point(theObject['hitboxPlane2']['x1'],theObject['hitboxPlane2']['y1']),new Point(theObject['hitboxPlane2']['x2'],theObject['hitboxPlane2']['y2']));
-        if(!wallBetween(objects[objectsToRender[i]],localPlayer) && isPointedAt){
+        if(!wallBetween(objects[objectsToRender[i]],localPlayer,'z',true,1) && isPointedAt){
             if(localPlayer.weaponHeld==1){
                 sendShot(objects[objectsToRender[i]]);
             }
