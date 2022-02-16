@@ -75,14 +75,42 @@ if(!playerExists){
 });
 
 function serverLoop(){
+    utcTime = (new Date()).getTime() / 1000;
+    updateGameObjects();
     emitServerUpdate();
     setTimeout(serverLoop,50,'');
 }
 setTimeout(serverLoop,50,'');
 
+let garage1Height = 0;
+function updateGameObjects(){
+  //  let wH = (Math.sin(utcTime*1.5)+1);
+    if(playerWithinPoint(372,642,50)){
+        if(garage1Height<1.8)
+            garage1Height+=0.2;
+    }else{
+        if(garage1Height>0.2)
+            garage1Height-=0.2;
+    }
+
+
+    let garage1 = new Wall(332,638,413,647,1,garage1Height,'rgba(32,164,168,0.7)','#c7c7c7');
+    gameObjects = [garage1]
+}
+
+
+function playerWithinPoint(x,y,dist){
+    for(let i = 0; i<serverPlayerData.length; i++){
+        if(serverPlayerData[i]==null) continue;
+        if(Math.sqrt(Math.pow(serverPlayerData[i]['x']-x,2) + Math.pow(serverPlayerData[i]['y']-y,2))<dist){
+            return true;
+        }
+    }
+    return false;
+}
 
 function emitServerUpdate(){
-    let utcTime = (new Date()).getTime() / 1000;
+
     //let theX = Math.sin(utcTime)*100;
     //let funnyWall = new Wall(theX,0,theX,100,1,0);
    // let gameObjects = [];

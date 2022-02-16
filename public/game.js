@@ -8,7 +8,7 @@ const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys; resetKeys();
 function resetKeys(){ keys = {'arrowup':false,'down':false,'arrowleft':false,'arrowright':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
-let renderMode = 1;
+let renderMode = 0;
 let interfaceEnabled = false;
 let usernameTyped = '';
 const startingPoints = [
@@ -97,7 +97,7 @@ let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
 
 let comicTelemetry = '';
-let showStats = false;
+let showStats = true;
 let timeLocalWasShot = 0;
 let framesSinceShot = 10;
 let framesSinceHeal =10;
@@ -209,10 +209,10 @@ else
     gameSpeed = 1*60/framesPerSecond;
 
     ctx.fillStyle = "#9ae090";
-    ctx.font = '10px Comic Sans MS';
+    ctx.font = '8px Comic Sans MS';
     let telemList = comicTelemetry.split('\n');
     for(let i = 0; i<telemList.length; i++)
-        ctx.fillText(telemList[i], 2, i*10+10);
+        ctx.fillText(telemList[i], 1, i*8+8);
 
     utcTime = (new Date()).getTime() / 1000;
     frameOn++;
