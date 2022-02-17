@@ -449,7 +449,7 @@ function drawOverlay(){
      if(localPlayer.weaponHeld==2)
          imgToShow+=16;
 
-     ctx.drawImage(mikeImages[imgToShow],0,200-overlayMikeSize/0.75,overlayMikeSize,overlayMikeSize/0.75);
+     ctx.drawImage(mikeImages[imgToShow],0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
 }
 
 function fillSky(){
