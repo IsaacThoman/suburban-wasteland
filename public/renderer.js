@@ -1,7 +1,7 @@
 let viewDistance = 2500;
 
 let mikeImages = [];
-for(let i = 0; i<32; i++)
+for(let i = 0; i<64; i++)
     mikeImages[i] = new Image();
 
 let mikeSheet = new Image(); mikeSheet.src = 'mike-sheet-combined.webp'; mikeSheet.onload = function(){mikeSheetLoaded();};
@@ -59,9 +59,9 @@ function imgArrayFromSheet(img,width,height,count,startIndex){
     imgEditorCanvas.width = 382;
     imgEditorCanvas.height = 640;
     let editorCtx = imgEditorCanvas.getContext("2d");
-    let indexesToHurt = [0,1,2,3,4,5,6,7,16,17,18,19,20,21,22,23];
+    let indexesToHurt = [0,1,2,3,4,5,6,7,16,17,18,19,20,21,22,23,32,33,34,35,36,37,38,39,48,49,50,51,52,53,54,55];
     for(let j = 0; j<indexesToHurt.length; j++){
-        i = indexesToHurt[j];
+        let i = indexesToHurt[j];
         editorCtx.clearRect(0,0,1000,1000);
         editorCtx.drawImage(mikeImages[i],0,0)
         let tempImg = editorCtx.getImageData(0,0,382,640);
