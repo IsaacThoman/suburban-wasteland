@@ -4,18 +4,20 @@ let mikeImages = [];
 for(let i = 0; i<32; i++)
     mikeImages[i] = new Image();
 
-for(let i = 0; i<8; i++) {
+let mikeSheet = new Image(); mikeSheet.src = 'mike-sheet-combined.webp'; mikeSheet.onload = function(){mikeSheetLoaded();};
 
+function mikeSheetLoaded(){
+    let tempMikes = imgArrayFromSheet(mikeSheet,382,640,32,0);
+    for(let i = 0; i<8; i++){
+        mikeImages[i] = tempMikes[i];
+        mikeImages[i+16] = tempMikes[i+8]
 
-    mikeImages[i].src = 'mikes/'+i+'.webp';
-    mikeImages[i].onload = function(){onMikeLoad();}
-
-    mikeImages[i+16].src = 'saberMike/'+i+'.webp';
-    mikeImages[i+16].onload = function(){onMikeLoad();}
-
+        mikeImages[i+32] = tempMikes[i+16];
+        mikeImages[i+48] = tempMikes[i+24];
+    }
+    createMikesInPain();
 }
 
-let mikesLoaded = 0;
 let mikesInPainCreated = false;
 
 let cactiLoaded = false;
@@ -24,11 +26,6 @@ let cactiSheet = new Image();
 cactiSheet.src = 'cacti-sheet-128.webp';
 cactiSheet.onload = function (){cactiLoaded = true;}
 
-function onMikeLoad(){
-    mikesLoaded++;
-    if(mikesLoaded>=16)
-        createMikesInPain();
-}
 
 let handImg = [];
 for(let i = 0; i<=1; i++){
@@ -39,14 +36,14 @@ for(let i = 0; i<=1; i++){
 let handToUse = 0;
 
 
-function imgArrayFromSheet(img,width,height,count){
+function imgArrayFromSheet(img,width,height,count,startIndex){
     let imgEditorCanvas = document.createElement("canvas");
     imgEditorCanvas.width = width;
     imgEditorCanvas.height = height;
     let editorCtx = imgEditorCanvas.getContext("2d");
 
     let out = [];
-    for(let i = 0; i<count; i++){
+    for(let i = startIndex; i<count; i++){
         out[i] = new Image();
         editorCtx.clearRect(0,0,width*count,height);
         editorCtx.drawImage(img,width*i,0,width,height,0,0,width,height);
@@ -379,6 +376,8 @@ function render3D(){
                     imgToShow+=8;
                 if(theObject['weaponHeld']==2)
                     imgToShow+=16;
+                if(theObject['team']===1)
+                    imgToShow+=32;
 
                 //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
                 ctx.fillStyle = "rgba(255,255,255,0.6)";

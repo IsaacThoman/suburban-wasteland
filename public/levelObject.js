@@ -1,7 +1,11 @@
+let redWallColor = "#9a4343";
+let whiteWallColor = "#ffffff";
+let blueWallColor = "#4e65a1";
+
 let levelBuilt = [
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -12,8 +16,8 @@ let levelBuilt = [
         "y2": 582
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -24,8 +28,8 @@ let levelBuilt = [
         "y2": 625
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -36,8 +40,8 @@ let levelBuilt = [
         "y2": 665
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -48,8 +52,8 @@ let levelBuilt = [
         "y2": 704
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -60,8 +64,8 @@ let levelBuilt = [
         "y2": 744
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -72,8 +76,8 @@ let levelBuilt = [
         "y2": 784
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -84,8 +88,8 @@ let levelBuilt = [
         "y2": 831
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -96,8 +100,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -108,8 +112,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -120,8 +124,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -132,8 +136,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -144,8 +148,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -156,8 +160,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -168,8 +172,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -180,8 +184,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -192,8 +196,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -204,8 +208,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -216,8 +220,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -228,8 +232,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -240,8 +244,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -252,8 +256,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -264,8 +268,8 @@ let levelBuilt = [
         "y2": 533
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -276,8 +280,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -288,8 +292,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -300,8 +304,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -312,8 +316,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -324,8 +328,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -336,8 +340,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -348,8 +352,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -360,8 +364,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -372,8 +376,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -384,8 +388,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -396,8 +400,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -408,8 +412,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -420,8 +424,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -432,8 +436,8 @@ let levelBuilt = [
         "y2": 568
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -444,8 +448,8 @@ let levelBuilt = [
         "y2": 609
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -456,8 +460,8 @@ let levelBuilt = [
         "y2": 638
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -468,8 +472,8 @@ let levelBuilt = [
         "y2": 669
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -480,8 +484,8 @@ let levelBuilt = [
         "y2": 705
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -492,8 +496,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -504,8 +508,8 @@ let levelBuilt = [
         "y2": 764
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -516,8 +520,8 @@ let levelBuilt = [
         "y2": 786
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -528,8 +532,8 @@ let levelBuilt = [
         "y2": 813
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -540,8 +544,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -552,8 +556,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -564,8 +568,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -576,8 +580,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -588,8 +592,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -600,8 +604,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -612,8 +616,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -624,8 +628,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -636,8 +640,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -648,8 +652,8 @@ let levelBuilt = [
         "y2": 735
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -660,8 +664,8 @@ let levelBuilt = [
         "y2": 560
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -672,8 +676,8 @@ let levelBuilt = [
         "y2": 585
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -684,8 +688,8 @@ let levelBuilt = [
         "y2": 609
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -696,8 +700,8 @@ let levelBuilt = [
         "y2": 631
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -708,8 +712,8 @@ let levelBuilt = [
         "y2": 647
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -720,8 +724,8 @@ let levelBuilt = [
         "y2": 647
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -732,8 +736,8 @@ let levelBuilt = [
         "y2": 638
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -744,8 +748,8 @@ let levelBuilt = [
         "y2": 638
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -756,8 +760,8 @@ let levelBuilt = [
         "y2": 638
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -768,8 +772,8 @@ let levelBuilt = [
         "y2": 638
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -780,8 +784,8 @@ let levelBuilt = [
         "y2": 647
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -792,8 +796,8 @@ let levelBuilt = [
         "y2": 873
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -804,8 +808,8 @@ let levelBuilt = [
         "y2": 683
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -816,8 +820,8 @@ let levelBuilt = [
         "y2": 930
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -828,8 +832,8 @@ let levelBuilt = [
         "y2": 976
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -840,8 +844,8 @@ let levelBuilt = [
         "y2": 1024
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -852,8 +856,8 @@ let levelBuilt = [
         "y2": 1075
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -864,8 +868,8 @@ let levelBuilt = [
         "y2": 1120
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -876,8 +880,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -888,8 +892,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -900,8 +904,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -912,8 +916,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -924,8 +928,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -936,8 +940,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -948,8 +952,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -960,8 +964,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -972,8 +976,8 @@ let levelBuilt = [
         "y2": 1157
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -984,8 +988,8 @@ let levelBuilt = [
         "y2": 489
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -996,8 +1000,8 @@ let levelBuilt = [
         "y2": 443
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1008,8 +1012,8 @@ let levelBuilt = [
         "y2": 401
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1020,8 +1024,8 @@ let levelBuilt = [
         "y2": 366
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1032,8 +1036,8 @@ let levelBuilt = [
         "y2": 320
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1044,8 +1048,8 @@ let levelBuilt = [
         "y2": 278
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1056,8 +1060,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1068,8 +1072,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1080,8 +1084,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1092,8 +1096,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1104,8 +1108,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1116,8 +1120,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1128,8 +1132,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1140,8 +1144,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1152,8 +1156,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1164,8 +1168,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1176,8 +1180,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1188,8 +1192,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1200,8 +1204,8 @@ let levelBuilt = [
         "y2": 247
     },
     {
-        "color": "#b68181",
-        "outlineColor": "#ffffff",
+        "color": redWallColor,
+        "outlineColor": whiteWallColor,
         "z": 0,
         "height": 1,
         "priority": false,
@@ -1225,7 +1229,7 @@ for(let i = 0; i<initialLength; i++){
     x1 = base-(x1 - base);
     x2 = base-(x2-base);
 
-    let newWall = new Wall(x1,y1,x2,y2,levelBuilt[i].height,levelBuilt[i].z,"#466877","#ffffff",false);
+    let newWall = new Wall(x1,y1,x2,y2,levelBuilt[i].height,levelBuilt[i].z,blueWallColor,whiteWallColor,false);
     levelBuilt.push(newWall);
 }
 

@@ -89,7 +89,7 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1,'team':0};
 resetPlayer();
 let playerSpeed = 1.6;
 let playerSpeedMultiplier = 1;
