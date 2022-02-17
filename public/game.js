@@ -107,6 +107,7 @@ let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
 
 let comicTelemetry = '';
+let extraComicTelemetry = '';
 let showStats = true;
 let timeLocalWasShot = 0;
 let framesSinceShot = 10;
@@ -223,6 +224,16 @@ else
     let telemList = comicTelemetry.split('\n');
     for(let i = 0; i<telemList.length; i++)
         ctx.fillText(telemList[i], 1, i*8+8);
+
+
+    
+    ctx.fillStyle = "hsl(" +(utcTime*100%360) +",100%,50%)"; //comic telemetry 2
+    ctx.font = 'italic 20px Comic Sans MS';
+    telemList = extraComicTelemetry.split('\n');
+    for(let i = 0; i<telemList.length; i++)
+        ctx.fillText(telemList[i], screen.width/2-ctx.measureText(telemList[i]).width/2, i*20+60);
+
+
 
     utcTime = (new Date()).getTime() / 1000;
     frameOn++;
