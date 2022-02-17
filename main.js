@@ -28,11 +28,14 @@ io.on('connection', (socket) => {
     socket.on('playerData', (msg) => {
         utcTime = (new Date()).getTime() / 1000;
      //   console.log('player '+msg.playerNum+' sent '+msg);
-        let msgRequirements = ['x','y','inPain','lives','name','playerNum','weaponHeld','crouching'];
+        let msgRequirements = ['x','y','inPain','lives','name','playerNum','weaponHeld','crouching','killCount','deathCount','team'];
         if(typeof msg != "object") return;
-        for(let i in msgRequirements)
-        if(!msgRequirements[i] in msg)
-            return;
+        for(let i in msgRequirements){
+            let exists = msgRequirements[i] in msg;
+            if(!exists)
+                return;
+        }
+
 
         let playerExists = false;
 for(let i = 0; i<serverPlayerData.length; i++){
