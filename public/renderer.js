@@ -441,6 +441,15 @@ function render3D(){
 
 function drawOverlay(){
      ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
+     let overlayMikeSize = 30;
+     let overlayMikeDir = Math.floor(utcTime*10%8);
+     let imgToShow = 7;
+     if(localPlayer.team==1)
+         imgToShow+=32;
+     if(localPlayer.weaponHeld==2)
+         imgToShow+=16;
+
+     ctx.drawImage(mikeImages[imgToShow],0,200-overlayMikeSize/0.75,overlayMikeSize,overlayMikeSize/0.75);
 }
 
 function fillSky(){
