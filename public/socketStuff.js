@@ -1,6 +1,6 @@
 const socket = io();
 
-const gameVersion = 0.15;
+const gameVersion = 0.16;
 let serverVersion = gameVersion;
 let lastUpload = 0;
 let playerCount = 0;
@@ -82,3 +82,11 @@ function gotPlayerData(msg){
         if(remotePlayers[i]!=null && remotePlayers[i]['playerNum']==localPlayer.playerNum)
             remotePlayers[i] = null; //removes you from the list of remote players
 }
+
+function requestTeamAssign(){
+socket.emit('requestTeamAssign','pwease?');
+}
+socket.on('teamAssign', function(msg) {
+localPlayer.team = msg;
+    resetPlayer();
+});

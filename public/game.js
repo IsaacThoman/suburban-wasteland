@@ -12,7 +12,17 @@ let renderMode = 0;
 let interfaceEnabled = false;
 let usernameTyped = '';
 const startingPoints = [
-    {x: 265, y: 580, dir: 0}
+    [
+        {x: 2065, y: 580, dir: PI},
+        {x: 2065, y: 550, dir: PI},
+        {x: 2065, y: 610, dir: PI}
+    ]
+    ,
+    [
+        {x: 265, y: 580, dir: 0},
+        {x: 265, y: 550, dir: 0},
+        {x: 265, y: 610, dir: 0}
+    ]
 ]
 
 const playerWidth = 7;
@@ -90,7 +100,7 @@ let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
 let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1,'team':0};
-resetPlayer();
+requestTeamAssign();
 let playerSpeed = 1.6;
 let playerSpeedMultiplier = 1;
 let rotationSpeed = 0.025;
@@ -450,10 +460,10 @@ framesSinceShot = 0;
 }
 
 function resetPlayer(){
-    let randomPoint = Math.floor(Math.random()*startingPoints.length);
-    localPlayer.x = startingPoints[randomPoint].x;
-    localPlayer.y = startingPoints[randomPoint].y;
-    localPlayer.dir = startingPoints[randomPoint].dir;
+    let randomPoint = Math.floor(Math.random()*startingPoints[localPlayer.team].length);
+    localPlayer.x = startingPoints[localPlayer.team][randomPoint].x;
+    localPlayer.y = startingPoints[localPlayer.team][randomPoint].y;
+    localPlayer.dir = startingPoints[localPlayer.team][randomPoint].dir;
     localPlayer.lives = 3;
     localPlayer['deathCount']++;
 }

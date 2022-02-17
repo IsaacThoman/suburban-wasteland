@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const gameVersion = 0.15;
+const gameVersion = 0.16;
 let emitCount = 0;
 let utcTime = (new Date()).getTime() / 1000;
 
@@ -71,11 +71,28 @@ if(!playerExists){
         io.emit('playerShot',msg);
     });
 
+    socket.on('requestTeamAssign', (msg) => {
+        let counts = teamPlayerCounts();
+        if(counts[0]<=counts[1])
+            socket.emit('teamAssign',0);
+        else
+            socket.emit('teamAssign',1);
+    });
+
 
 
 
 
 });
+
+function teamPlayerCounts(){
+    let out = [0,0];
+    for(let i = 0; i<serverPlayerData.length; i++){
+        if(serverPlayerData[i]==null)continue;
+        out[serverPlayerData[i]['team']]++;
+    }
+    return out;
+}
 
 function serverLoop(){
     utcTime = (new Date()).getTime() / 1000;
@@ -86,6 +103,7 @@ function serverLoop(){
 setTimeout(serverLoop,50,'');
 
 let garage1Height = 0;
+let garage2Height = 0;
 function updateGameObjects(){
   //  let wH = (Math.sin(utcTime*1.5)+1);
     if(playerWithinPoint(372,642,50)){
@@ -96,9 +114,19 @@ function updateGameObjects(){
             garage1Height-=0.2;
     }
 
+    if(playerWithinPoint(1970,642,50)){
+        if(garage2Height<1.8)
+            garage2Height+=0.2;
+    }else{
+        if(garage2Height>0.2)
+            garage2Height-=0.2;
+    }
+
 
     let garage1 = new Wall(332,638,413,647,1,garage1Height,'rgba(32,164,168,0.7)','#c7c7c7');
-    gameObjects = [garage1]
+    let garage2 = new Wall(2010,638,1929,647,1,garage2Height,'rgba(32,164,168,0.7)','#c7c7c7');
+
+    gameObjects = [garage1,garage2]
 }
 
 
