@@ -28,7 +28,7 @@ cactiSheet.onload = function (){cactiLoaded = true;}
 
 
 let handImg = [];
-for(let i = 0; i<=1; i++){
+for(let i = 0; i<=2; i++){
     handImg[i] = new Image();
     handImg[i].src = 'hands/'+i+'.webp';
 }
@@ -440,7 +440,9 @@ function render3D(){
 }
 
 function drawOverlay(){
-     ctx.drawImage(handImg[handToUse],0,handY,screen.width,200);
+    let handSourceX = 0;
+    if(localPlayer.team == 1) handSourceX= 320;
+     ctx.drawImage(handImg[handToUse],handSourceX,0,320,200,0,handY,screen.width,200);
      let overlayMikeSize = 30;
      let overlayMikeDir = Math.floor(utcTime*10%8);
      let imgToShow = 7;
