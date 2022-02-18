@@ -7,7 +7,7 @@ const debugMode = true;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys; resetKeys();
-function resetKeys(){ keys = {'arrowup':false,'down':false,'arrowleft':false,'arrowright':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
+function resetKeys(){ keys = {'arrowup':false,'arrowdown':false,'arrowleft':false,'arrowright':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
 let renderMode = 0;
 let interfaceEnabled = false;
 let usernameTyped = '';
@@ -401,13 +401,13 @@ function mouseUpdate(e){
 
 function playerControls(){
     let newPos = {x:localPlayer.x, y:localPlayer.y};
-    let moveKeyHeld = (keys.arrowup||keys.w||keys.down||keys.s||keys.a||keys.d);
+    let moveKeyHeld = (keys.arrowup||keys.w||keys.arrowdown||keys.s||keys.a||keys.d);
     let moveX = 0;
     let moveY = 0;
 
     if(keys.arrowup||keys.w)
         moveY = 1;
-    if(keys.down||keys.s)
+    if(keys.arrowdown||keys.s)
         moveY = -1;
     if(keys.a)
         moveX = -1;
