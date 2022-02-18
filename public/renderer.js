@@ -454,6 +454,7 @@ function drawOverlay(){
          imgToShow+=16;
 
      let imageToShow = mikeImages[imgToShow];
+     if(mikesInPainCreated)
      ctx.drawImage(imageToShow,0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
 
 }
