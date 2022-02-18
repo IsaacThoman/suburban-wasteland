@@ -100,9 +100,9 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1,'team':0};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1,'team':0,'isACactus':false};
 requestTeamAssign();
-let playerSpeed = 1.6;
+let playerSpeed = 2.5;
 let playerSpeedMultiplier = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;
@@ -516,7 +516,7 @@ function setSecondWallPos(){
 
 //funny title
 if(Math.random()<0.1){
-    let randomTitles = ['Garage Door Simulator 2022','There\'s Fish Everywhere','Cyberpunk 2077','You found a secret!'];
+    let randomTitles = ['Garage Door Simulator 2022','There\'s Fish Everywhere','Cyberpunk 2077'];
     window.top.document.title = randomTitles[Math.floor(Math.random()*randomTitles.length)];
 }
 

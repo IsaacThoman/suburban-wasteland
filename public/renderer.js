@@ -348,7 +348,7 @@ function render3D(){
 
 
 
-            if(theObject.type == 'remotePlayer'){
+            if(theObject.type == 'remotePlayer' && !theObject['isACactus']){
                 let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
 
                 viewingAngle-= 15/radToDeg;
@@ -385,8 +385,10 @@ function render3D(){
                 let remoteName = theObject['name'];
                 ctx.fillText(remoteName,drawX+drawWidth/2-ctx.measureText(remoteName).width/2,drawY)
 
-                if(mikesInPainCreated)
-                ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+
+                    if(mikesInPainCreated)
+                        ctx.drawImage(mikeImages[imgToShow],drawX,drawY,drawWidth,drawHeight);
+
 
                 //    }else{
                 //        console.log('mike image out of bounds: '+imgToShow);
@@ -395,7 +397,7 @@ function render3D(){
 
             }
 
-            if(theObject.type == 'cactus'){
+            if(theObject.type == 'cactus' || ('isACactus' in theObject &&theObject['isACactus'])){
            //     console.log(theObject)
                 let totalImgCount = 127;
                 let viewingAngle = (theObject['dirFromPlayer']+PI); //0-2PI value
@@ -451,7 +453,9 @@ function drawOverlay(){
      if(localPlayer.weaponHeld==2)
          imgToShow+=16;
 
-     ctx.drawImage(mikeImages[imgToShow],0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
+     let imageToShow = mikeImages[imgToShow];
+     ctx.drawImage(imageToShow,0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
+
 }
 
 function fillSky(){

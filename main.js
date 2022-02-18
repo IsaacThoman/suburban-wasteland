@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
     socket.on('playerData', (msg) => {
         utcTime = (new Date()).getTime() / 1000;
      //   console.log('player '+msg.playerNum+' sent '+msg);
-        let msgRequirements = ['x','y','inPain','lives','name','playerNum','weaponHeld','crouching','killCount','deathCount','team'];
+        let msgRequirements = ['x','y','inPain','lives','name','playerNum','weaponHeld','crouching','killCount','deathCount','team','isACactus'];
         if(typeof msg != "object") return;
         for(let i in msgRequirements){
             let exists = msgRequirements[i] in msg;
@@ -100,13 +100,49 @@ function serverLoop(){
     emitServerUpdate();
     setTimeout(serverLoop,50,'');
 }
+
 setTimeout(serverLoop,50,'');
 
 let garage1Height = 0;
 let garage2Height = 0;
 function updateGameObjects(){
-  //  let wH = (Math.sin(utcTime*1.5)+1);
-    if(playerWithinPoint(372,642,50)){
+    gameObjects = [];
+    updateGarages();
+    doCactusStuff();
+}
+
+let team1CactusTaken = false;
+let team2CactusTaken = false;
+function doCactusStuff(){
+    let cactus1 = {'x':175,'y':585,'dir':1.95,'type':'cactus'};
+    let cactus2 = {'x':2175,'y':585,'dir':1,'type':'cactus'};
+
+if(!team1CactusTaken)
+    gameObjects.push(cactus1)
+
+if(!team2CactusTaken)
+    gameObjects.push(cactus2)
+
+    let playerTouching1 = playerWithinPoint(175,585,30);
+    if(!team1CactusTaken && playerTouching1>=0 && serverPlayerData[playerTouching1]['team']==0){ //red cactus
+        team1CactusTaken = true;
+        let stolenInfo = {'team':1,'player':serverPlayerData[playerTouching1]};
+        io.emit('cactusTaken',stolenInfo);
+    }
+
+    let playerTouching2 = playerWithinPoint(2175,585,30);
+    if(!team2CactusTaken && playerTouching2>=0 && serverPlayerData[playerTouching2]['team']==1){ //blue cactus
+        team2CactusTaken = true;
+        let stolenInfo = {'team':0,'player':serverPlayerData[playerTouching2]};
+        io.emit('cactusTaken',stolenInfo);
+    }
+
+}
+
+
+function updateGarages(){
+    //  let wH = (Math.sin(utcTime*1.5)+1);
+    if(playerWithinPoint(372,642,50)>-1){
         if(garage1Height<1.8)
             garage1Height+=0.2;
     }else{
@@ -114,7 +150,7 @@ function updateGameObjects(){
             garage1Height-=0.2;
     }
 
-    if(playerWithinPoint(1970,642,50)){
+    if(playerWithinPoint(1970,642,50)>-1){
         if(garage2Height<1.8)
             garage2Height+=0.2;
     }else{
@@ -126,18 +162,17 @@ function updateGameObjects(){
     let garage1 = new Wall(332,638,413,647,1,garage1Height,'rgba(32,164,168,0.7)','#c7c7c7');
     let garage2 = new Wall(2010,638,1929,647,1,garage2Height,'rgba(32,164,168,0.7)','#c7c7c7');
 
-    gameObjects = [garage1,garage2]
+    gameObjects.push(garage1,garage2);
 }
-
 
 function playerWithinPoint(x,y,dist){
     for(let i = 0; i<serverPlayerData.length; i++){
         if(serverPlayerData[i]==null) continue;
         if(Math.sqrt(Math.pow(serverPlayerData[i]['x']-x,2) + Math.pow(serverPlayerData[i]['y']-y,2))<dist){
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
 }
 
 function emitServerUpdate(){
@@ -145,7 +180,8 @@ function emitServerUpdate(){
     //let theX = Math.sin(utcTime)*100;
     //let funnyWall = new Wall(theX,0,theX,100,1,0);
    // let gameObjects = [];
-    let gameState = {'playerData':serverPlayerData,'serverVersion':gameVersion,'serverObjects':gameObjects};
+    let cactiTaken = [team1CactusTaken,team2CactusTaken];
+    let gameState = {'playerData':serverPlayerData,'serverVersion':gameVersion,'serverObjects':gameObjects,'cactusTaken':cactiTaken};
 
     io.emit('gameStateUpdate', gameState);
 

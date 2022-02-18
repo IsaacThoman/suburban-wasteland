@@ -90,3 +90,14 @@ socket.on('teamAssign', function(msg) {
 localPlayer.team = msg;
     resetPlayer();
 });
+
+
+socket.on('cactusTaken', function(msg) {
+if(msg['team']==localPlayer.team){
+    let stealerName = 'Someone';
+    if(msg['player']['name'].length>=1) stealerName = msg['player']['name'];
+    extraComicTelemetry = stealerName+" stole your cactus!!"
+}
+if(msg['player']['playerNum']==localPlayer.playerNum)
+    localPlayer.isACactus = true;
+});
