@@ -41,6 +41,7 @@ function keyDownHandler(e) {
 
         if (e.keyCode == 13) { //enter
             localPlayer.name = usernameTyped;
+            localStorage.setItem('name',localPlayer.name);
             interfaceEnabled = false;
             return;
         }
@@ -226,7 +227,7 @@ else
         ctx.fillText(telemList[i], 1, i*8+8);
 
 
-    
+
     ctx.fillStyle = "hsl(" +(utcTime*100%360) +",100%,50%)"; //comic telemetry 2
     ctx.font = 'italic 20px Comic Sans MS';
     telemList = extraComicTelemetry.split('\n');
@@ -511,4 +512,15 @@ function setSecondWallPos(){
     let newWall = new Wall(firstWallPos.x,firstWallPos.y,localPlayer.x,localPlayer.y)
     addedObjects.push(newWall)
     console.log(addedObjects)
+}
+
+//funny title
+if(Math.random()<0.1){
+    let randomTitles = ['Garage Door Simulator 2022','There\'s Fish Everywhere','Cyberpunk 2077','You found a secret!'];
+    window.top.document.title = randomTitles[Math.floor(Math.random()*randomTitles.length)];
+}
+
+if(localPlayer.name == ''){
+    if(localStorage.getItem('name')!=null)
+        localPlayer.name = localStorage.getItem('name');
 }
