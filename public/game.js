@@ -102,7 +102,7 @@ let disallowedMoveBlocks = [];
 let objectsToRender = [];
 let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1,'team':0,'isACactus':false};
 requestTeamAssign();
-let playerSpeed = 2.5;
+let playerSpeed = 1.7;
 let playerSpeedMultiplier = 1;
 let rotationSpeed = 0.025;
 let FOV = 0.4*3.14;

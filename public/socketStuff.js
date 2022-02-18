@@ -101,3 +101,12 @@ if(msg['team']==localPlayer.team){
 if(msg['player']['playerNum']==localPlayer.playerNum)
     localPlayer.isACactus = true;
 });
+
+socket.on('pointGiven', function(msg) {
+if(msg==localPlayer.team){
+    localPlayer.isACactus = false;
+}else{
+    extraComicTelemetry = '';
+}
+});
+

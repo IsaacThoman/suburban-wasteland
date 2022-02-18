@@ -61,7 +61,21 @@ if(!playerExists){
 
             if( 'name' in serverPlayerData[i] &&  serverPlayerData[i]['name'].length>100) serverPlayerData[i]['name'] = 'Michael Frederick Krol'; //removes long names
 
-            if(serverPlayerData[i]['lastUploadTime']+5<utcTime) serverPlayerData[i] = null;
+            if(serverPlayerData[i]['lastUploadTime']+5<utcTime){
+                if(serverPlayerData[i]['isACactus']){
+                    if(serverPlayerData[i]['team']==0) {
+                        team1CactusTaken = false;
+                        io.emit('pointGiven', -1);
+                    }
+                    else {
+                        team2CactusTaken = false;
+                        io.emit('pointGiven', -1);
+                    }
+
+                }
+
+                serverPlayerData[i] = null;
+            }
         }
 
 
@@ -137,8 +151,25 @@ if(!team2CactusTaken)
         io.emit('cactusTaken',stolenInfo);
     }
 
-}
+    for(let i = 0; i<serverPlayerData.length; i++){
+        if(serverPlayerData[i]==null) continue;
+        if(!serverPlayerData[i]['isACactus'])continue; //player mustn't be null and must be a cactus
 
+        if(serverPlayerData[i]['x']<700 && serverPlayerData[i]['team']==1){
+            io.emit('pointGiven',1);
+            team2CactusTaken = false;
+        }
+
+        if(serverPlayerData[i]['x']>1650 && serverPlayerData[i]['team']==0) {
+            io.emit('pointGiven', 0);
+            team1CactusTaken = false;
+        }
+
+    }
+
+
+
+}
 
 function updateGarages(){
     //  let wH = (Math.sin(utcTime*1.5)+1);
