@@ -141,9 +141,9 @@ function doFrame(){
 
     makeObjectsList();
 
-    playerControls();
-    prepareForRender();
 
+    prepareForRender();
+    playerControls();
 
 fillSky();
     if(renderMode==0)
