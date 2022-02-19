@@ -216,7 +216,7 @@ function prepareForRender(){
 
 
 }
-let topDownScale = 7;
+let topDownScale = 7.3;
 function renderTopDown(showWallLines){
 
     ctx.fillStyle = "#2a2a2a";
