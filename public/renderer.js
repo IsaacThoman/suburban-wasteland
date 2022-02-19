@@ -454,8 +454,16 @@ function drawOverlay(){
          imgToShow+=16;
 
      let imageToShow = mikeImages[imgToShow];
-     if(mikesInPainCreated)
-     ctx.drawImage(imageToShow,0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
+
+
+     if(localPlayer.isACactus){
+         let cactiOverlayImg = Math.floor(utcTime*70)%127;
+         if(cactiLoaded)
+             ctx.drawImage(cactiSheet,cactiOverlayImg*460/4.25,0,460/4.25,200,0,235-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
+     }else{
+         if(mikesInPainCreated)
+             ctx.drawImage(imageToShow,0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
+     }
 
 }
 
