@@ -25,8 +25,9 @@ const startingPoints = [
     ]
 ]
 
-const playerWidth = 7;
-
+const playerWidth = 10;
+let gamepad;
+let gp;
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -136,6 +137,7 @@ function doFrame(){
     else
         screen.height = 200;
 
+    updateGamepad();
 
     makeObjectsList();
 
@@ -398,8 +400,26 @@ function mouseUpdate(e){
     localPlayer.dir+= e.movementX/550;
 }
 
-
+let lastb7Val = 0;
+let lastb4Val = 0;
+const selectableWeapons = [1,2];
+let weaponIndex = 0;
 function playerControls(){
+
+    if(gp!=null){
+        if(gp.buttons[7].value>0.5 && lastb7Val<0.5)
+            cKeyPressed();
+        lastb7Val = gp.buttons[7].value;
+
+        if(gp.buttons[4].value >0.5 && lastb4Val<0.5){
+            weaponIndex = (weaponIndex+1)%selectableWeapons.length;
+            localPlayer.weaponHeld = selectableWeapons[weaponIndex];
+            lastShot = utcTime;
+        }
+        lastb4Val = gp.buttons[4].value;
+    }
+
+
     let newPos = {x:localPlayer.x, y:localPlayer.y};
     let moveKeyHeld = (keys.arrowup||keys.w||keys.arrowdown||keys.s||keys.a||keys.d);
     let moveX = 0;
@@ -414,11 +434,25 @@ function playerControls(){
     if(keys.d)
         moveX = 1;
 
+    let leftJoyDist = 0;
+    let lJoySpeedMod = 1;
+    if(gp!=null){
+        leftJoyDist = Math.sqrt(Math.pow(gp.axes[0],2) + Math.pow(gp.axes[1],2));
+    }
+
+
+
+    if(gp!=null &&leftJoyDist>0.06){
+        moveX = gp.axes[0];
+        moveY = 0-gp.axes[1];
+        lJoySpeedMod = leftJoyDist;
+    }
+
     let movementDir = Math.atan2(moveX,moveY);
 
-if(moveKeyHeld) {
-    newPos.x += Math.cos(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed;
-    newPos.y += Math.sin(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed;
+if(moveKeyHeld || leftJoyDist>0.06) {
+    newPos.x += Math.cos(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed*lJoySpeedMod;
+    newPos.y += Math.sin(localPlayer.dir + movementDir) * playerSpeed *playerSpeedMultiplier* gameSpeed*lJoySpeedMod;
 }
 
     if(keys.arrowleft){
@@ -428,6 +462,9 @@ if(moveKeyHeld) {
         localPlayer.dir+=rotationSpeed*gameSpeed;
     }
 
+    if(gp!=null && Math.abs(gp.axes[2])>0.06)
+        localPlayer.dir+=gp.axes[2]*rotationSpeed*1.4;
+
     if(!wallBetween(localPlayer,newPos,'z',true,1.5)){
         localPlayer.x = newPos.x;
         localPlayer.y = newPos.y;
@@ -436,7 +473,7 @@ if(moveKeyHeld) {
 
     playerSpeedMultiplier = 1;
 
-    if(keys.shift){
+    if(keys.shift || (gp!=null && gp.buttons[10].pressed)){
         localPlayer.crouching = true;
         playerSpeedMultiplier = 0.4;
     }else{
@@ -459,6 +496,17 @@ if(moveKeyHeld) {
 }
 
 
+
+window.addEventListener("gamepadconnected", function(e) {
+    console.log("Gamepad connected")
+    gamepad = e.gamepad;
+});
+
+function updateGamepad(){
+    if(gamepad!=null)
+        gp = navigator.getGamepads()[gamepad.index];
+
+}
 
 function localPlayerShot(){
     console.log('you\'ve been shot!!')
