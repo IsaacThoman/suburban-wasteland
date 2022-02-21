@@ -462,8 +462,13 @@ if(moveKeyHeld || leftJoyDist>0.06) {
         localPlayer.dir+=rotationSpeed*gameSpeed;
     }
 
-    if(gp!=null && Math.abs(gp.axes[2])>0.06)
-        localPlayer.dir+=gp.axes[2]*rotationSpeed*1.4;
+    if(gp!=null && Math.abs(gp.axes[2])>0.06) {
+        let leftTModifier = 1;
+        if(gp.buttons[6].value>0.5)
+            leftTModifier = 0.3;
+
+        localPlayer.dir += gp.axes[2] * rotationSpeed * gameSpeed * 1.4*leftTModifier;
+    }
 
     if(!wallBetween(localPlayer,newPos,'z',true,1.5)){
         localPlayer.x = newPos.x;

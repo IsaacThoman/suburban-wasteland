@@ -438,7 +438,8 @@ function render3D(){
 
 
     }
-   drawOverlay();
+    if(showStats)
+        drawOverlay();
 }
 
 function drawOverlay(){
