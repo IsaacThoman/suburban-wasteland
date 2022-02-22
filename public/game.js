@@ -129,7 +129,6 @@ let framesSinceLastSecond = 0;
 let framesPerSecond = 60;
 let gameSpeed = 1;
 
-
 function doFrame(){
 
     if(localPlayer.crouching)
@@ -233,12 +232,16 @@ else
         ctx.fillText(telemList[i], 1, i*8+8);
 
 
+    let ECTtoShow = extraComicTelemetry;
+    if(localPlayer.isACactus)
+        ECTtoShow = 'You took the enemy cactus.\nGet back to your base!';
+
 
     ctx.fillStyle = "hsl(" +(utcTime*100%360) +",100%,50%)"; //comic telemetry 2
     ctx.font = 'italic 20px Comic Sans MS';
-    telemList = extraComicTelemetry.split('\n');
+    telemList = ECTtoShow.split('\n');
     for(let i = 0; i<telemList.length; i++)
-        ctx.fillText(telemList[i], screen.width/2-ctx.measureText(telemList[i]).width/2, i*20+60);
+        ctx.fillText(telemList[i], screen.width/2-ctx.measureText(telemList[i]).width/2, i*20+40);
 
 
 
@@ -518,7 +521,8 @@ function updateGamepad(){
 }
 
 function localPlayerShot(){
-    console.log('you\'ve been shot!!')
+    console.log('you\'ve been shot!!');
+    audio[randomNumber(8,13)].play();
     localPlayer.lives--;
 framesSinceShot = 0;
 

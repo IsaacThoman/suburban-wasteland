@@ -22,6 +22,7 @@ function uploadPlayerData(){
 }
 
 let lastShot = 0;
+let hitSound = 0;
 function cKeyPressed(){
     if(utcTime<=lastShot+1) return;
     for(let i = 0; i<objectsToRender.length; i++){
@@ -39,11 +40,15 @@ function cKeyPressed(){
                     sendShot(objects[objectsToRender[i]]);
             }
 
+            audio[6].play();
 
+        }
+        else{
 
         }
 
     }
+    audio[0].play();
     lastShot = utcTime;
 
 }
@@ -96,10 +101,13 @@ socket.on('cactusTaken', function(msg) {
 if(msg['team']==localPlayer.team){
     let stealerName = 'Someone';
     if(msg['player']['name'].length>=1) stealerName = msg['player']['name'];
-    extraComicTelemetry = stealerName+" stole your cactus!!"
+    extraComicTelemetry = '\n'+stealerName+" stole your cactus!!"
+    audio[3].play();
 }
-if(msg['player']['playerNum']==localPlayer.playerNum)
+if(msg['player']['playerNum']==localPlayer.playerNum) {
     localPlayer.isACactus = true;
+    audio[14].play();
+}
 });
 
 socket.on('pointGiven', function(msg) {
@@ -107,6 +115,7 @@ if(msg==localPlayer.team){
     if(localPlayer.isACactus && ((localPlayer.x>500 && localPlayer.team == 1)||(localPlayer.x<1850 && localPlayer.team == 0))){
         confettiFrame = 0;
         localPlayer.licks++;
+        audio[15].play();
     }
     localPlayer.isACactus = false;
 }else{

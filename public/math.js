@@ -14,6 +14,11 @@ function wallBetween(point1, point2,prop,greaterThan,num){
     return false;
 }
 
+function randomNumber(min,max){
+    return Math.floor((Math.random()*(max-min+1))+min);
+}
+
+
 
 // Taken from https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 // Javascript program to check if two given line segments intersect
