@@ -104,6 +104,9 @@ if(msg['player']['playerNum']==localPlayer.playerNum)
 
 socket.on('pointGiven', function(msg) {
 if(msg==localPlayer.team){
+    if(localPlayer.isACactus && ((localPlayer.x>500 && localPlayer.team == 1)||(localPlayer.x<1850 && localPlayer.team == 0))){
+        confettiFrame = 0;
+    }
     localPlayer.isACactus = false;
 }else{
     extraComicTelemetry = '';

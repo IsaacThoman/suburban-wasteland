@@ -151,6 +151,10 @@ fillSky();
     if(renderMode==1)
         renderTopDown(false);
 
+    if(frameOn%5==0){
+        confettiFrame++;
+    }
+
     if(interfaceEnabled){
         let blinker = '|';
         if(frameOn%40<20)blinker = '';

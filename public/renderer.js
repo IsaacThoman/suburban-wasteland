@@ -26,6 +26,8 @@ let cactiSheet = new Image();
 cactiSheet.src = 'cacti-sheet-128.webp';
 cactiSheet.onload = function (){cactiLoaded = true;}
 
+let confettiSheet = new Image();
+confettiSheet.src = 'strike.webp'
 
 let handImg = [];
 for(let i = 0; i<=2; i++){
@@ -441,8 +443,14 @@ function render3D(){
     if(showStats)
         drawOverlay();
 }
-
+let confettiFrame = 100;
 function drawOverlay(){
+
+    if(confettiFrame>=0 && confettiFrame<=23){
+        let sx = confettiFrame*320;
+        ctx.drawImage(confettiSheet,sx,0,320,200,0,0,320,200);
+    }
+
     let handSourceX = 0;
     if(localPlayer.team == 1) handSourceX= 320;
      ctx.drawImage(handImg[handToUse],handSourceX,0,320,200,0,handY,screen.width,200);
@@ -465,6 +473,8 @@ function drawOverlay(){
          if(mikesInPainCreated)
              ctx.drawImage(imageToShow,0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
      }
+
+
 
 }
 
