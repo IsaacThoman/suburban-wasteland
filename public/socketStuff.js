@@ -106,6 +106,7 @@ socket.on('pointGiven', function(msg) {
 if(msg==localPlayer.team){
     if(localPlayer.isACactus && ((localPlayer.x>500 && localPlayer.team == 1)||(localPlayer.x<1850 && localPlayer.team == 0))){
         confettiFrame = 0;
+        localPlayer.licks++;
     }
     localPlayer.isACactus = false;
 }else{

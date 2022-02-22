@@ -101,7 +101,7 @@ let utcTime = (new Date()).getTime() / 1000;
 let objects = [];
 let disallowedMoveBlocks = [];
 let objectsToRender = [];
-let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1,'team':0,'isACactus':false};
+let localPlayer = {'x':0,'y':0,'dir':0,'playerNum':Math.floor(Math.random()*90000+10000),'lives':3,'crouching':false,'inPain':false,'weaponHeld':1,'name':'','killCount':0,'deathCount':-1,'team':0,'isACactus':false,'licks':0};
 requestTeamAssign();
 let playerSpeed = 1.7;
 let playerSpeedMultiplier = 1;
@@ -217,7 +217,7 @@ let KDR = 0;
     if(localPlayer.killCount!=0||localPlayer.deathCount!=0)
      KDR = Math.floor(localPlayer.killCount/localPlayer.deathCount*10)/10;
 if(showStats)
-    comicTelemetry = framesPerSecond+'FPS, '+playerCount+' players\n'+localPlayer.killCount+' kills'+'\n'+localPlayer.deathCount+' deaths'+'\nratio: '+KDR+'';
+    comicTelemetry = framesPerSecond+'FPS, '+playerCount+' players\n'+localPlayer.killCount+' kills, '+localPlayer.licks+' licks\n'+localPlayer.deathCount+' deaths\n'+'ratio: '+KDR+'';
 else
     comicTelemetry = '';
 

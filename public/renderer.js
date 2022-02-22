@@ -382,7 +382,7 @@ function render3D(){
                     imgToShow+=32;
 
                 //   if(imgToShow>=0 && (imgToShow<8 || (mikesInPainCreated && imgToShow<16))){
-                ctx.fillStyle = "rgba(255,255,255,0.6)";
+                ctx.fillStyle = "rgba(255,255,255,0.7)";
                 ctx.font = drawHeight/12+'px Comic Sans MS';
                 let remoteName = theObject['name'];
                 ctx.fillText(remoteName,drawX+drawWidth/2-ctx.measureText(remoteName).width/2,drawY)
