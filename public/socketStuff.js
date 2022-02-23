@@ -40,7 +40,8 @@ function cKeyPressed(){
                     sendShot(objects[objectsToRender[i]]);
             }
 
-            audio[6].play();
+            hitSound = (hitSound+1)%3;
+            audio[5+hitSound].play();
 
         }
         else{
