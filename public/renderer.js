@@ -255,11 +255,28 @@ function renderTopDown(showWallLines){
 
     }
 
-    ctx.fillStyle = "#50a142"; //local player
+
+    let px = localPlayer.x;
+    let py = localPlayer.y;
+
+    let tx = px + Math.cos(localPlayer.dir)*25;
+    let ty = py + Math.sin(localPlayer.dir)*25;
+    let tx2 = tx-Math.cos(localPlayer.dir-0.5)*50;
+    let ty2 = ty-Math.sin(localPlayer.dir-0.5)*50;
+    let tx3 = tx-Math.cos(localPlayer.dir+0.5)*50;
+    let ty3 = ty-Math.sin(localPlayer.dir+0.5)*50;
+
+
+    ctx.strokeStyle = "#50a142"; //local player
     ctx.beginPath();
-    ctx.rect((localPlayer.x-2)/topDownScale,(localPlayer.y-2)/topDownScale,4,4);
-    ctx.fill();
+    ctx.moveTo(tx/topDownScale,ty/topDownScale);
+    ctx.lineTo(tx2/topDownScale,ty2/topDownScale);
+    ctx.moveTo(tx/topDownScale,ty/topDownScale);
+    ctx.lineTo(tx3/topDownScale,ty3/topDownScale);
+
+    ctx.stroke();
     ctx.closePath();
+
 
 if(showWallLines) {
     ctx.beginPath();
@@ -272,6 +289,8 @@ if(showWallLines) {
     ctx.stroke();
     ctx.closePath();
 }
+
+
 }
 
 const magicViewNumber = 0.6;
@@ -474,7 +493,12 @@ function drawOverlay(){
              ctx.drawImage(imageToShow,0,240-overlayMikeSize/0.75-(overlayMikeSize/0.75*localPlayer.lives/3),overlayMikeSize,overlayMikeSize/0.75*localPlayer.lives/3);
      }
 
-
+    ctx.fillStyle = "rgba(0,255,34,0.7)";
+    ctx.beginPath();
+    ctx.rect(screen.width/2,100-2,1,5);
+    ctx.rect(screen.width/2-2,100,5,1);
+    ctx.fill();
+    ctx.closePath();
 
 }
 

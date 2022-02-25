@@ -1218,9 +1218,387 @@ let levelBuilt = [
 ]
 
 
+let obstacleFill = "rgba(182,129,129,0.75)";
+let obstacleStroke = "#ffffff";
+
+let obstacleWalls = [
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1475,
+        "x2": 1471,
+        "y1": 595,
+        "y2": 570
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1471,
+        "x2": 1467,
+        "y1": 570,
+        "y2": 546
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1467,
+        "x2": 1463,
+        "y1": 546,
+        "y2": 521
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1463,
+        "x2": 1459,
+        "y1": 521,
+        "y2": 496
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1459,
+        "x2": 1454,
+        "y1": 496,
+        "y2": 472
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1011,
+        "x2": 1036,
+        "y1": 412,
+        "y2": 408
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1036,
+        "x2": 1060,
+        "y1": 408,
+        "y2": 403
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1060,
+        "x2": 1085,
+        "y1": 403,
+        "y2": 399
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1085,
+        "x2": 1109,
+        "y1": 399,
+        "y2": 395
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1109,
+        "x2": 1134,
+        "y1": 395,
+        "y2": 390
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1134,
+        "x2": 1159,
+        "y1": 390,
+        "y2": 386
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1159,
+        "x2": 1183,
+        "y1": 386,
+        "y2": 381
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1183,
+        "x2": 1208,
+        "y1": 381,
+        "y2": 377
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1208,
+        "x2": 1202,
+        "y1": 377,
+        "y2": 353
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 926,
+        "x2": 931,
+        "y1": 765,
+        "y2": 789
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 931,
+        "x2": 937,
+        "y1": 789,
+        "y2": 814
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 937,
+        "x2": 942,
+        "y1": 814,
+        "y2": 838
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 942,
+        "x2": 947,
+        "y1": 838,
+        "y2": 862
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 947,
+        "x2": 952,
+        "y1": 862,
+        "y2": 887
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1341,
+        "x2": 1340,
+        "y1": 1157,
+        "y2": 1132
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1340,
+        "x2": 1340,
+        "y1": 1132,
+        "y2": 1107
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1340,
+        "x2": 1339,
+        "y1": 1107,
+        "y2": 1082
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1339,
+        "x2": 1339,
+        "y1": 1082,
+        "y2": 1057
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1199,
+        "x2": 1198,
+        "y1": 1057,
+        "y2": 1032
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1198,
+        "x2": 1198,
+        "y1": 1032,
+        "y2": 1007
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1198,
+        "x2": 1197,
+        "y1": 1007,
+        "y2": 982
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1199,
+        "x2": 1224,
+        "y1": 1057,
+        "y2": 1056
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1224,
+        "x2": 1249,
+        "y1": 1056,
+        "y2": 1056
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1249,
+        "x2": 1274,
+        "y1": 1056,
+        "y2": 1056
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1197,
+        "x2": 1197,
+        "y1": 982,
+        "y2": 957
+    },
+    {
+        "color": obstacleFill,
+        "outlineColor": obstacleStroke,
+        "z": 0,
+        "height": 1,
+        "priority": false,
+        "type": "wall",
+        "x1": 1339,
+        "x2": 1363,
+        "y1": 1057,
+        "y2": 1054
+    }
+]
+
 let initialLength = levelBuilt.length;
 for(let i = 0; i<initialLength; i++){
-    let x1 = levelBuilt[i].x1;
+    let x1 = levelBuilt[i].x1; //the mirroring
     let x2 = levelBuilt[i].x2;
     let y1 = levelBuilt[i].y1;
     let y2 = levelBuilt[i].y2;
@@ -1233,10 +1611,32 @@ for(let i = 0; i<initialLength; i++){
     levelBuilt.push(newWall);
 }
 
-let lvlSize = 1;
-for(let i = 0; i<levelBuilt.length; i++){
-    levelBuilt[i].x1*=lvlSize;
-    levelBuilt[i].x2*=lvlSize;
-    levelBuilt[i].y1*=lvlSize;
-    levelBuilt[i].y2*=lvlSize;
-}
+for(let i = 0; i<obstacleWalls.length; i++)
+    levelBuilt.push(obstacleWalls[i]);
+
+//pillar turtle
+
+// let pT = {x:1160,y:630,dir:0,faceCount:25,size:10};
+//
+//     for(let i = 0; i<pT.faceCount; i++){
+//         let nextX = pT.x+(Math.cos(pT.dir)*pT.size);
+//         let nextY = pT.y+(Math.sin(pT.dir)*pT.size);
+//
+//         let pillarWall = new Wall(pT.x,pT.y,nextX,nextY,1,0,'rgb(133,0,0)','#ffffff')
+//         levelBuilt.push(pillarWall);
+//         pT.x = nextX;
+//         pT.y = nextY;
+//         pT.dir+=2*3.14/pT.faceCount;
+//
+//     }
+
+
+// let lvlSize = 1;
+// for(let i = 0; i<levelBuilt.length; i++){
+//     levelBuilt[i].x1*=lvlSize;
+//     levelBuilt[i].x2*=lvlSize;
+//     levelBuilt[i].y1*=lvlSize;
+//     levelBuilt[i].y2*=lvlSize;
+// }
+
+

@@ -7,7 +7,7 @@ const debugMode = true;
 const screen = {'width':320,'height':200};
 let frameOn = 0;
 let keys; resetKeys();
-function resetKeys(){ keys = {'arrowup':false,'arrowdown':false,'arrowleft':false,'arrowright':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false} }
+function resetKeys(){ keys = {'arrowup':false,'arrowdown':false,'arrowleft':false,'arrowright':false, 'w':false, 'a':false,'s':false,'d':false,'shift':false,'control':false,'u':false,'h':false,'j':false,'k':false,'space':false,'i':false} }
 let renderMode = 0;
 let interfaceEnabled = false;
 let usernameTyped = '';
@@ -179,14 +179,6 @@ fillSky();
 
 
 
-
-
-    ctx.fillStyle = "#ff0000";
-    ctx.beginPath();
-    ctx.rect(screen.width/2,100,2,2);
-    ctx.fill();
-    ctx.closePath();
-
     framesSinceShot++;
     framesSinceHeal++;
     localPlayer.inPain = (framesSinceShot<5);
@@ -335,21 +327,7 @@ for(let i = 0; i<serverObjects.length; i++)
     }
 //*/
 
-    //pillar turtle
-    let pT = {x:300,y:0,dir:0,faceCount:70,size:25};
-/*
-    for(let i = 0; i<pT.faceCount; i++){
-        let nextX = pT.x+(Math.cos(pT.dir)*pT.size);
-        let nextY = pT.y+(Math.sin(pT.dir)*pT.size);
 
-        let pillarWall = {'type':'wall','x1':pT.x,'y1':pT.y,'x2':nextX,'y2':nextY,'color':"#663db9",'outlineColor':"#c7c7c7"};
-        objects.push(pillarWall);
-        pT.x = nextX;
-        pT.y = nextY;
-        pT.dir+=2*PI/pT.faceCount;
-
-    }
-*/
     let splitSize = 25;
     let color = "#4b389f";
     let outlineColor = "#6464c7";
@@ -411,6 +389,7 @@ let lastb7Val = 0;
 let lastb4Val = 0;
 const selectableWeapons = [1,2];
 let weaponIndex = 0;
+let iWasDown = false;
 function playerControls(){
 
     if(gp!=null){
@@ -503,6 +482,13 @@ if(moveKeyHeld || leftJoyDist>0.06) {
             localPlayer.x-=1;
         if(keys.k)
             localPlayer.x+=1;
+        if(keys.i && !iWasDown){
+            let blipDist = 25;
+            localPlayer.x+= Math.cos(localPlayer.dir)*blipDist;
+            localPlayer.y+= Math.sin(localPlayer.dir)*blipDist;
+        }
+            iWasDown = keys.i;
+
     }
 
 }
