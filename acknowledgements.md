@@ -12,7 +12,7 @@
 ### The wii bowling strike screen is from Wii Sports
 #### https://www.youtube.com/watch?v=prcDV6iOjAQ
 
-### The hand images were from Aidian Teboul and Matthew Gourash
+### The hand images were from Aidan and Matthew
 
 ### Line intersection math was from GeeksForGeeks
 #### https://www.geeksforgeeks.org/orientation-3-ordered-points/
